@@ -1,5 +1,5 @@
 /* Import mongoose and define any variables needed to create the schema */
-var mongoose = require('mongoose'), 
+var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 
@@ -94,7 +94,7 @@ var criteriaSchema = new Schema ({
 /* Votes */
 var voteSchema = new Schema ({
   // Automatic MongoDB PK is generated - String
-  
+
   project_id: {
     type: String,
     required: true
@@ -127,11 +127,11 @@ var noteSchema = new Schema ({
   }
 });
 
-/* 
+/*
 When admin creates a new hackathon, an empty hackathon entity will be created.
 Hackathon will contain the IDs of projects associated with the hackathon
-*/ 
-var hackathonSchema = new Schema ({ 
+*/
+var hackathonSchema = new Schema ({
   // Automatic MongoDB PK is generated - string
   // it will be referenced as hackathon_id in other entities
 
@@ -159,7 +159,7 @@ var category = mongoose.model('Category', categorySchema);
 var criteria = mongoose.model('Criteria', criteriaSchema);
 var vote = mongoose.model('Vote', voteSchema);
 var hackathon = mongoose.model('Hackathon', hackathonSchema);
-var note = mongoose.model('Note' noteSchema);
+var note = mongoose.model('Note', noteSchema);
 
 /* Export the model to make it avaiable to other parts of your Node application */
 module.exports = project;
