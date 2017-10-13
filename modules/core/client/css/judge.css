@@ -21,3 +21,20 @@
     background-color: white;
     display: none;
 }*/
+body {
+  background-color: black;
+  padding-bottom: 40px;
+  padding-top: 40px;
+}
+.nav{
+  color: #509E2F
+}
+.panel-heading {
+    background-color: #509E2F;
+    color: white;
+    border-radius: 5px;
+}
+
+.panel-body {
+    border-radius: 5px;
+}

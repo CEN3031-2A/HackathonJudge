@@ -8,28 +8,39 @@
 
   </head>
   <body ng-app="hackathonJudge">
-    <div class = "titleContainer">
-      <div class = "row">
-          <h1>Hackathon Judge</h1>
+      <div class="row">
+        <div class="col-sm-4">
+          <img src="https://www.ultimatesoftware.com/brand/img/identity/primary/company-cmyk.png" alt="logo" style="width:400px;height:200px;">
+        </div>
+
+
+
+
+      <div class="col-sm-8">
+        <div class = "titleContainer">
+          <div class = "row">
+              <h1>Hackathon Judge</h1>
+          </div>
+        </div>
+        <div class = "signInContainer">
+          <form class="form-signin">
+            <h2 class="form-signin-heading">Welcome Joe,</h2>
+            <div class = "ID">
+              <label for="inputID" class="sr-only">Employee ID</label>
+            </div>
+            <input type="ID" id="inputID" class="form-control" placeholder="ID" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <li><a href = "/judge">Judge</a></li>
+          </form>
+        </div>
       </div>
-    </div>
-    <div class = "signInContainer">
-      <form class="form-signin">
-        <h2 class="form-signin-heading">Welcome Joe,</h2>
-        <div class = "ID">
-          <label for="inputID" class="sr-only">Employee ID</label>
-        </div>
-        <input type="ID" id="inputID" class="form-control" placeholder="ID" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <li><a href = "/judge">Judge</a></li>
-      </form>
-  </div>
+</div>
   </body>
 </html>
