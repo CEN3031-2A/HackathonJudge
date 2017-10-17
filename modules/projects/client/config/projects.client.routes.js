@@ -24,6 +24,7 @@
         }
       })
       .state('projects.create', {
+        // Replace the / with a . to access the page
         url: '/create',
         templateUrl: 'modules/projects/client/views/form-project.client.view.html',
         controller: 'ProjectsController',
@@ -32,9 +33,9 @@
           projectResolve: newProject
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['guest'], // Shouldn't be guest but this is temporary
           pageTitle: 'Projects Create'
-        }
+        } 
       })
       .state('projects.edit', {
         url: '/:projectId/edit',

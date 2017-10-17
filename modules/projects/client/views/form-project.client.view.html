@@ -7,10 +7,15 @@
       <fieldset>
         <div class="form-group" show-errors>
           <label class="control-label" for="name">Name</label>
-          <input name="name" type="text" ng-model="vm.project.name" id="name" class="form-control" placeholder="Name" required>
-          <div ng-messages="vm.form.projectForm.name.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Project name is required.</p>
-          </div>
+          <input name="name" type="text" ng-model="vm.project.name" id="name" class="form-control" placeholder="Name" required> <br>
+          <label class="control-label" for="id">Hackathon ID 59df9694e03907246478ab1b</label>
+          <input name="name" type="text" ng-model="vm.project.hackathon_id" id="hackathon_id" class="form-control" placeholder="Hackathon ID" required> <br>
+          <label class="control-label" for="name">Category ID 59df9694e03907246478ab17</label>
+          <input name="link" type="text" ng-model="vm.project.category_id" id="category_id" class="form-control" placeholder="Category ID" required> <br>
+          <label class="control-label" for="name">Description</label>
+          <input name="description" type="text" ng-model="vm.project.description" id="description" class="form-control" placeholder="Description" required> <br>
+          <label class="control-label" for="name">Link</label>
+          <input name="link" type="text" ng-model="vm.project.link" id="link" class="form-control" placeholder="Link" required>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.project._id ? 'Update' : 'Create'}}</button>
