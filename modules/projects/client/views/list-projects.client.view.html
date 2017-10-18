@@ -8,7 +8,7 @@
     <title>judgePage</title>
 
   </head>
-  <body ng-app="hackathonJudge">
+  <body>
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="#cat1">Category 1</a></li>
@@ -16,8 +16,8 @@
       <li role="presentation"><a href="#cat3">Category 3</a></li>
       <li role="presentation"><a href="#cat4">Category 4</a></li>
     </ul>
-    
-    <section>
+    <a ui-sref="projects.create"> Create </a>
+    <section ng-app="projects">
       <div class="page-header">
         <h1>Projects</h1>
       </div>
@@ -30,8 +30,5 @@
         No Projects yet, why don't you <a ui-sref="projects.create">create one</a>?
       </div>
     </section>
-
-
-    <script src="/modules/core/client/app/judge.js"></script>
   </body>
 </html>

@@ -32,7 +32,7 @@
           projectResolve: newProject
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user'],
           pageTitle: 'Projects Create'
         }
       })
