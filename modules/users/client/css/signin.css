@@ -1,0 +1,46 @@
+body {
+  background-color: white;
+  margin: 0;
+  padding: 0;
+  color: white;
+
+  /*background-image: url("ultimate.png");
+  background-position: left top;*/
+
+    background-image: url("ultimate.png"),url("hackathon.jpg");
+    background-repeat: no-repeat;
+    background-position: left top,center center;
+    background-size: 12% 10%,100% 80%;
+    background-attachment: fixed;
+}
+.nav{
+
+  list-style: none;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: #000000;
+    height:40px;
+    width: auto;
+}
+
+.wholeBlock{
+  margin-top: 10%;
+}
+.content{
+  margin: 0;
+}
+
+
+
+
+h2{
+  font-size: 40px;
+  /*color: #509e2f;*/
+  color: white;
+}
+
+h3{
+  /*color: #509e2f;*/
+  color: white;
+}
