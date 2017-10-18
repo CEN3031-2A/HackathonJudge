@@ -23,7 +23,43 @@
       </div>
       <uib-accordion>
         <div uib-accordion-group class="panel-default" heading="{{project.name}}" ng-repeat="project in vm.projects">
-          {{project.description}}
+          <div class="row">
+            <div class=".col-sm-1">
+              <a href="google.com">link</a><br/>
+              <ins>Description:</ins><br />
+              {{project.description}}
+            </div>
+            <div class="form-group">
+              <label for="comment">Notes:</label>
+              <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+            <div class=".col-sm-1">
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+              <select>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+              </select>
+            </div>
+          </div>
         </div>
       </uib-accordion>
       <div class="alert alert-warning text-center" ng-if="vm.projects.$resolved && !vm.projects.length">
