@@ -24,7 +24,7 @@
         }
       })
       .state('projects.create', {
-        url: '/create',
+        url: '.create', // need to fix --- should be /create but there is an issue where the post request is sent to /projects/api/projects instead of /api/projects
         templateUrl: 'modules/projects/client/views/form-project.client.view.html',
         controller: 'ProjectsController',
         controllerAs: 'vm',
