@@ -15,6 +15,7 @@
       <li role="presentation"><a href="#cat2">Category 2</a></li>
       <li role="presentation"><a href="#cat3">Category 3</a></li>
       <li role="presentation"><a href="#cat4">Category 4</a></li>
+      <li role="presentation"><a ui-sref="projects.create">Add Project</a></li>
     </ul>
     <a ui-sref="projects.create"> Create </a>
     <section ng-app="projects">
@@ -23,12 +24,11 @@
       </div>
       <uib-accordion>
         <div uib-accordion-group class="panel-default" heading="{{project.name}}" ng-repeat="project in vm.projects">
-          {{project.description}}
+          {{project.description}} <br> 
+          {{project.link}} <br>
+          <a ui-sref="projects.edit(vm.project._id)">Edit Project -- WIP</a>
         </div>
-      </uib-accordion>
-      <div class="alert alert-warning text-center" ng-if="vm.projects.$resolved && !vm.projects.length">
-        No Projects yet, why don't you <a ui-sref="projects.create">create one</a>?
-      </div>
+      </uib-accordion> 
     </section>
   </body>
 </html>
