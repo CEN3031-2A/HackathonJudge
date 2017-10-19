@@ -8,7 +8,7 @@
     <title>judgePage</title>
 
   </head>
-  <body ng-app="hackathonJudge">
+  <body>
 
     <ul class="nav nav-tabs">
       <li role="presentation" class="active"><a href="#cat1">Category 1</a></li>
@@ -17,8 +17,8 @@
       <li role="presentation"><a href="#cat4">Category 4</a></li>
       <li role="presentation"><a ui-sref="projects.create">Add Project</a></li>
     </ul>
-    
-    <section>
+    <a ui-sref="projects.create"> Create </a>
+    <section ng-app="projects">
       <div class="page-header">
         <h1>Projects</h1>
       </div>
