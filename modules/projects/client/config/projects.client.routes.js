@@ -24,7 +24,6 @@
         }
       })
       .state('projects.create', {
-        // Replace the / with a . to access the page
         url: '/create',
         templateUrl: 'modules/projects/client/views/form-project.client.view.html',
         controller: 'ProjectsController',
@@ -46,7 +45,7 @@
           projectResolve: getProject
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['guest'], // Should not be guest
           pageTitle: 'Edit Project {{ projectResolve.name }}'
         }
       })
