@@ -13,24 +13,24 @@ var hackathonSchema = new Schema({
   name: String,
   description: String,
   active: Boolean,
-  
+
   category: [{
     name: String,
     description: String,
 
-    project: {
+    project: [{
       name: String,
       description: String,
       link: String,
 
-      note: {
+      note: [{
         text: String,
         vote: [{
           criteria_id: String,
           number: Number
         }]
-      },      
-    },
+      }],
+    }],
 
     criteria: [{
       name: String,
@@ -44,4 +44,3 @@ var hackathonSchema = new Schema({
 
 var hackathon = mongoose.model('Hackathon', hackathonSchema);
 module.exports = hackathon;
-
