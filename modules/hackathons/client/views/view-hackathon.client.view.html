@@ -13,6 +13,7 @@
   </div>
   <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
   Note to dev: Make sure to add user verification <br>
-  Description: {{ hackathon.description }}
+  Active Hackathon: {{ vm.hackathon.active }} <br>
+  Description: {{ vm.hackathon.description }}
   <p class="lead" ng-bind="vm.hackathon.content"></p>
 </section>

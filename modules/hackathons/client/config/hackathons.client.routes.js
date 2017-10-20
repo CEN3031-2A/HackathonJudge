@@ -38,7 +38,7 @@
         }
       })
       .state('hackathons.edit', {
-        url: '/:hackathonId/edit',
+        url: '.:hackathonId.edit',  // temporariliy using . instead of /
         templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',
         controller: 'HackathonsController',
         controllerAs: 'vm',

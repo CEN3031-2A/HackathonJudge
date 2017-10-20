@@ -11,6 +11,15 @@
           <input name="name" type="text" ng-model="vm.hackathon.name" id="name" class="form-control" placeholder="Name" required>
           <label class="control-label" for="name">Description</label>
           <input name="name" type="text" ng-model="vm.hackathon.description" id="description" class="form-control" placeholder="Description" required>
+          Set Hackathon to: Active or Inactive
+          <div>
+            <input type="radio" id="booleanTrue" name="true" value="true" ng-model="vm.hackathon.active">
+            <label for="booleanTrue">True</label>
+        
+            <input type="radio" id="booleanFalse" name="false" value="false" ng-model ="vm.hackathon.active">
+            <label for="booleanFalse">False</label>
+          </div>
+
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.hackathon._id ? 'Update' : 'Create'}}</button>
