@@ -59,8 +59,26 @@
         resolve: {
           hackathonResolve: getHackathon
         },
+
         data: {
           pageTitle: 'Hackathon {{ hackathonResolve.name }}'
+        }
+      })
+      .state('hackathons.edit_cat', {
+        url: ':hackathonId.:cat.edit',
+        templateUrl: '/modules/hackathons/client/views/edit-hackathon-cat.client.view.html',
+        controller: 'HackathonsController',
+        controllerAs: 'vm',
+        params: {
+          cat: null
+        },
+        resolve: {
+          hackathonResolve: getHackathon
+        },
+
+        data: {
+          roles: ['guest', 'user', 'admin'],
+          pageTitle: 'Edit {{ hackathonResolve.name }} Category'
         }
       });
   }

@@ -1,18 +1,20 @@
 <section>
   <div class="page-header">
-    <h1>Hackathons</h1>
+    <h1>Hackathon List</h1>
   </div>
   <a ui-sref="hackathons.create">Create Hackathon</a>
+  <h3>Active Hackathons</h3>
   <div class="list-group">
-    <a ng-repeat="hackathon in vm.hackathons"
-       ui-sref="hackathons.view({ hackathonId: hackathon._id })"
-       class="list-group-item">
+    <a ng-repeat="hackathon in vm.hackathons | filter:true:hackathon.active" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
-      Active: {{ hackathon.active }} <br>
       Description: {{ hackathon.description}}
     </a>
   </div>
-  <div class="alert alert-warning text-center" ng-if="vm.hackathons.$resolved && !vm.hackathons.length">
-    No Hackathons yet, why don't you <a ui-sref="hackathons.create">create one</a>?
+  <h3>Inactive Hackathons</h3>
+  <div class="list-group">
+    <a ng-repeat="hackathon in vm.hackathons | filter:false:hackathon.active" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
+      <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
+      Description: {{ hackathon.description}} 
+    </a>
   </div>
 </section>
