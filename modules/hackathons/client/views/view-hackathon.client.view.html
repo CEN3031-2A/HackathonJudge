@@ -1,0 +1,29 @@
+<section>
+  <div class="page-header">
+    <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
+    <h1 ng-bind="vm.hackathon.name"></h1>
+    {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon
+  </div>  
+  <div class="pull-right">
+    <a class="btn btn-primary"
+       ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  Note to dev: Make sure to add user verification <br>
+  Description: {{ vm.hackathon.description }} <br>
+  See reuslts <br>
+  Send out links to judges <br>
+
+  <hr>
+  <h2>Modification Section</h2>
+  Edit Hackathon <br>
+  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 0})">Edit Category 1</a> <br>
+  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 1})">Edit Category 2</a> <br>
+  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 2})">Edit Category 3</a> <br>
+  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 3})">Edit Category 4</a> <br>
+  <p class="lead" ng-bind="vm.hackathon.content"></p>
+</section>
