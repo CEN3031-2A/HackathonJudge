@@ -1,56 +1,58 @@
 <!--This form works. Replace the instances of exactly "cat" with a number 0-3 to modify a category until a solution is found to pass paramters-->
 <section>
   <div class="page-header">
-    <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id})">Back to {{vm.hackathon.name}}</a> <br>
+    <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{vm.hackathon.name}}</a> <br>
     <h1>Edit {{vm.hackathon.name}} - Category {{ cat }}</h1>
   </div>
   <div class="col-md-12">
     <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
+          <h2>Category</h2>
           <label class="control-label" for="cat_name"> Category {{ cat }} Name</label>
-          <input name="name" type="text" ng-model="vm.hackathon.category[cat].name" id="cat_name" class="form-control" placeholder="Name" required>
-          <label class="control-label" for="cat_description"> Category Description</label>
-          <input name="name" type="text" ng-model="vm.hackathon.category[cat].description" id="cat_description" class="form-control" placeholder="Description" required> 
+          <input name="cat_name" type="text" ng-model="vm.hackathon.category[cat].name" id="cat_name" class="form-control" placeholder="Name" required> <br>
+          <label class="control-label" for="cat_description"> Category Description</label> <br>
+          <textarea name="cat_description" ng-model="vm.hackathon.category[cat].description" id="cat_description" rows="4" cols="50" required></textarea>
           <hr>
 
-          <h2>Projects</h2>
+          <h2>Projects Modification</h2>
           <div style="float:left; width:40%;">
             <label class="control-label" for="project1_name"> Project 1 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[0].name" id="project1_name" class="form-control" placeholder="Project 1 Name">
+            <input name="project1_name" type="text" ng-model="vm.hackathon.category[cat].project[0].name" id="project1_name" class="form-control" placeholder="Project 1 Name">
             <label class="control-label" for="project1_description"> Project 1 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[0].description" id="project1_description" class="form-control" placeholder="Project 1 Description">
+            <textarea name="project1_description" ng-model="vm.hackathon.category[cat].project[0].description" id="project1_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project1_link"> Project 1 - Link </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[0].link" id="project1_link" class="form-control" placeholder="Project 1 Link"> <br>
-
-            <label class="control-label" for="project3_name"> Project 3 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[2].name" id="project3_name" class="form-control" placeholder="Project 3 Name">
-            <label class="control-label" for="project3_description"> Project 3 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[2].description" id="project3_description" class="form-control" placeholder="Project 3 Description">
-            <label class="control-label" for="project3_link"> Project 3 - Link </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[2].link" id="project3_link" class="form-control" placeholder="Project 3 Link"> 
+            <input name="project1_link" type="text" ng-model="vm.hackathon.category[cat].project[0].link" id="project1_link" class="form-control" placeholder="Project 1 Link"> <br>
+            
+            <label class="control-label" for="project2_name"> Project 2 - Name </label>
+            <input name="project2_name" type="text" ng-model="vm.hackathon.category[cat].project[1].name" id="project2_name" class="form-control" placeholder="Project 2 Name">
+            <label class="control-label" for="project2_description"> Project 2 - Description </label>
+            <textarea name="project2_description" ng-model="vm.hackathon.category[cat].project[1].description" id="project2_description" rows="4" cols="50" required></textarea>
+            <label class="control-label" for="project2_link"> Project 2 - Link </label>
+            <input name="project2_link" type="text" ng-model="vm.hackathon.category[cat].project[1].link" id="project2_link" class="form-control" placeholder="Project 2 Link"> 
           </div>
           <div style="float:right; width:40%; margin-right:20px">
-            <label class="control-label" for="project2_name"> Project 2 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[1].name" id="project2_name" class="form-control" placeholder="Project 2 Name">
-            <label class="control-label" for="project2_description"> Project 2 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[1].description" id="project2_description" class="form-control" placeholder="Project 2 Description">
-            <label class="control-label" for="project2_link"> Project 2 - Link </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[1].link" id="project2_link" class="form-control" placeholder="Project 2 Link"> <br>
+            <label class="control-label" for="project3_name"> Project 3 - Name </label>
+            <input name="project3_name" type="text" ng-model="vm.hackathon.category[cat].project[2].name" id="project3_name" class="form-control" placeholder="Project 3 Name">
+            <label class="control-label" for="project3_description"> Project 3 - Description </label>
+            <textarea name="project3_description" ng-model="vm.hackathon.category[cat].project[2].description" id="project3_description" rows="4" cols="50" required></textarea>
+            <label class="control-label" for="project3_link"> Project 3 - Link </label>
+            <input name="project3_link" type="text" ng-model="vm.hackathon.category[cat].project[2].link" id="project3_link" class="form-control" placeholder="Project 3 Link"> <br>
 
             <label class="control-label" for="project4_name"> Project 4 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[3].name" id="project4_name" class="form-control" placeholder="Project 4 Name">
+            <input name="project4_name" type="text" ng-model="vm.hackathon.category[cat].project[3].name" id="project4_name" class="form-control" placeholder="Project 4 Name">
             <label class="control-label" for="project3_description"> Project 4 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[3].description" id="project3_description" class="form-control" placeholder="Project 4 Description">
+            <textarea name="project4_description" ng-model="vm.hackathon.category[cat].project[3].description" id="project4_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project3_link"> Project 4 - Link </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].project[3].link" id="project3_link" class="form-control" placeholder="Project 4 Link"> 
+            <input name="project4_link" type="text" ng-model="vm.hackathon.category[cat].project[3].link" id="project3_link" class="form-control" placeholder="Project 4 Link"> 
           </div>
 
           <!--Is there a better solution than using multiple <br> for formatting issues?-->
+          <br><br><br><br><br><br>
           <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
           <hr>
 
-          <h2>Criteria</h2>
+          <h2>Criteria Modification</h2>
           <div style="float:left; width:40%;">
             <label class="control-label" for="criteria1_name"> Criteria 1 - Name </label>
             <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[0].name" id="criteria1_name" class="form-control" placeholder="Criteria 1 Name">
@@ -67,6 +69,23 @@
             <label class="control-label" for="criteria1_high_num"> Criteria 1 - Number Limit </label>
             <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[0].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 1 Limit"> <br>
 
+            <label class="control-label" for="criteria2_name"> Criteria 2 - Name </label>
+            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].name" id="criteria2_name" class="form-control" placeholder="Criteria 2 Name">
+            <label class="control-label" for="criteria2_description"> Criteria 2 - Description </label>
+            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].description" id="criteria2_description" class="form-control" placeholder="Criteria 2 Description"> <br>
+            Criteria 2 - Input Type: (button WIP)
+            <div>
+              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[1].input_type">
+              <label for="scaleInput">Scale</label>
+          
+              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[1].input_type">
+              <label for="customInput">Custom</label>
+            </div>
+            <label class="control-label" for="criteria2_high_num"> Criteria 2 - Number Limit </label>
+            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 2 Limit">
+          </div>
+
+          <div style="float:right; width:40%; margin-right:20px;">
             <label class="control-label" for="criteria3_name"> Criteria 3 - Name </label>
             <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].name" id="criteria3_name" class="form-control" placeholder="Criteria 3 Name">
             <label class="control-label" for="criteria3_description"> Criteria 3 - Description </label>
@@ -80,25 +99,8 @@
               <label for="customInput">Custom</label>
             </div>
             <label class="control-label" for="criteria3_high_num"> Criteria 3 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].high_num" id="criteria3_high_num" class="form-control" placeholder="Criteria 3 Limit">
-          </div>
-
-          <div style="float:right; width:40%; margin-right:20px;">
-            <label class="control-label" for="criteria1_name"> Criteria 2 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].name" id="criteria2_name" class="form-control" placeholder="Criteria 2 Name">
-            <label class="control-label" for="criteria2_description"> Criteria 2 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].description" id="criteria2_description" class="form-control" placeholder="Criteria 2 Description"> <br>
-            Criteria 2 - Input Type: (button WIP)
-            <div>
-              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[1].input_type">
-              <label for="scaleInput">Scale</label>
-          
-              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[1].input_type">
-              <label for="customInput">Custom</label>
-            </div>
-            <label class="control-label" for="criteria2_high_num"> Criteria 2 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 2 Limit"> <br>
-
+            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].high_num" id="criteria3_high_num" class="form-control" placeholder="Criteria 3 Limit"> <br>
+            
             <label class="control-label" for="criteria4_name"> Criteria 4 - Name </label>
             <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[3].name" id="criteria4_name" class="form-control" placeholder="Criteria 4 Name">
             <label class="control-label" for="criteria4_description"> Criteria 4 - Description </label>

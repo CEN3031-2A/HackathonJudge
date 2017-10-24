@@ -13,6 +13,7 @@ var hackathonSchema = new Schema({
   name: String,
   description: String,
   active: Boolean,
+  link: String,
 
   category: [{
     name: String,
