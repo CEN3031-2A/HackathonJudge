@@ -12,6 +12,7 @@ var mongoose = require('mongoose'),
 var hackathonSchema = new Schema({
   name: String,
   description: String,
+  date: Date, 
   active: Boolean,
   link: String,
 
