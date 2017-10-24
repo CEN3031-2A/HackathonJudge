@@ -2,50 +2,72 @@
 <section>
   <div class="page-header">
     <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{vm.hackathon.name}}</a> <br>
-    <h1>Edit {{vm.hackathon.name}} - Category {{ cat }}</h1>
+    <h1>Edit {{vm.hackathon.name}} - Category {{ vm.catToUpdate.name }}</h1>
   </div>
   <div class="col-md-12">
     <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
           <h2>Category</h2>
-          <label class="control-label" for="cat_name"> Category {{ cat }} Name</label>
-          <input name="cat_name" type="text" ng-model="vm.hackathon.category[cat].name" id="cat_name" class="form-control" placeholder="Name" required> <br>
+          <label class="control-label" for="cat_name"> Category Name</label>
+          <input name="cat_name" type="text" id="cat_name" ng-model="vm.catToUpdate.name" class="form-control" placeholder="Name" required> <br>
           <label class="control-label" for="cat_description"> Category Description</label> <br>
-          <textarea name="cat_description" ng-model="vm.hackathon.category[cat].description" id="cat_description" rows="4" cols="50" required></textarea>
+          <textarea name="cat_description" ng-model="vm.catToUpdate.description" id="cat_description" rows="4" cols="50" required></textarea>
           <hr>
 
           <h2>Projects Modification</h2>
-          <div style="float:left; width:40%;">
+          <div ng-if="vm.catToUpdate.project.length == 0">
+            No projects currently exists for this category. Would you like to add one? <a type="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span></a>
+          </div>
+          <div ng-repeat="project in vm.catToUpdate.project">
+            <div ng-if="$even" style="float:left; width:40%;">
+              <label class="control-label" for="project_{{$index}}_name"> Project {{$index +1}} - Name </label>
+              <input name="project_$index_name" type="text" ng-model="vm.catToUpdate.project[$index].name" id="project_$index_name" class="form-control" placeholder="Project {{$index + 1}} Name">
+              <label class="control-label" for="project_{{$index}}_description"> Project {{$index +1}} - Description </label>
+              <textarea name="project_{{$index}}_description" ng-model="vm.catToUpdate.project[$index].description" id="project_{{$index}}_description" rows="4" cols="50" required></textarea> <br>
+              <label class="control-label" for="project1_link"> Project {{$index +1}} - Link </label>
+              <input name="project1_link" type="text" ng-model="vm.catToUpdate.project[$index].link" id="project_{{$index}}_link" class="form-control" placeholder="Project {{$index +1}} Link"> <br>
+            </div>
+            <div ng-if="$odd" style="float:right; width:40%; margin-right:20px">
+              <label class="control-label" for="project_{{$index}}_name"> Project {{$index +1}} - Name </label>
+              <input name="project_$index_name" type="text" ng-model="vm.catToUpdate.project[$index].name" id="project_$index_name" class="form-control" placeholder="Project {{$index + 1}} Name">
+              <label class="control-label" for="project_{{$index}}_description"> Project {{$index +1}} - Description </label>
+              <textarea name="project_{{$index}}_description" ng-model="vm.catToUpdate.project[$index].description" id="project_{{$index}}_description" rows="4" cols="50" required></textarea> <br>
+              <label class="control-label" for="project1_link"> Project {{$index +1}} - Link </label>
+              <input name="project1_link" type="text" ng-model="vm.catToUpdate.project[$index].link" id="project_{{$index}}_link" class="form-control" placeholder="Project {{$index +1}} Link"> <br>
+            </div>
+          </div>
+
+          <!-- <div style="float:left; width:40%;">
             <label class="control-label" for="project1_name"> Project 1 - Name </label>
-            <input name="project1_name" type="text" ng-model="vm.hackathon.category[cat].project[0].name" id="project1_name" class="form-control" placeholder="Project 1 Name">
+            <input name="project1_name" type="text" ng-model="vm.catToUpdate.project[0].name" id="project1_name" class="form-control" placeholder="Project 1 Name">
             <label class="control-label" for="project1_description"> Project 1 - Description </label>
-            <textarea name="project1_description" ng-model="vm.hackathon.category[cat].project[0].description" id="project1_description" rows="4" cols="50" required></textarea>
+            <textarea name="project1_description" ng-model="vm.catToUpdate.project[0].description" id="project1_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project1_link"> Project 1 - Link </label>
-            <input name="project1_link" type="text" ng-model="vm.hackathon.category[cat].project[0].link" id="project1_link" class="form-control" placeholder="Project 1 Link"> <br>
-            
+            <input name="project1_link" type="text" ng-model="vm.catToUpdate.project[0].link" id="project1_link" class="form-control" placeholder="Project 1 Link"> <br>
+
             <label class="control-label" for="project2_name"> Project 2 - Name </label>
-            <input name="project2_name" type="text" ng-model="vm.hackathon.category[cat].project[1].name" id="project2_name" class="form-control" placeholder="Project 2 Name">
+            <input name="project2_name" type="text" ng-model="vm.hackathon.category[vm.cat].project[1].name" id="project2_name" class="form-control" placeholder="Project 2 Name">
             <label class="control-label" for="project2_description"> Project 2 - Description </label>
-            <textarea name="project2_description" ng-model="vm.hackathon.category[cat].project[1].description" id="project2_description" rows="4" cols="50" required></textarea>
+            <textarea name="project2_description" ng-model="vm.hackathon.category[vm.cat].project[1].description" id="project2_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project2_link"> Project 2 - Link </label>
-            <input name="project2_link" type="text" ng-model="vm.hackathon.category[cat].project[1].link" id="project2_link" class="form-control" placeholder="Project 2 Link"> 
+            <input name="project2_link" type="text" ng-model="vm.hackathon.category[vm.cat].project[1].link" id="project2_link" class="form-control" placeholder="Project 2 Link">
           </div>
           <div style="float:right; width:40%; margin-right:20px">
             <label class="control-label" for="project3_name"> Project 3 - Name </label>
-            <input name="project3_name" type="text" ng-model="vm.hackathon.category[cat].project[2].name" id="project3_name" class="form-control" placeholder="Project 3 Name">
+            <input name="project3_name" type="text" ng-model="vm.hackathon.category[vm.cat].project[2].name" id="project3_name" class="form-control" placeholder="Project 3 Name">
             <label class="control-label" for="project3_description"> Project 3 - Description </label>
-            <textarea name="project3_description" ng-model="vm.hackathon.category[cat].project[2].description" id="project3_description" rows="4" cols="50" required></textarea>
+            <textarea name="project3_description" ng-model="vm.hackathon.category[vm.cat].project[2].description" id="project3_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project3_link"> Project 3 - Link </label>
-            <input name="project3_link" type="text" ng-model="vm.hackathon.category[cat].project[2].link" id="project3_link" class="form-control" placeholder="Project 3 Link"> <br>
+            <input name="project3_link" type="text" ng-model="vm.hackathon.category[vm.cat].project[2].link" id="project3_link" class="form-control" placeholder="Project 3 Link"> <br>
 
             <label class="control-label" for="project4_name"> Project 4 - Name </label>
-            <input name="project4_name" type="text" ng-model="vm.hackathon.category[cat].project[3].name" id="project4_name" class="form-control" placeholder="Project 4 Name">
+            <input name="project4_name" type="text" ng-model="vm.hackathon.category[vm.cat].project[3].name" id="project4_name" class="form-control" placeholder="Project 4 Name">
             <label class="control-label" for="project3_description"> Project 4 - Description </label>
-            <textarea name="project4_description" ng-model="vm.hackathon.category[cat].project[3].description" id="project4_description" rows="4" cols="50" required></textarea>
+            <textarea name="project4_description" ng-model="vm.hackathon.category[vm.cat].project[3].description" id="project4_description" rows="4" cols="50" required></textarea>
             <label class="control-label" for="project3_link"> Project 4 - Link </label>
-            <input name="project4_link" type="text" ng-model="vm.hackathon.category[cat].project[3].link" id="project3_link" class="form-control" placeholder="Project 4 Link"> 
-          </div>
+            <input name="project4_link" type="text" ng-model="vm.hackathon.category[vm.cat].project[3].link" id="project3_link" class="form-control" placeholder="Project 4 Link">
+          </div> -->
 
           <!--Is there a better solution than using multiple <br> for formatting issues?-->
           <br><br><br><br><br><br>
@@ -53,72 +75,111 @@
           <hr>
 
           <h2>Criteria Modification</h2>
-          <div style="float:left; width:40%;">
+          <div ng-if="vm.catToUpdate.criteria.length == 0">
+            No criteria currently exists for this category. Would you like to add one? <a type="btn btn-primary"><i class="glyphicon glyphicon-plus-sign"></i></a>
+          </div>
+          <div ng-repeat="criteria in vm.catToUpdate.criteria">
+            <div ng-if="$even" style="float:left; width:40%;">
+              <label class="control-label" for="criteria_{{$index}}_name"> Criteria {{$index+1}} - Name </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].name" id="criteria_{{$index}}_name" class="form-control" placeholder="Criteria {{$index + 1}} Name">
+              <label class="control-label" for="criteria_{{$index}}_description"> Criteria {{$index + 1}} - Description </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].description" id="criteria_{{$index}}_description" class="form-control" placeholder="Criteria {{$index + 1}} Description"> <br>
+              Criteria {{$index + 1}} - Input Type: (button WIP)
+              <div>
+                <input type="radio" id="scaleInput" name="input_type_{{$index}}" value="scale" ng-model="vm.catToUpdate.criteria[$index].input_type">
+                <label for="scaleInput">Scale</label>
+
+                <input type="radio" id="customInput" name="input_type_{{$index}}" value="custom" ng-model ="vm.catToUpdate.criteria[$index].input_type">
+                <label for="customInput">Custom</label>
+              </div>
+              <label class="control-label" for="criteria_{{$index}}_high_num"> Criteria {{$index + 1}} - Number Limit </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].high_num" id="criteria_{{$index}}_high_num" class="form-control" placeholder="Criteria {{$index + 1}} Limit"> <br>
+            </div>
+
+            <div ng-if="$odd" style="float:right; width:40%; margin-right:20px">
+              <label class="control-label" for="criteria_{{$index}}_name"> Criteria {{$index+1}} - Name </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].name" id="criteria_{{$index}}_name" class="form-control" placeholder="Criteria {{$index + 1}} Name">
+              <label class="control-label" for="criteria_{{$index}}_description"> Criteria {{$index + 1}} - Description </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].description" id="criteria_{{$index}}_description" class="form-control" placeholder="Criteria {{$index + 1}} Description"> <br>
+              Criteria {{$index + 1}} - Input Type: (button WIP)
+              <div>
+                <input type="radio" id="scaleInput" name="input_type_{{$index}}" value="scale" ng-model="vm.catToUpdate.criteria[$index].input_type">
+                <label for="scaleInput">Scale</label>
+
+                <input type="radio" id="customInput" name="input_type_{{$index}}" value="custom" ng-model ="vm.catToUpdate.criteria[$index].input_type">
+                <label for="customInput">Custom</label>
+              </div>
+              <label class="control-label" for="criteria_{{$index}}_high_num"> Criteria {{$index + 1}} - Number Limit </label>
+              <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].high_num" id="criteria_{{$index}}_high_num" class="form-control" placeholder="Criteria {{$index + 1}} Limit"> <br>
+            </div>
+          </div>
+
+          <!-- <div style="float:left; width:40%;">
             <label class="control-label" for="criteria1_name"> Criteria 1 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[0].name" id="criteria1_name" class="form-control" placeholder="Criteria 1 Name">
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[0].name" id="criteria1_name" class="form-control" placeholder="Criteria 1 Name">
             <label class="control-label" for="criteria1_description"> Criteria 1 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[0].description" id="criteria1_description" class="form-control" placeholder="Criteria 1 Description"> <br>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[0].description" id="criteria1_description" class="form-control" placeholder="Criteria 1 Description"> <br>
             Criteria 1 - Input Type: (button WIP)
             <div>
-              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[0].input_type">
+              <input type="radio" id="scaleInput" name="input_type1" value="scale" ng-model="vm.hackathon.category[vm.cat].criteria[0].input_type">
               <label for="scaleInput">Scale</label>
-          
-              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[0].input_type">
+
+              <input type="radio" id="customInput" name="input_type1" value="custom" ng-model ="vm.hackathon.category[vm.cat].criteria[0].input_type">
               <label for="customInput">Custom</label>
             </div>
             <label class="control-label" for="criteria1_high_num"> Criteria 1 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[0].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 1 Limit"> <br>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[0].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 1 Limit"> <br>
 
             <label class="control-label" for="criteria2_name"> Criteria 2 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].name" id="criteria2_name" class="form-control" placeholder="Criteria 2 Name">
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[1].name" id="criteria2_name" class="form-control" placeholder="Criteria 2 Name">
             <label class="control-label" for="criteria2_description"> Criteria 2 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].description" id="criteria2_description" class="form-control" placeholder="Criteria 2 Description"> <br>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[1].description" id="criteria2_description" class="form-control" placeholder="Criteria 2 Description"> <br>
             Criteria 2 - Input Type: (button WIP)
             <div>
-              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[1].input_type">
+              <input type="radio" id="scaleInput" name="input_type2" value="scale" ng-model="vm.hackathon.category[vm.cat].criteria[1].input_type">
               <label for="scaleInput">Scale</label>
-          
-              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[1].input_type">
+
+              <input type="radio" id="customInput" name="input_type2" value="custom" ng-model ="vm.hackathon.category[vm.cat].criteria[1].input_type">
               <label for="customInput">Custom</label>
             </div>
             <label class="control-label" for="criteria2_high_num"> Criteria 2 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[1].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 2 Limit">
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[1].high_num" id="criteria1_high_num" class="form-control" placeholder="Criteria 2 Limit">
           </div>
 
           <div style="float:right; width:40%; margin-right:20px;">
             <label class="control-label" for="criteria3_name"> Criteria 3 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].name" id="criteria3_name" class="form-control" placeholder="Criteria 3 Name">
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[2].name" id="criteria3_name" class="form-control" placeholder="Criteria 3 Name">
             <label class="control-label" for="criteria3_description"> Criteria 3 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].description" id="criteria3_description" class="form-control" placeholder="Criteria 3 Description"> <br>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[2].description" id="criteria3_description" class="form-control" placeholder="Criteria 3 Description"> <br>
             Criteria 3 - Input Type: (button WIP)
             <div>
-              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[2].input_type">
+              <input type="radio" id="scaleInput" name="input_type3" value="scale" ng-model="vm.hackathon.category[vm.cat].criteria[2].input_type">
               <label for="scaleInput">Scale</label>
-          
-              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[2].input_type">
+
+              <input type="radio" id="customInput" name="input_type3" value="custom" ng-model ="vm.hackathon.category[vm.cat].criteria[2].input_type">
               <label for="customInput">Custom</label>
             </div>
             <label class="control-label" for="criteria3_high_num"> Criteria 3 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[2].high_num" id="criteria3_high_num" class="form-control" placeholder="Criteria 3 Limit"> <br>
-            
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[2].high_num" id="criteria3_high_num" class="form-control" placeholder="Criteria 3 Limit"> <br>
+
             <label class="control-label" for="criteria4_name"> Criteria 4 - Name </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[3].name" id="criteria4_name" class="form-control" placeholder="Criteria 4 Name">
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[3].name" id="criteria4_name" class="form-control" placeholder="Criteria 4 Name">
             <label class="control-label" for="criteria4_description"> Criteria 4 - Description </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[3].description" id="criteria4_description" class="form-control" placeholder="Criteria 4 Description"> <br>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[3].description" id="criteria4_description" class="form-control" placeholder="Criteria 4 Description"> <br>
             Criteria 4 - Input Type: (button WIP)
             <div>
-              <input type="radio" id="scaleInput" name="scale" value="scale" ng-model="vm.hackathon.category[cat].criteria[3].input_type">
+              <input type="radio" id="scaleInput" name="input_type4" value="scale" ng-model="vm.hackathon.category[vm.cat].criteria[3].input_type">
               <label for="scaleInput">Scale</label>
-          
-              <input type="radio" id="customInput" name="custom" value="custom" ng-model ="vm.hackathon.category[cat].criteria[3].input_type">
+
+              <input type="radio" id="customInput" name="input_type4" value="custom" ng-model ="vm.hackathon.category[vm.cat].criteria[3].input_type">
               <label for="customInput">Custom</label>
             </div>
             <label class="control-label" for="criteria4_high_num"> Criteria 4 - Number Limit </label>
-            <input name="name" type="text" ng-model="vm.hackathon.category[cat].criteria[3].high_num" id="criteria4_high_num" class="form-control" placeholder="Criteria 4 Limit">
-          </div>
+            <input name="name" type="text" ng-model="vm.hackathon.category[vm.cat].criteria[3].high_num" id="criteria4_high_num" class="form-control" placeholder="Criteria 4 Limit">
+          </div> -->
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-default">Update Category {{ cat }}</button>
+          <button type="submit" class="btn btn-default">Update Category {{ vm.catToUpdate.name }}</button>
         </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>

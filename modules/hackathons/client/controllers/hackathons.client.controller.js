@@ -6,9 +6,9 @@
     .module('hackathons')
     .controller('HackathonsController', HackathonsController);
 
-  HackathonsController.$inject = ['$scope', '$state', '$window', 'Authentication', 'hackathonResolve'];
+  HackathonsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve'];
 
-  function HackathonsController ($scope, $state, $window, Authentication, hackathon) {
+  function HackathonsController ($scope, $stateParams, $state, $window, Authentication, hackathon) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -17,6 +17,8 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
+    vm.catToUpdate = hackathon.category[$stateParams.cat];
+    vm.cat = $stateParams.cat;
 
     // Remove existing Hackathon
     function remove() {
