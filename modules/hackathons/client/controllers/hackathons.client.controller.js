@@ -17,8 +17,11 @@
     vm.form = {};
     vm.remove = remove;
     vm.save = save;
-    vm.catToUpdate = hackathon.category[$stateParams.cat];
-    vm.cat = $stateParams.cat;
+
+    if ($stateParams.cat != null) {
+      vm.catToUpdate = hackathon.category[$stateParams.cat];
+      vm.cat = $stateParams.cat;
+    }
 
     // Remove existing Hackathon
     function remove() {
