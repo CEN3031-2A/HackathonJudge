@@ -156,16 +156,7 @@ var HackathonSchema = new Schema ({
   }]
 });
 
+/* Only keeping this schema so the app works */
 var project = mongoose.model('Project', ProjectSchema);
-var category = mongoose.model('Category', CategorySchema);
-var criteria = mongoose.model('Criteria', CriteriaSchema);
-var vote = mongoose.model('Vote', VoteSchema);
-var hackathon = mongoose.model('Hackathon', HackathonSchema);
-var note = mongoose.model('Note', NoteSchema);
 
 module.exports = project;
-module.exports = category;
-module.exports = criteria;
-module.exports = vote;
-module.exports = hackathon;
-module.exports = note;
