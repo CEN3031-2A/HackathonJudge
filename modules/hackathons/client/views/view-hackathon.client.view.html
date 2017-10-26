@@ -3,7 +3,7 @@
     <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
     <h1 ng-bind="vm.hackathon.name"></h1>
     {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon
-  </div>  
+  </div>
   <div class="pull-right">
     <a class="btn btn-primary"
        ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">
