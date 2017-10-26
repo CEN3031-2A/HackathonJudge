@@ -159,5 +159,4 @@ var HackathonSchema = new Schema ({
 /* Only keeping this schema so the app works */
 var project = mongoose.model('Project', ProjectSchema);
 
-
 module.exports = project;
