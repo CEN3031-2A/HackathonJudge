@@ -23,6 +23,19 @@
           pageTitle: 'Hackathons List'
         }
       })
+      .state('hackathons.results', {
+        url: ':hackathonId.results',
+        templateUrl: 'modules/hackathons/client/views/results-hackathon.client.view.html',
+        controller: 'HackathonsController',
+        controllerAs: 'vm',
+        resolve: {
+          hackathonResolve: newHackathon
+        },
+        data: {
+          roles: ['guest', 'user', 'admin'],
+          pageTitle: 'Hackathons Results',
+        }
+      })
       .state('hackathons.create', {
         url: '.create', // temporarily a . instead of / due to POST destination error (sent to hackathons/api/hackathons)
         templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',

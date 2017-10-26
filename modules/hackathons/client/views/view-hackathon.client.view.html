@@ -2,7 +2,8 @@
   <div class="page-header">
     <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
     <h1 ng-bind="vm.hackathon.name"></h1>
-    {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon
+    {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon <br>
+    <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id})">Hackathon Results</a> <br>
   </div>
   <div class="pull-right">
     <a class="btn btn-primary"
