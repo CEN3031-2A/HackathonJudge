@@ -26,20 +26,21 @@
           <div ng-repeat="category in vm.hackathon.category">
             <div ng-if="$even" style="float:left; width:40%;">
               <label class="control-label" for="cat{{$index}}_name"> Category {{$index+1}} Name</label>
-              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name">
+              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name"><br>
             </div>
             <div ng-if="$odd" style="float:right; width:40%; margin-right:200px">
               <label class="control-label" for="cat{{$index}}_name"> Category {{$index+1}} Name</label>
-              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name">
+              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name"><br>
             </div>
           </div>
 
-          <div>
-            <br>
-            <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCategoryToHackathon()">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
-          </div>
-          
         </div>
+
+        <div>
+          <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCategoryToHackathon(false)">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
+          <br><br>
+        </div>
+
         <div class="form-group">
           <button type="submit" class="btn btn-default">{{vm.hackathon._id ? 'Update' : 'Create'}}</button>
         </div>

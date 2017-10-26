@@ -80,12 +80,15 @@
       vm.catToUpdate.criteria[vm.catToUpdate.criteria.length] = newCriteria;
     }
 
-    function addCategoryToHackathon() {
+    function addCategoryToHackathon(save) {
       var newCategory = {
         name: 'New Category',
         description: ''
       };
       vm.hackathon.category[vm.hackathon.category.length] = newCategory;
+      if(save){
+        vm.save(true);
+      }
     }
 
     function removeProjectFromCategory(project) {
