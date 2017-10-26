@@ -24,9 +24,15 @@
 
   <hr>
   <h2>Modification Section</h2>
-  <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br>
+  <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br><br>
+  
   <div ng-repeat="category in vm.hackathon.category">
     <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: $index})">Edit {{category.name}} Category</a> <br>
+  </div>
+
+  <div>
+    <br>
+    <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCategoryToHackathon()">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
   </div>
 
   <p class="lead" ng-bind="vm.hackathon.content"></p>
