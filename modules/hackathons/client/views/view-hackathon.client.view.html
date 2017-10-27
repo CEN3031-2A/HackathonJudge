@@ -3,7 +3,7 @@
     <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
     <h1 ng-bind="vm.hackathon.name"></h1>
     {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon
-  </div>  
+  </div>
   <div class="pull-right">
     <a class="btn btn-primary"
        ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">
@@ -14,16 +14,26 @@
     </a>
   </div>
   Note to dev: Make sure to add user verification <br>
-  Description: {{ vm.hackathon.description }} <br>
-  See reuslts <br>
-  Send out links to judges <br>
+  Description: {{ vm.hackathon.description }} <br> <br>
+  View results <br> <br>
+
+  Generate Link <br>
+  Link: {{ vm.hackathon.link ? vm.hackathon.link : 'Unavailable' }} <br><br>
+  Email links to judges <br>
+  <input name="csvFile" type="file">
 
   <hr>
   <h2>Modification Section</h2>
-  Edit Hackathon <br>
-  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 0})">Edit Category 1</a> <br>
-  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 1})">Edit Category 2</a> <br>
-  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 2})">Edit Category 3</a> <br>
-  <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: 3})">Edit Category 4</a> <br>
+  <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br><br>
+
+  <div ng-repeat="category in vm.hackathon.category">
+    <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: $index})">Edit {{category.name}} Category</a> <br>
+  </div>
+
+  <div>
+    <br>
+    <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCategoryToHackathon(true)">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
+  </div>
+
   <p class="lead" ng-bind="vm.hackathon.content"></p>
 </section>
