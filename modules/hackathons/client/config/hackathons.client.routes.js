@@ -26,11 +26,8 @@
       .state('hackathons.results', {
         url: ':hackathonId.results',
         templateUrl: 'modules/hackathons/client/views/results-hackathon.client.view.html',
-        controller: 'HackathonsController',
+        controller: 'BarCtrl',
         controllerAs: 'vm',
-        resolve: {
-          hackathonResolve: newHackathon
-        },
         data: {
           roles: ['guest', 'user', 'admin'],
           pageTitle: 'Hackathons Results',
