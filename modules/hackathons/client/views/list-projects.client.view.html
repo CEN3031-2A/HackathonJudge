@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="/">
+    <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="/../css/judge.css">
+    <title>judgePage</title>
+    
+  </head>
+  <body>
+    <div ng-repeat="hackathon in vm.hackathons | filter:true:hackathon.active">
+      <h1> {{hackathon.name}} </h1>
+        <uib-tabset active="active">
+                <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in hackathon.category">
+                    <section>
+                            <uib-accordion class="panel-default">
+                                <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <a href="google.com">link</a><br/>
+                                            <ins>Description:</ins><br/>
+                                            {{project.description}}
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <div class="form-group">
+                                                <label for="comment">Notes:</label>
+                                                <textarea class="form-control" rows="5" id="comment" placeholder="Take notes about the project here!"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="criteria">
+                                                <label> Criteria 1 </label>   
+                                                <select>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                            <div class="criteria">
+                                                <label> Criteria 2 </label>
+                                                <select>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                            <div class="criteria">
+                                                <label> Criteria 3 </label>
+                                                <select>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                            <div class="criteria">
+                                                <label> Criteria 4 </label>
+                                                <select>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </uib-accordion>
+                    </section>
+                </uib-tab>
+        </uib-tabset>
+    </div>
+  </body>
+</html>
