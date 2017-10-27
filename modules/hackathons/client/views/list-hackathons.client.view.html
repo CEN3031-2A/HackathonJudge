@@ -3,6 +3,7 @@
     <h1>Hackathon List</h1>
   </div>
   <a ui-sref="hackathons.create">Create Hackathon</a>
+  <a ui-sref="hackathons.projectList">List Projects</a>
   <h3>Active Hackathons</h3>
   <div class="list-group">
     <a ng-repeat="hackathon in vm.hackathons | filter:true:hackathon.active" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
