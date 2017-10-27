@@ -40,10 +40,7 @@
       {name: 'December', num: 12}
     ];
 
-    // vm.currentYear = parseInt(new Date().toJSON().substr(0,4));
-    // console.log("Current Year: ");
-    // console.log(vm.currentYear);
-    // console.log(typeof vm.currentYear);
+    vm.currentYear = parseInt(new Date().toJSON().substr(0,4), 10);
 
     if ($stateParams.cat != null) {
       vm.catToUpdate = hackathon.category[$stateParams.cat];
