@@ -32,9 +32,9 @@
           projectResolve: newProject
         },
         data: {
-          roles: ['guest'], // Shouldn't be guest but this is temporary
+          roles: ['user', 'admin'],
           pageTitle: 'Projects Create'
-        } 
+        }
       })
       .state('projects.edit', {
         url: '/:projectId/edit',
@@ -45,7 +45,7 @@
           projectResolve: getProject
         },
         data: {
-          roles: ['guest'], // Should not be guest
+          roles: ['user', 'admin'],
           pageTitle: 'Edit Project {{ projectResolve.name }}'
         }
       })

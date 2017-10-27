@@ -1,0 +1,105 @@
+<section>
+  <div class="page-header">
+    <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{vm.hackathon.name}}</a> <br>
+    <h1>Edit {{vm.hackathon.name}} - Category {{ vm.catToUpdate.name }}</h1>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <h2>Category</h2>
+          <label class="control-label" for="cat_name"> Category Name</label>
+          <input name="cat_name" type="text" id="cat_name" ng-model="vm.catToUpdate.name" class="form-control" placeholder="Name" required> <br>
+          <label class="control-label" for="cat_description"> Category Description</label> <br>
+          <textarea name="cat_description" ng-model="vm.catToUpdate.description" id="cat_description" rows="4" cols="50"></textarea>
+
+          <div type="button" class="btn btn-primary" style="float:right; background: red" ng-click="vm.removeCategoryFromHackathon()">Delete Category <span class="glyphicon glyphicon-trash"></span></div>
+
+          <hr>
+
+
+          <h2>Projects Modification</h2>
+          <div class="container">
+            <div ng-repeat="project in vm.catToUpdate.project">
+              <div ng-if="$even" style="float:left; width:40%;">
+                <label class="control-label" for="project_{{$index}}_name"> Project {{$index +1}} - Name </label>
+                <div type="button" class="btn btn-primary" style="float:right; background: red" ng-click="vm.removeProjectFromCategory(project)"><span class="glyphicon glyphicon-trash"></span></div>
+                <input name="project_$index_name" type="text" ng-model="vm.catToUpdate.project[$index].name" id="project_$index_name" class="form-control" placeholder="Project {{$index + 1}} Name">
+                <label class="control-label" for="project_{{$index}}_description"> Project {{$index +1}} - Description </label>
+                <textarea name="project_{{$index}}_description" ng-model="vm.catToUpdate.project[$index].description" id="project_{{$index}}_description" rows="4" cols="50"></textarea> <br>
+                <label class="control-label" for="project1_link"> Project {{$index +1}} - Link </label>
+                <input name="project1_link" type="text" ng-model="vm.catToUpdate.project[$index].link" id="project_{{$index}}_link" class="form-control" placeholder="Project {{$index +1}} Link"> <br><br>
+              </div>
+              <div ng-if="$odd" style="float:right; width:40%; margin-right:20px">
+                <label class="control-label" for="project_{{$index}}_name"> Project {{$index +1}} - Name </label>
+                <div type="button" class="btn btn-primary" style="float:right; background: red" ng-click="vm.removeProjectFromCategory(project)"><span class="glyphicon glyphicon-trash"></span></div>
+                <input name="project_$index_name" type="text" ng-model="vm.catToUpdate.project[$index].name" id="project_$index_name" class="form-control" placeholder="Project {{$index + 1}} Name">
+                <label class="control-label" for="project_{{$index}}_description"> Project {{$index +1}} - Description </label>
+                <textarea name="project_{{$index}}_description" ng-model="vm.catToUpdate.project[$index].description" id="project_{{$index}}_description" rows="4" cols="50"></textarea> <br>
+                <label class="control-label" for="project1_link"> Project {{$index +1}} - Link </label>
+                <input name="project1_link" type="text" ng-model="vm.catToUpdate.project[$index].link" id="project_{{$index}}_link" class="form-control" placeholder="Project {{$index +1}} Link"> <br><br>
+              </div>
+            </div>
+          </div>
+
+          <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addProjectToCategory()">Add a Project <span class="glyphicon glyphicon-plus-sign"></span></a>
+
+          <hr>
+
+          <h2>Criteria Modification</h2>
+          <div class="container">
+            <div ng-repeat="criteria in vm.catToUpdate.criteria">
+              <div ng-if="$even" style="float:left; width:40%;">
+                <label class="control-label" for="criteria_{{$index}}_name"> Criteria {{$index+1}} - Name </label>
+                <div type="button" class="btn btn-primary" style="float:right; background: red" ng-click="vm.removeCriteriaFromCategory(criteria)"><span class="glyphicon glyphicon-trash"></span></div>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].name" id="criteria_{{$index}}_name" class="form-control" placeholder="Criteria {{$index + 1}} Name">
+                <label class="control-label" for="criteria_{{$index}}_description"> Criteria {{$index + 1}} - Description </label>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].description" id="criteria_{{$index}}_description" class="form-control" placeholder="Criteria {{$index + 1}} Description"> <br>
+                <label class="control-label">Criteria {{$index + 1}} - Input Type </label><br>
+                <div>
+                  <input type="radio" id="scaleInput" name="input_type_{{$index}}" value="scale" ng-model="vm.catToUpdate.criteria[$index].input_type">
+                  <label for="scaleInput">Scale</label>
+
+                  <input type="radio" id="customInput" name="input_type_{{$index}}" value="custom" ng-model ="vm.catToUpdate.criteria[$index].input_type">
+                  <label for="customInput">Custom</label>
+                </div>
+                <label class="control-label" for="criteria_{{$index}}_high_num"> Criteria {{$index + 1}} - Number Limit </label>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].high_num" id="criteria_{{$index}}_high_num" class="form-control" placeholder="Criteria {{$index + 1}} Limit"> <br><br>
+              </div>
+
+              <div ng-if="$odd" style="float:right; width:40%; margin-right:20px">
+                <label class="control-label" for="criteria_{{$index}}_name"> Criteria {{$index+1}} - Name </label>
+                <div type="button" class="btn btn-primary" style="float:right; background: red" ng-click="vm.removeCriteriaFromCategory(criteria)"><span class="glyphicon glyphicon-trash"></span></div>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].name" id="criteria_{{$index}}_name" class="form-control" placeholder="Criteria {{$index + 1}} Name">
+                <label class="control-label" for="criteria_{{$index}}_description"> Criteria {{$index + 1}} - Description </label>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].description" id="criteria_{{$index}}_description" class="form-control" placeholder="Criteria {{$index + 1}} Description"> <br>
+                <label class="control-label">Criteria {{$index + 1}} - Input Type </label><br>
+                <div>
+                  <input type="radio" id="scaleInput" name="input_type_{{$index}}" value="scale" ng-model="vm.catToUpdate.criteria[$index].input_type">
+                  <label for="scaleInput">Scale</label>
+
+                  <input type="radio" id="customInput" name="input_type_{{$index}}" value="custom" ng-model ="vm.catToUpdate.criteria[$index].input_type">
+                  <label for="customInput">Custom</label>
+                </div>
+                <label class="control-label" for="criteria_{{$index}}_high_num"> Criteria {{$index + 1}} - Number Limit </label>
+                <input name="name" type="text" ng-model="vm.catToUpdate.criteria[$index].high_num" id="criteria_{{$index}}_high_num" class="form-control" placeholder="Criteria {{$index + 1}} Limit"> <br><br>
+              </div>
+            </div>
+          </div>
+
+
+          <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCriteriaToCategory()">Add a Criterion <span class="glyphicon glyphicon-plus-sign"></span></a>
+        </div>
+
+        <hr>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-default">Update Category {{ vm.catToUpdate.name }}</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
