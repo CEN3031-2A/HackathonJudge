@@ -1,0 +1,20 @@
+<section>
+  <div class="page-header">
+		<a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a>
+    <h1>{{ vm.hackathon.name }} - View Votes</h1>
+  </div>
+  <div ng-repeat="category in vm.hackathon.category track by $index">
+		<h2>{{ category.name }}</h2>
+		<div ng-repeat="project in category.project track by $index">
+			<h3>{{ project.name }}</h3>
+			<div ng-repeat="note in project.note track by $index">
+				Notes: {{ note.text }} <br>
+				<div ng-repeat="vote in note.vote track by $index">
+					{{ vote.criteria_name }} - {{ vote.number }} <br>
+				</div>
+				<br>
+			</div>
+			<br>
+		</div>
+  </div>
+</section>

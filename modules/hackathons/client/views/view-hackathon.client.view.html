@@ -3,7 +3,6 @@
     <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
     <h1 ng-bind="vm.hackathon.name"></h1>
     {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon <br>
-    <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id})">Hackathon Results</a> <br>
   </div>
   <div class="pull-right">
     <a class="btn btn-primary"
@@ -14,9 +13,9 @@
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>
-  Note to dev: Make sure to add user verification <br>
   Description: {{ vm.hackathon.description }} <br> <br>
-  View results <br> <br>
+  <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
+  <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
 
   Generate Link <br>
   Link: {{ vm.hackathon.link ? vm.hackathon.link : 'Unavailable' }} <br><br>

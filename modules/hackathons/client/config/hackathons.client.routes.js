@@ -93,6 +93,20 @@
           roles: ['guest', 'user', 'admin'],
           pageTitle: 'Edit {{ hackathonResolve.name }} Category'
         }
+      })
+      .state('hackathons.view_votes', {
+        url: ':hackathonId.view.votes',
+        templateUrl: '/modules/hackathons/client/views/view-votes-hackathon.client.view.html',
+        controller: 'ViewVotesController',
+        controllerAs: 'vm',
+        resolve: {
+          hackathonResolve: getHackathon
+        },
+
+        data: {
+          roles: ['guest', 'user', 'admin'],
+          pageTitle: 'View {{ hackathonResolve.name }} Votes'
+        }
       });
   }
 

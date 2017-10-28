@@ -1,9 +1,9 @@
 <section>
   <div class="page-header">
+      <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a><br>
     <h1>{{ vm.hackathon.name }} - Results</h1>
   </div>
   
-  <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a><br><br>
   <canvas id="bar" class="chart chart-bar"
     chart-data="data" chart-labels="labels" chart-series="series" chart-options="options">
   </canvas>
