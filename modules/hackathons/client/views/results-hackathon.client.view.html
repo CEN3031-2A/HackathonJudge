@@ -1,11 +1,16 @@
 <section>
   <div class="page-header">
-    <h1>Hackathon Results</h1>
-
+    <h1>{{ vm.hackathon.name }} - Results</h1>
   </div>
-
+  
+  <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a><br><br>
   <canvas id="bar" class="chart chart-bar"
-  chart-data="data" chart-labels="labels"> chart-series="series"
-</canvas
+    chart-data="data" chart-labels="labels"> chart-series="series"
+  </canvas>
+
+  <h2>Vote Counts</h2>
+  <div ng-repeat="project in vm.projects">
+    {{ project.name }} - {{ vm.vote_sizes[$index] }} <br>
+  </div>
 
 </section>
