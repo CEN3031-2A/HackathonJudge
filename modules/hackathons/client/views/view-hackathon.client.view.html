@@ -13,7 +13,8 @@
       <i class="glyphicon glyphicon-trash"></i>
     </a>
   </div>
-  Description: {{ vm.hackathon.description }} <br> <br>
+  Description: {{ vm.hackathon.description }} <br>
+  Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}} <br><br>
   <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
   <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
 
