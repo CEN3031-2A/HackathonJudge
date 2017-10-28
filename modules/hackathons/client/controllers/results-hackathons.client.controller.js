@@ -18,6 +18,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   $scope.labels = [];
   $scope.series = [];
   $scope.data = [];
+  $scope.options = {legend: {display: true}};
 
   
   // Inside for loop to iterate across all categories - begin
