@@ -24,65 +24,70 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
-
-    // Make the date more readable
-    var year = "";
-    var month = "";
     
-    var i = 0;
-    while (vm.hackathon.date[i] != '-') {
-      year += vm.hackathon.date[i];
+    // if statement to deal with the creation page (because it has no date field, no need to go through this)
+    if (vm.hackathon.date != null) {
+      // Make the date more readable
+      var year = "";
+      var month = "";
+      
+      var i = 0;
+      while (vm.hackathon.date[i] != '-') {
+        year += vm.hackathon.date[i];
+        i++;
+      }
       i++;
-    }
-    i++;
 
-    while (vm.hackathon.date[i] != '-') {
-      month += vm.hackathon.date[i];
-      i++;
-    }
-    month = parseInt(month);
-    
-    switch(month) {
-      case 1:
-        month = "January";
-        break;
-      case 2:
-        month = "February";
-        break;
-      case 3:
-        month = "March";
-        break;
-      case 4:
-        month = "April";
-        break;
-      case 5:
-        month = "May";
-        break;
-      case 6:
-        month = "June";
-        break;
-      case 7:
-        month = "July";
-        break;
-      case 8:
-        month = "August";
-        break;
-      case 9:
-        month = "September";
-        break;
-      case 10:
-        month = "October";
-        break;
-      case 11:
-        month = "November";
-        break;
-      case 12:
-        month = "December";
+      while (vm.hackathon.date[i] != '-') {
+        month += vm.hackathon.date[i];
+        i++;
+      }
+      month = parseInt(month);
+      
+      switch(month) {
+        case 1:
+          month = "January";
+          break;
+        case 2:
+          month = "February";
+          break;
+        case 3:
+          month = "March";
+          break;
+        case 4:
+          month = "April";
+          break;
+        case 5:
+          month = "May";
+          break;
+        case 6:
+          month = "June";
+          break;
+        case 7:
+          month = "July";
+          break;
+        case 8:
+          month = "August";
+          break;
+        case 9:
+          month = "September";
+          break;
+        case 10:
+          month = "October";
+          break;
+        case 11:
+          month = "November";
+          break;
+        case 12:
+          month = "December";
+      }
+
+      vm.hackathon.string_date = month + " " + year;
+
+      // Also convert the date into a Date object
+      vm.hackathon.date = new Date(vm.hackathon.date);
     }
 
-    vm.hackathon.string_date = month + " " + year;
-
-    
     if ($stateParams.cat != null) {
       vm.catToUpdate = hackathon.category[$stateParams.cat];
       vm.cat = $stateParams.cat;
