@@ -24,7 +24,7 @@
         }
       })
       .state('hackathons.results', {
-        url: ':hackathonId.results',
+        url: '.:hackathonId.results',
         templateUrl: 'modules/hackathons/client/views/results-hackathon.client.view.html',
         controller: 'ResultsController',
         controllerAs: 'vm',

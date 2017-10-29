@@ -38,6 +38,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
         text: vm.hackathon.category[cat].name + " - Results"
       },
 
+      scales: {
+        yAxes: [{
+          ticks: {
+            min: 0
+          }
+        }]
+      },
+
       responsive: false,
       maintainAspectRatio: false
     };
