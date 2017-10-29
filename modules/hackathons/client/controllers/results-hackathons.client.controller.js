@@ -10,80 +10,105 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   var vm = this;
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
-
-  vm.vote_sizes = []; // Hold the number of votes per projects
-  vm.projects = vm.hackathon.category[0].project; // Hold projects - temporarily the first category projects only
-
-  // Graph variables
-  $scope.labels = [];
-  $scope.series = [];
-  $scope.data = [];
-  $scope.options = {
-    legend: {
-      display: true
-    },
-
-    title: {
-      display: true,
-      text: vm.hackathon.category[0].name + " - Results"
-    },
-    
-    responsive: false,
-    maintainAspectRatio: false
-  };
   
-  // Inside for loop to iterate across all categories - begin
-  // numbers are 0 temporarily until iteration is made
-
-  var criteria = vm.hackathon.category[0].criteria;
+  // Graph variables 
+  $scope.labels = [];   // 2D array that holds x-axis labels for each graph -- e.g. $scope.labels[0] accesses labels for category 0
+  $scope.series = [];   // 3D array that holds how many bars there will be per label (i.e. criteria) -- e.g. $scope.series[0] accesses criteria for category 0
+  $scope.data = [];     // 3D array that holds data points for each graph -- e.g. $scope.data[0] accesses data points for category 0
+  $scope.options = [];  // 1D array that holds how each graph will be structured - only part that changes per option is the title
   
-  for (var i=0; i < vm.projects.length; i++) {
-    $scope.labels.push(vm.projects[i].name);
-  }
+  // Variables accessed by the results view
+  vm.projects = [];   // 2D array which will hold the projects -- e.g. vm.projects[0] contains projects corresponding to category 0
 
-  for(var i=0; i < criteria.length; i++) {
-    $scope.series.push(criteria[i].name);
+  
+  // Iterate over the categories to extract information for above variables
+  for (var cat=0; cat < vm.hackathon.category.length; cat++) {
+    // Variables which will be pushed into the respective $scope variables (series and data will be 2D arrays, labels is 1D, options is an object)
+    var labels = [];  // 1D array
+    var series = [];  // 2D array
+    var data = [];    // 2D array
+
+    var options = {
+      legend: {
+        display: true
+      },
+
+      title: {
+        display: true,
+        text: vm.hackathon.category[cat].name + " - Results"
+      },
+
+      responsive: false,
+      maintainAspectRatio: false
+    };
+
+    $scope.options.push(options);
+
+    var projects = vm.hackathon.category[cat].project;  // Holds projects of given category
+    var criteria = vm.hackathon.category[cat].criteria; // Holds criteria of given category
     
-    // Push empty arrays to hold the votes later
-    $scope.data.push([]);
-  }
-
-  // Inside for loop to iterate across all projects and their notes
-  for (var curr_project=0; curr_project < vm.projects.length; curr_project++) {
-    var notes = vm.projects[curr_project].note;
-
-    // Inside for loop to iterate across all the votes corresponding to each criteria
-    // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
-    for (var curr_criteria=0; curr_criteria < criteria.length; curr_criteria++) {
-      var vote_sum = 0;
-
-      // assumption - all votes corresponding to the same criteria have the same index in each array
-      for (var curr_note=0; curr_note < notes.length; curr_note++) {
-        vote_sum += notes[curr_note].vote[curr_criteria].number;
-      }
-
-      // Push the average of the votes to the data
-      if (notes.length != 0)
-        vote_sum = vote_sum / notes.length;
-
-      //console.log(vote_sum);
-      $scope.data[curr_criteria].push(vote_sum);
+    // Push project names into labels
+    for (var i=0; i < projects.length; i++) {
+      labels.push(projects[i].name);  
     }
 
-    vm.vote_sizes.push(notes.length);
-    //console.log($scope.data);
-  }
+    $scope.labels.push(labels); // Push 1D array of labels into $scope.labels (forming 2D array)
 
+    // Push criteria into series
+    for(var i=0; i < criteria.length; i++) {
+      series.push(criteria[i].name);  
+      data.push([]);                  // Push empty arrays to hold the votes later
+    }
+
+    $scope.series.push(series); // Push 1D array of series into $scope.series (forming 2D array)
+
+
+    // Inside for loop to iterate across all projects
+    for (var curr_project=0; curr_project < projects.length; curr_project++) {
+      var notes = projects[curr_project].note;  // Store notes (and their associated votes as well)
+
+      // Loop to iterate across all the votes corresponding to each criteria
+      // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
+      for (var curr_criteria=0; curr_criteria < criteria.length; curr_criteria++) {
+        var vote_sum = 0;
+
+        // assumption - all votes corresponding to the same criteria have the same index in each array
+        // e.g. notes[0].vote[0] corresponds to the Quality criteria and notes[1].vote[0] corresponds to the Quality criteria as well
+        for (var curr_note=0; curr_note < notes.length; curr_note++) {
+          vote_sum += notes[curr_note].vote[curr_criteria].number;
+        }
+
+        // Get average of votes
+        if (notes.length != 0)
+          vote_sum = vote_sum / notes.length;
+
+        data[curr_criteria].push(vote_sum); // Push average into data
+      }
+
+      projects[curr_project].vote_size = notes.length;  // Store how many votes a project has      
+    }
+
+    $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data 
+    vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects 
+  }
   
 
   // Sample data for reference
   /*
   $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
   $scope.series = ['Series A', 'Series B'];
-  
-  $scope.data = [
+
+  var data1 = [
     [65, 59, 80, 81, 56, 55, 40],
     [28, 48, 40, 19, 86, 27, 90]
-  ];*/
+  ];
+
+  var data2 = [
+    [28, 48, 40, 19, 86, 27, 90],
+    [65, 59, 80, 81, 56, 55, 40]
+  ];
+
+  $scope.data.push(data1);
+  $scope.data.push(data2);*/
   }
 }());
