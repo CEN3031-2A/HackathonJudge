@@ -12,7 +12,7 @@ This is a Judging app for the Ultimate Software Hackathon.
 The judging will be done using Block Chaining which will help ensure that there
 is one vote per judge.
 There will be:
-+Live results
-+Ways to add hackathons
-+Ways to view and vote on each project
-+Ways to take notes on each project
++ Live results
++ Ways to add hackathons
++ Ways to view and vote on each project
++ Ways to take notes on each project
