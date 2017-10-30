@@ -13,11 +13,8 @@
           <label class="control-label" for="description">Description</label> <br>
           <textarea name="description" ng-model="vm.hackathon.description" id="description" rows="4" cols="50" required></textarea>
           <br>
-          <!-- <label class="control-label" for="date">Date of Hackathon</label> <br> -->
-          <label class="control-label">Month </label>
-          <select ng-model="vm.hackathon.date.month" ng-options="x.name for x in vm.months"></select>
-          <label class="control-label">Year </label><input type="number" value="vm.currentYear" > <br><br>
-          <!-- <input type="month" ng-model="vm.hackathon.date"> <br><br> -->
+          <label class="control-label" for="month">Date of Hackathon</label> <br>
+          <input type="month" ng-model="vm.hackathon.date"> <br><br>
           <div>
             <input type="checkbox" id="booleanTrue" name="true" ng-model="vm.hackathon.active">
             <label for="booleanTrue">Active Hackathon</label>

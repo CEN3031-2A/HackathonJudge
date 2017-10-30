@@ -28,7 +28,7 @@ var hackathonSchema = new Schema({
       note: [{
         text: String,
         vote: [{
-          criteria_id: String,
+          criteria_name: String,
           number: Number
         }]
       }],
