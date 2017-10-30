@@ -21,6 +21,7 @@
         controller: 'ProjectsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Projects List'
         }
       })
@@ -30,6 +31,7 @@
         controller: 'HackathonsListController',
         controllerAs: 'vm',
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Hackathons List'
         }
       })
@@ -42,7 +44,7 @@
           hackathonResolve: getHackathon
         },
         data: {
-          roles: ['guest', 'user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Hackathons Results',
         }
       })
@@ -55,8 +57,7 @@
           hackathonResolve: newHackathon
         },
         data: {
-          // add guest temporarily
-          roles: ['guest', 'user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Hackathons Create'
         }
       })
@@ -69,8 +70,7 @@
           hackathonResolve: getHackathon
         },
         data: {
-          // allow guest temporarily
-          roles: ['guest', 'user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Edit Hackathon {{ hackathonResolve.name }}'
         }
       })
@@ -84,6 +84,7 @@
         },
 
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Hackathon {{ hackathonResolve.name }}'
         }
       })
@@ -100,7 +101,7 @@
         },
 
         data: {
-          roles: ['guest', 'user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Edit {{ hackathonResolve.name }} Category'
         }
       })
@@ -114,7 +115,7 @@
         },
 
         data: {
-          roles: ['guest', 'user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'View {{ hackathonResolve.name }} Votes'
         }
       });
