@@ -24,23 +24,70 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+    
+    // if statement to deal with the creation page (because it has no date field, no need to go through this)
+    if (vm.hackathon.date != null) {
+      // Make the date more readable
+      var year = "";
+      var month = "";
+      
+      var i = 0;
+      while (vm.hackathon.date[i] != '-') {
+        year += vm.hackathon.date[i];
+        i++;
+      }
+      i++;
 
-    vm.months = [
-      {name: 'January', num: 1},
-      {name: 'February', num: 2},
-      {name: 'March', num: 3},
-      {name: 'April', num: 4},
-      {name: 'May', num: 5},
-      {name: 'June', num: 6},
-      {name: 'July', num: 7},
-      {name: 'August', num: 8},
-      {name: 'September', num: 9},
-      {name: 'October', num: 10},
-      {name: 'November', num: 11},
-      {name: 'December', num: 12}
-    ];
+      while (vm.hackathon.date[i] != '-') {
+        month += vm.hackathon.date[i];
+        i++;
+      }
+      month = parseInt(month);
+      
+      switch(month) {
+        case 1:
+          month = "January";
+          break;
+        case 2:
+          month = "February";
+          break;
+        case 3:
+          month = "March";
+          break;
+        case 4:
+          month = "April";
+          break;
+        case 5:
+          month = "May";
+          break;
+        case 6:
+          month = "June";
+          break;
+        case 7:
+          month = "July";
+          break;
+        case 8:
+          month = "August";
+          break;
+        case 9:
+          month = "September";
+          break;
+        case 10:
+          month = "October";
+          break;
+        case 11:
+          month = "November";
+          break;
+        case 12:
+          month = "December";
+      }
 
-    vm.currentYear = parseInt(new Date().toJSON().substr(0,4), 10);
+      vm.hackathon.string_date = month + " " + year;
+
+
+      // Also convert the date into a Date object
+      vm.hackathon.date = new Date(vm.hackathon.date);
+    }
 
     if ($stateParams.cat != null) {
       vm.catToUpdate = hackathon.category[$stateParams.cat];

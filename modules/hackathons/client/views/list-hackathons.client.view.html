@@ -9,7 +9,7 @@
     <a ng-repeat="hackathon in vm.hackathons | filter: { active: 'true' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
       Description: {{ hackathon.description }} <br>
-      Date: {{ hackathon.date ? hackathon.date : 'Not set' }}
+      Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
     </a>
   </div>
   <h3>Inactive Hackathons</h3>
@@ -17,7 +17,7 @@
     <a ng-repeat="hackathon in vm.hackathons | filter: { active : '!!', active: 'false' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
       Description: {{ hackathon.description }} <br>
-      Date: {{ hackathon.date ? hackathon.date : 'Not set' }}
+      Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
     </a>
   </div>
 </section>

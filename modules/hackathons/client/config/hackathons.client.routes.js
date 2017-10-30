@@ -33,6 +33,19 @@
           pageTitle: 'Hackathons List'
         }
       })
+      .state('hackathons.results', {
+        url: '.:hackathonId.results',
+        templateUrl: 'modules/hackathons/client/views/results-hackathon.client.view.html',
+        controller: 'ResultsController',
+        controllerAs: 'vm',
+        resolve: {
+          hackathonResolve: getHackathon
+        },
+        data: {
+          roles: ['guest', 'user', 'admin'],
+          pageTitle: 'Hackathons Results',
+        }
+      })
       .state('hackathons.create', {
         url: '.create', // temporarily a . instead of / due to POST destination error (sent to hackathons/api/hackathons)
         templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',
@@ -89,6 +102,20 @@
         data: {
           roles: ['guest', 'user', 'admin'],
           pageTitle: 'Edit {{ hackathonResolve.name }} Category'
+        }
+      })
+      .state('hackathons.view_votes', {
+        url: ':hackathonId.view.votes',
+        templateUrl: '/modules/hackathons/client/views/view-votes-hackathon.client.view.html',
+        controller: 'ViewVotesController',
+        controllerAs: 'vm',
+        resolve: {
+          hackathonResolve: getHackathon
+        },
+
+        data: {
+          roles: ['guest', 'user', 'admin'],
+          pageTitle: 'View {{ hackathonResolve.name }} Votes'
         }
       });
   }
