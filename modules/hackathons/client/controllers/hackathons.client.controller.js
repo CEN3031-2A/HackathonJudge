@@ -84,6 +84,7 @@
 
       vm.hackathon.string_date = month + " " + year;
 
+
       // Also convert the date into a Date object
       vm.hackathon.date = new Date(vm.hackathon.date);
     }

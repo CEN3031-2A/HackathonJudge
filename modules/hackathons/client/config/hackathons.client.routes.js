@@ -9,10 +9,20 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
+
       .state('hackathons', {
         abstract: true,
         url: '/hackathons',
         template: '<ui-view/>'
+      })
+      .state('hackathons.projectList', {
+        url: '.projects',
+        templateUrl: 'modules/hackathons/client/views/list-projects.client.view.html',
+        controller: 'ProjectsListController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Projects List'
+        }
       })
       .state('hackathons.list', {
         url: '',
