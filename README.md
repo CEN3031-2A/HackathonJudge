@@ -16,3 +16,9 @@ There will be:
 + Ways to add hackathons
 + Ways to view and vote on each project
 + Ways to take notes on each project
+
+### Chain Structure
+![Alt text](/public/chainstructure.png?raw=true)
+
+### P2P Connection
+![alt text](/public/portstructure.png?raw=true)
