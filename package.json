@@ -102,7 +102,7 @@
     "validator": "~8.0.0",
     "winston": "~2.3.1",
     "wiredep": "~4.0.0",
-    "zlib": "~1.2.11"
+    "zlib": "~1.0.5"
   },
   "devDependencies": {
     "coveralls": "~2.13.0",
