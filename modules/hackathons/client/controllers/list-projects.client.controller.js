@@ -5,17 +5,14 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-    ProjectsListController.$inject = ['ProjectsService', 'Socket'];
+    ProjectsListController.$inject = ['ProjectsService', 'Socket', '$scope'];
 
-    function ProjectsListController(ProjectsService, Socket) {
+    function ProjectsListController(ProjectsService, Socket, $scope) {
       var vm = this;
 
       vm.hackathons = ProjectsService.query();
 
       vm.blockchain = [];
-      vm.voteValues = [];
-      // vm.CurrentProject = null;
-      // vm.sendVote = sendVote;
       vm.saveVote = saveVote;
 
       vm.scaleArray = [
@@ -36,39 +33,35 @@
         ['1','2','3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
       ];
 
-  // function saveVote() {
-    // vm.blockchain.push(project.tempVote);
-  // }
+      init();
 
-      // init();
-      //
-      // function init() {
-      //   // Make sure the Socket is connected
-      //   if (!Socket.socket) {
-      //     Socket.connect();
-      //   }
-      //
-      //   // Add an event listener to the 'chatMessage' event
-      //   Socket.on('voteMessage', function (newBlock) {
-      //     vm.blockchain.push(newBlock);
-      //   });
-      //
-      //   // Remove the event listener when the controller instance is destroyed
-      //   $scope.$on('$destroy', function () {
-      //     Socket.removeListener('voteMessage');
-      //   });
-      // }
+      function init() {
+        // Make sure the Socket is connected
+        if (!Socket.socket) {
+          Socket.connect();
+        }
+
+        // Add an event listener to the 'chatMessage' event
+        Socket.on('voteMessage', function (newBlock) {
+          vm.blockchain.push(newBlock);
+        });
+
+        // Remove the event listener when the controller instance is destroyed
+        $scope.$on('$destroy', function () {
+          Socket.removeListener('voteMessage');
+        });
+      }
 
       // Create a controller method for sending messages
-      function saveVote(projectName) {
+      function saveVote(project) {
         // Create a new message object
         var data = {
           sender: 2,
-          recipient: projectName,
-          voteCriteria1: vm.tempVote[0],
-          voteCriteria2: vm.tempVote[1],
-          voteCriteria3: vm.tempVote[2],
-          voteCriteria4: vm.tempVote[3]
+          recipient: project.name,
+          voteCriteria1: project.tempVote[0],
+          voteCriteria2: project.tempVote[1],
+          voteCriteria3: project.tempVote[2],
+          voteCriteria4: project.tempVote[3]
         };
 
         console.log(data);
