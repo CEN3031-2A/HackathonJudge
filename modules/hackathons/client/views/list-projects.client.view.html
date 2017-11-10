@@ -15,6 +15,7 @@
           <section>
             <uib-accordion class="panel-default">
               <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project">
+                <form ng-submit="vm.saveVote(project.name)">
                 <div class="row">
                   <div class="col-sm-4">
                     <a href="{{project.link}}">Project Link</a><br/><br>
@@ -30,12 +31,14 @@
                   <div class="col-sm-3">
                     <div ng-repeat="criteria in cat.criteria">
                       <label>{{criteria.name}}</label>
-                      <select ng-if="criteria.input_type == 'scale'" ng-model="project.tempVote[$index]" ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
-                      <input ng-if="criteria.input_type == 'custom'" type="number" min="0" max="{{criteria.high_num}}" ng-model="project.tempVote[$index]"></input>
+                      <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="vm.tempVote[$index]" ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
+                      <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}" ng-model="vm.tempVote[$index]"></input>
                       <br><br>
                     </div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
               </div>
             </uib-accordion>
           </section>

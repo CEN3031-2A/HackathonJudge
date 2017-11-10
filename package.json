@@ -31,7 +31,6 @@
     "test:client": "gulp test:client",
     "test:e2e": "gulp test:e2e",
     "test:coverage": "gulp test:coverage",
-    "postinstall": "bower install",
     "generate-ssl-certs": "scripts/generate-ssl-certs.sh",
     "seed": "gulp seed",
     "seed:prod": "gulp seed:prod",
@@ -101,7 +100,8 @@
     "socket.io": "~2.0.2",
     "validator": "~8.0.0",
     "winston": "~2.3.1",
-    "wiredep": "~4.0.0"
+    "wiredep": "~4.0.0",
+    "ws": "^3.3.1"
   },
   "devDependencies": {
     "coveralls": "~2.13.0",
