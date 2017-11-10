@@ -44,6 +44,14 @@
           </section>
         </uib-tab>
       </uib-tabset>
+      <li class="col-xs-12 col-md-offset-4 col-md-4 vote-message" ng-repeat="block in vm.blockchain">
+        <p>Sender: {{block.sender}}</p>
+        <p>Recipient: {{block.recipient}}</p>
+        <p>vote1: {{block.voteCriteria1}}</p>
+        <p>vote2: {{block.voteCriteria2}}</p>
+        <p>vote3: {{block.voteCriteria3}}</p>
+        <p>vote4: {{block.voteCriteria4}}</p>
+      </li>
     </div>
   </body>
 </html>
