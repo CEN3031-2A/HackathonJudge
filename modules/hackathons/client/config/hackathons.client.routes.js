@@ -16,12 +16,12 @@
         template: '<ui-view/>'
       })
       .state('hackathons.projectList', {
-        url: '.projects',
+        url: '.projects.:judgeID',
         templateUrl: 'modules/hackathons/client/views/list-projects.client.view.html',
         controller: 'ProjectsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin'],
+          roles: ['guest', 'user', 'admin'],  // Guest is judge
           pageTitle: 'Projects List'
         }
       })

@@ -18,10 +18,11 @@
   <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
   <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
 
-  Generate Link <br>
   Link: {{ vm.hackathon.link ? vm.hackathon.link : 'Unavailable' }} <br><br>
   Email links to judges <br>
-  <input name="csvFile" type="file">
+  
+  <input type="file" fileread="vm.uploadme" accept=".csv">
+  <a type="button" class="btn btn-primary" ng-click="vm.test()">Test</a>
 
   <hr>
   <h2>Modification Section</h2>

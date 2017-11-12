@@ -4,9 +4,28 @@
   // Hackathons controller
   angular
     .module('hackathons')
-    .controller('HackathonsController', HackathonsController);
+    .controller('HackathonsController', HackathonsController)
+    .directive("fileread", [function () {
+      return {
+          scope: {
+              fileread: "="
+          },
+          link: function (scope, element, attributes) {
+              element.bind("change", function (changeEvent) {
+                  var reader = new FileReader();
+                  reader.onload = function (loadEvent) {
+                      scope.$apply(function () {
+                          scope.fileread = loadEvent.target.result;
+                      });
+                  }
+                  reader.readAsText(changeEvent.target.files[0]);
+              });
+          }
+      }
+  }]);
 
   HackathonsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve'];
+
 
   function HackathonsController ($scope, $stateParams, $state, $window, Authentication, hackathon) {
     var vm = this;
@@ -24,7 +43,22 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+
+    //Testing file upload
+    vm.test = test;
     
+    function test() {
+      try {
+        var emails = Papa.parse(vm.uploadme);
+        console.log(emails);
+      }
+      catch (err) {
+        alert("No CSV file uploaded!");
+      }
+    }
+
+     
+
     // if statement to deal with the creation page (because it has no date field, no need to go through this)
     if (vm.hackathon.date != null) {
       // Make the date more readable
