@@ -4,9 +4,9 @@
 
 angular.module("hackathons").controller("ResultsController", ResultsController);
 
-ResultsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve', 'Socket'];
+ResultsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve', 'Socket', 'BlockService'];
 
-function ResultsController($scope, $stateParams, $state, $window, Authentication, hackathon, Socket) {
+function ResultsController($scope, $stateParams, $state, $window, Authentication, hackathon, Socket, BlockService) {
   var vm = this;
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
@@ -20,7 +20,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   // Variables accessed by the results view
   vm.projects = [];   // 2D array which will hold the projects -- e.g. vm.projects[0] contains projects corresponding to category 0
 
-  vm.blockchain = [];
+  vm.blockchain = BlockService.get();
 
   // Iterate over the categories to extract information for above variables
   for (var cat=0; cat < vm.hackathon.category.length; cat++) {
