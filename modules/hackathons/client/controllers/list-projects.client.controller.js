@@ -68,8 +68,7 @@
         // Emit a 'voteMessage' message event
         Socket.emit('voteMessage', data);
 
-        // Clear the message text
-        // vm.voteValues = [];
+        // Clear the message text?
       }
 
     }

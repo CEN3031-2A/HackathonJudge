@@ -1,7 +1,7 @@
 
 'use strict';
 
-// Create the chat configuration
+// Create the vote socket configuration
 module.exports = function (io, socket) {
   // Emit the status event when a new socket client is connected
   io.emit('voteMessage', {
