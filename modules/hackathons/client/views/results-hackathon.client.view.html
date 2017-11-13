@@ -6,6 +6,17 @@
     <h1>{{ vm.hackathon.name }} - Results</h1>
   </div>
 
+  <div class="container">
+    <li class="col-xs-12 col-md-offset-4 col-md-4 vote-message" ng-repeat="block in vm.blockchain">
+      Sender: {{block.sender}}<br>
+      Recipient: {{block.recipient}}<br>
+      vote1: {{block.voteCriteria1}}<br>
+      vote2: {{block.voteCriteria2}}<br>
+      vote3: {{block.voteCriteria3}}<br>
+      vote4: {{block.voteCriteria4}}
+    </li>
+  </div>
+
   <div ng-repeat="category in vm.hackathon.category track by $index">
     <div ng-if="$even" style="float:left; width:40%; margin-left:-100px">
       <canvas id="bar" class="chart chart-bar"
