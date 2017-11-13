@@ -65,7 +65,7 @@ app.factory('BlockService', function () {
 
 
     var getLatestBlock = () => blockchain[blockchain.length - 1];
-    
+
     return {
         set: function (data) {
             blockchain = data;
