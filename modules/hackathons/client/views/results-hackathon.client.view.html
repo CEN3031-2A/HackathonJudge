@@ -7,7 +7,7 @@
   </div>
 
   <div class="container">
-    <li class="vote-message" ng-repeat="block in vm.blockchain">
+    <li ng-repeat="block in vm.blockchain">
       Sender: {{block.data.sender}} Recipient: {{block.data.recipient}}
       vote1: {{block.data.voteCriteria1}}
       vote2: {{block.data.voteCriteria2}}

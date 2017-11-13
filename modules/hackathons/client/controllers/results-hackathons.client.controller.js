@@ -20,7 +20,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   // Variables accessed by the results view
   vm.projects = [];   // 2D array which will hold the projects -- e.g. vm.projects[0] contains projects corresponding to category 0
 
-  vm.blockchain = BlockService.get();
+  vm.blockchain = [];
 
   // Iterate over the categories to extract information for above variables
   for (var cat=0; cat < vm.hackathon.category.length; cat++) {
@@ -103,8 +103,17 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
   init();
 
+  if(vm.blockchain.length == 0)
+  {
+    vm.blockchain = BlockService.get();
+    console.log('Gen Block');
+    console.log(vm.blockchain[0]);
+  }
+
   function init() {
     // Make sure the Socket is connected
+
+
     if (!Socket.socket) {
       Socket.connect();
     }

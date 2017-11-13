@@ -18,15 +18,15 @@
     };
 
     var getGenesisBlock = () => {
-        var data = [{
+        var data = {
             sender: 'Genesis Block',
             category: 'Genesis Category',
             recipient: 'Wireless Microwave',
-            vote1: 0,
-            vote2: 0,
-            vote3: 0,
-            vote4: 0
-        }]
+            voteCriteria1: 0,
+            voteCriteria2: 0,
+            voteCriteria3: 0,
+            voteCriteria4: 0
+        }
         return new Block(0, "0", 1465154705, data, "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7");
     };
     var blockchain = [getGenesisBlock()];

@@ -68,7 +68,7 @@
           voteCriteria4: project.tempVote[3]
         };
 
-        console.log(data);
+        // console.log(data);
         var newBlock = BlockService.add(data);
 
         // Emit a 'voteMessage' message event
