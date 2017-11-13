@@ -5,9 +5,9 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-    ProjectsListController.$inject = ['ProjectsService', 'Socket', '$scope'];
+    ProjectsListController.$inject = ['ProjectsService', 'Socket', '$scope', 'BlockService'];
 
-    function ProjectsListController(ProjectsService, Socket, $scope) {
+    function ProjectsListController(ProjectsService, Socket, $scope, BlockService) {
       var vm = this;
 
       vm.hackathons = ProjectsService.query();
@@ -43,7 +43,10 @@
 
         // Add an event listener to the 'chatMessage' event
         Socket.on('voteMessage', function (newBlock) {
-          vm.blockchain.push(newBlock);
+          if(newBlock.type == 'vote')
+          {
+            vm.blockchain.push(newBlock);
+          }
         });
 
         // Remove the event listener when the controller instance is destroyed
@@ -53,11 +56,12 @@
       }
 
       // Create a controller method for sending messages
-      function saveVote(project) {
+      function saveVote(project, category) {
         // Create a new message object
         var data = {
           sender: 2,
           recipient: project.name,
+          category: category.name,
           voteCriteria1: project.tempVote[0],
           voteCriteria2: project.tempVote[1],
           voteCriteria3: project.tempVote[2],
@@ -65,8 +69,10 @@
         };
 
         console.log(data);
+        var newBlock = BlockService.add(data);
+
         // Emit a 'voteMessage' message event
-        Socket.emit('voteMessage', data);
+        Socket.emit('voteMessage', newBlock);
 
         // Clear the message text?
       }

@@ -15,7 +15,7 @@
           <section>
             <uib-accordion class="panel-default">
               <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project">
-                <form ng-submit="vm.saveVote(project)">
+                <form ng-submit="vm.saveVote(project, cat)">
                 <div class="row">
                   <div class="col-sm-4">
                     <a href="{{project.link}}">Project Link</a><br/><br>
@@ -45,8 +45,8 @@
         </uib-tab>
       </uib-tabset>
       <li class="vote-message" ng-repeat="block in vm.blockchain">
-        Sender: {{block.sender}} Recipient: {{block.recipient}} 
-        vote1: {{block.voteCriteria1}} 
+        Sender: {{block.sender}} Recipient: {{block.recipient}}
+        vote1: {{block.voteCriteria1}}
         vote2: {{block.voteCriteria2}}
         vote3: {{block.voteCriteria3}}
         vote4: {{block.voteCriteria4}}

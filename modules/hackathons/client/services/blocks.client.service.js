@@ -1,10 +1,11 @@
+(function () {
 'use strict';
 
-var CryptoJS = require("crypto-js");
-var bodyParser = require('body-parser');
+  angular
+    .module('hackathons')
+    .factory('BlockService', BlockService);
 
-app.factory('BlockService', function () {
-    var blockchain = [];
+ function BlockService() {
 
     class Block {
         constructor(index, previousHash, timestamp, data, hash) {
@@ -14,7 +15,8 @@ app.factory('BlockService', function () {
             this.data = data;
             this.hash = hash.toString();
         }
-    }
+    };
+
     var getGenesisBlock = () => {
         var data = [{
             sender: 'Genesis Block',
@@ -65,7 +67,7 @@ app.factory('BlockService', function () {
 
 
     var getLatestBlock = () => blockchain[blockchain.length - 1];
-    
+
     return {
         set: function (data) {
             blockchain = data;
@@ -73,10 +75,15 @@ app.factory('BlockService', function () {
         get: function () {
             return blockchain;
         },
-        add: function (newBlock) {
+        add: function (newBlockData) {
+            var newBlock = generateNextBlock(newBlockData);
             if (isValidNewBlock(newBlock, getLatestBlock())) {
                 blockchain.push(newBlock);
+                console.log(JSON.stringify(newBlock));
             }
+            return getLatestBlock();
         }
      }
-});
+   }
+
+}());
