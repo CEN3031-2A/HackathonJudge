@@ -8,6 +8,7 @@
   <meta name="description" content="{{description}}">
   <meta name="fragment" content="!">
 
+
   <!-- Apple META -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -39,6 +40,7 @@
 </head>
 
 <body class="ng-cloak">
+  <header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse"></header>
   <section class="content">
     <section class="container">
       {{{block "content"}}}
@@ -79,7 +81,7 @@
 
   {{#if livereload}}
   <!--Livereload script rendered -->
-  <script type="text/javascript" src="{{host}}:35729/livereload.js"></script>
+  <!-- <script type="text/javascript" src="{{host}}:35729/livereload.js"></script> -->
   {{/if}}
 </body>
 

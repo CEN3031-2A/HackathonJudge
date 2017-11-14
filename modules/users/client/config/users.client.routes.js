@@ -82,6 +82,7 @@
           pageTitle: 'Signin'
         }
       })
+      
       .state('password', {
         abstract: true,
         url: '/password',

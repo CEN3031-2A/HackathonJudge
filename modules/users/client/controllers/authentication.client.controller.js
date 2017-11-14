@@ -24,7 +24,7 @@
 
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
-      $location.path('/');
+      $location.path('/authentication/signin');
     }
 
     function signup(isValid) {
@@ -41,17 +41,21 @@
     }
 
     function signin(isValid) {
-
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.userForm');
 
         return false;
       }
 
+
       UsersService.userSignin(vm.credentials)
         .then(onUserSigninSuccess)
         .catch(onUserSigninError);
     }
+
+
+
+
 
     // OAuth provider request
     function callOauthProvider(url) {
@@ -83,7 +87,7 @@
       Notification.info({ message: 'Welcome ' + response.firstName });
       // And redirect to the previous or home page
       //$state.go($state.previous.state.name || 'home', $state.previous.params);
-      $state.go("hackathons.list");
+      $state.go('hackathons.list');
     }
 
     function onUserSigninError(response) {

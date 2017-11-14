@@ -1,15 +1,20 @@
-<!-- <div class="container" ng-controller="HeaderController as vm">
+<div class="container" ng-controller="HeaderController as vm">
   <div class="navbar-header">
+
     <button class="navbar-toggle" type="button" ng-click="vm.isCollapsed = !vm.isCollapsed">
       <span class="sr-only">Toggle navigation</span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a ui-sref="home" class="navbar-brand">MEAN.JS</a>
+
+    <a ui-sref="home" class="navbar-brand">
+      <img img id ="ultLogo" src="/modules/core/client/views/ultimate.png" width="115" height="50" class="d-inline-block align-top">
+    </a>
+
   </div>
   <nav class="navbar-collapse" uib-collapse="!vm.isCollapsed" role="navigation">
-    <ul class="nav navbar-nav" ng-if="vm.menu.shouldRender(vm.authentication.user);">
+    <!-- <ul class="nav navbar-nav" ng-if="vm.menu.shouldRender(vm.authentication.user);">
       <li ng-repeat="item in vm.menu.items | orderBy: 'position'" ng-if="item.shouldRender(vm.authentication.user);" ng-switch="item.type" ng-class="{ dropdown: item.type === 'dropdown' }" ui-sref-active="active" class="{{item.class}}" uib-dropdown="item.type === 'dropdown'">
         <a ng-switch-when="dropdown" class="dropdown-toggle" uib-dropdown-toggle role="button">{{::item.title}}&nbsp;<span class="caret"></span></a>
         <ul ng-switch-when="dropdown" class="dropdown-menu">
@@ -19,20 +24,21 @@
         </ul>
         <a ng-switch-default ui-sref="{{item.state}}" ng-bind="item.title"></a>
       </li>
-    </ul>
+    </ul> -->
+
     <ul class="nav navbar-nav navbar-right" ng-hide="vm.authentication.user">
-      <li ui-sref-active="active">
+      <!-- <li ui-sref-active="active">
         <a ui-sref="authentication.signup">Sign Up</a>
-      </li>
+      </li> -->
       <li class="divider-vertical"></li>
-      <li ui-sref-active="active">
+      <!-- <li ui-sref-active="active">
         <a ui-sref="authentication.signin">Sign In</a>
-      </li>
+      </li> -->
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-show="vm.authentication.user">
       <li class="dropdown" uib-dropdown>
         <a class="dropdown-toggle user-header-dropdown-toggle" uib-dropdown-toggle role="button">
-          <img ng-src="{{vm.authentication.user.profileImageURL}}" alt="{{vm.authentication.user.displayName}}" class="header-profile-image" />
+          <!-- <img ng-src="{{vm.authentication.user.profileImageURL}}" alt="{{vm.authentication.user.displayName}}" class="header-profile-image" /> -->
           <span ng-bind="vm.authentication.user.displayName"></span> <b class="caret"></b>
         </a>
         <ul class="dropdown-menu" role="menu">
@@ -41,10 +47,11 @@
           </li>
           <li class="divider"></li>
           <li>
+            <!--<a ui-sref="authentication.signin" target="_self">Signout</a>-->
             <a href="/api/auth/signout" target="_self">Signout</a>
           </li>
         </ul>
       </li>
     </ul>
   </nav>
-</div> -->
+</div>
