@@ -6,28 +6,30 @@
     .module('hackathons')
     .controller('HackathonsController', HackathonsController)
     .directive("fileread", [function () {
+      // Borrowed from StackOverflow https://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
       return {
-          scope: {
-              fileread: "="
-          },
-          link: function (scope, element, attributes) {
-              element.bind("change", function (changeEvent) {
-                  var reader = new FileReader();
-                  reader.onload = function (loadEvent) {
-                      scope.$apply(function () {
-                          scope.fileread = loadEvent.target.result;
-                      });
-                  }
-                  reader.readAsText(changeEvent.target.files[0]);
+        scope: {
+          fileread: "="
+        },
+        link: function (scope, element, attributes) {
+          element.bind("change", function (changeEvent) {
+            var reader = new FileReader();
+            reader.onload = function (loadEvent) {
+              scope.$apply(function () {
+                scope.fileread = loadEvent.target.result;
               });
-          }
+            }
+            reader.readAsText(changeEvent.target.files[0]);
+          });
+        }
       }
-  }]);
+    }]);
 
-  HackathonsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve'];
+  HackathonsController.$inject = ['$scope', '$stateParams', '$state',
+    '$window', 'Authentication', 'hackathonResolve', '$http'];
 
 
-  function HackathonsController ($scope, $stateParams, $state, $window, Authentication, hackathon) {
+  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -45,26 +47,84 @@
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
     //Testing file upload
-    vm.test = test;
-    
-    function test() {
+    vm.send = send;
+    var json;
+
+    // Get AWS credentials and email from aws.json
+    $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
+      json = data;
+      console.log(json.data);
+      json = json.data;
+    });
+
+    function sendMail(ses, to, from, subject, body) {
+      //console.log('sending mail');
+      ses.sendEmail({
+        Source: from,
+        Destination: {
+          ToAddresses: to
+        },
+        Message: {
+          Subject: {
+            Data: subject
+          },
+          Body: {
+            Text: {
+              Data: body,
+            }
+          }
+        }
+      }, function (err, data) {
+        if (err) {
+          console.log('ERROR sending mail', err);
+        }
+        //console.log('Email sent:');
+        //console.log(data);
+      });
+    }
+
+    function send() {
       try {
-        var emails = Papa.parse(vm.uploadme);
-        console.log(emails);
+        let file = Papa.parse(vm.csvfile);
+
+        // Store emails
+        let emails = [];
+        for (let i = 0; i < file.data.length; i++) {
+          // If there are any empty lines, ignore them
+          if (String(file.data[i]) != "")
+            emails.push(String(file.data[i]));
+        }
+
+        for (let i = 0; i < emails.length; i++) {
+          console.log(emails[i]);
+        }
+
+        AWS.config.accessKeyId = json.accessKeyId;
+        AWS.config.secretAccessKey = json.secretAccessKey;
+        AWS.config.region = json.region;
+
+        let ses = new AWS.SES({
+          apiVersion: '2010-12-01'
+        });
+
+        let from = json.email;  // Get the sender email
+        let subject = "Hackathon Judge test";
+        let body = "Testing Hackathon Judge email system";
+
+        sendMail(ses, emails, from, subject, body);
       }
       catch (err) {
+        console.log(err);
         alert("No CSV file uploaded!");
       }
     }
-
-     
 
     // if statement to deal with the creation page (because it has no date field, no need to go through this)
     if (vm.hackathon.date != null) {
       // Make the date more readable
       var year = "";
       var month = "";
-      
+
       var i = 0;
       while (vm.hackathon.date[i] != '-') {
         year += vm.hackathon.date[i];
@@ -77,8 +137,8 @@
         i++;
       }
       month = parseInt(month);
-      
-      switch(month) {
+
+      switch (month) {
         case 1:
           month = "January";
           break;
@@ -164,7 +224,7 @@
         description: ''
       };
       vm.hackathon.category[vm.hackathon.category.length] = newCategory;
-      if(save){
+      if (save) {
         vm.save(true);
       }
     }

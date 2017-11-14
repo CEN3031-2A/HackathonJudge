@@ -14,15 +14,13 @@
     </a>
   </div>
   Description: {{ vm.hackathon.description }} <br>
-  Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}} <br><br>
+  <p>Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}}</p>
   <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
   <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
 
-  Link: {{ vm.hackathon.link ? vm.hackathon.link : 'Unavailable' }} <br><br>
   Email links to judges <br>
-  
-  <input type="file" fileread="vm.uploadme" accept=".csv">
-  <a type="button" class="btn btn-primary" ng-click="vm.test()">Test</a>
+  <input type="file" fileread="vm.csvfile" accept=".csv">
+  <a type="button" class="btn btn-primary" ng-click="vm.send()">Send Emails</a>
 
   <hr>
   <h2>Modification Section</h2>

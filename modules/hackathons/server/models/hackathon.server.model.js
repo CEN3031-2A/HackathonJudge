@@ -14,7 +14,6 @@ var hackathonSchema = new Schema({
   description: String,
   date: Date, 
   active: Boolean,
-  link: String,
 
   category: [{
     name: String,

@@ -9,7 +9,6 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
-
       .state('hackathons', {
         abstract: true,
         url: '/hackathons',
