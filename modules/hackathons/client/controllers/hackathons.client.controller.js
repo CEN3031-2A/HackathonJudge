@@ -24,13 +24,13 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
-    
+
     // if statement to deal with the creation page (because it has no date field, no need to go through this)
     if (vm.hackathon.date != null) {
       // Make the date more readable
       var year = "";
       var month = "";
-      
+
       var i = 0;
       while (vm.hackathon.date[i] != '-') {
         year += vm.hackathon.date[i];
@@ -43,7 +43,7 @@
         i++;
       }
       month = parseInt(month);
-      
+
       switch(month) {
         case 1:
           month = "January";

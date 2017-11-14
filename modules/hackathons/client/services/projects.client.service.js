@@ -11,7 +11,7 @@
     function ProjectsService($resource) {
       return $resource('api/hackathons', {}, {
         query: {
-          method: 'GET'
+          method: 'GET', isArray:true
         }
       });
     }
