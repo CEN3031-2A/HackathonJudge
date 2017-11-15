@@ -96,9 +96,18 @@
         // Store emails
         let emails = [];
         for (let i = 0; i < file.data.length; i++) {
+          let email = String(file.data[i]);
+
           // If there are any empty lines, ignore them
-          if (String(file.data[i]) != "")
-            emails.push(String(file.data[i]));
+          if (email != "") {
+            
+            // Eliminate the \t at the end of emails (appears if it's not the last email) 
+            if (email.substr(email.length-1, 1) == "\t") {
+              email = email.substring(0,email.length-1);
+            }
+            console.log(email);
+            emails.push(email);
+          }
         }
 
         for (let i = 0; i < emails.length; i++) {
@@ -114,12 +123,19 @@
         });
 
         let from = json.email;  // Get the sender email
-        let subject = "Hackathon Judge test";
-        let body = "Testing Hackathon Judge email system";
+        let subject = vm.hackathon.name;
+        subject += " - Judge Link";
+        //let body = "Testing Hackathon Judge email system";
 
         generateUID(emails);    // Links emails and ids together - pushes object into judges
 
-        
+        for (let i = 0; i < vm.hackathon.judge.length; i++) {
+          let temp_email = [];
+          temp_email.push(vm.hackathon.judge[i].email);
+          let temp_body = vm.hackathon.judge[i].id;
+          sendMail(ses, temp_email, from, subject, temp_body);
+        }
+
         //sendMail(ses, emails, from, subject, body);
         alert("Emails sent!");
       }

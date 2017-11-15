@@ -21,8 +21,10 @@
   Email links to judges <br>
   <input type="file" fileread="vm.csvfile" accept=".csv">
   <a type="button" class="btn btn-primary" ng-click="vm.send()">Send Emails</a>
-  <a type="button" class="btn btn-primary" ng-click="vm.generateUID()">Generate UID</a>
-
+  <!--
+    Testing out unique ID generation
+    <a type="button" class="btn btn-primary" ng-click="vm.generateUID()">Generate UID</a>
+  -->
   <hr>
   <h2>Modification Section</h2>
   <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br><br>
