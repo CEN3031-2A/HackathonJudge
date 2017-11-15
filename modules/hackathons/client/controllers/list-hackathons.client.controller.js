@@ -11,6 +11,7 @@
     var vm = this;
 
     // Make the dates more readable
+    // Otherwise they would be in a number format (not natural format)
     HackathonsService.query().$promise.then(function (results) {
       angular.forEach(results, function(result) {
         var year = "";

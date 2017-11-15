@@ -24,7 +24,8 @@
 
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
-      $location.path('/authentication/signin');
+      Notification.info({ message: '<i class="glyphicon glyphicon-ok"></i> Already signed in!' });
+      $location.path('/hackathons');
     }
 
     function signup(isValid) {
@@ -87,7 +88,8 @@
       Notification.info({ message: 'Welcome ' + response.firstName });
       // And redirect to the previous or home page
       //$state.go($state.previous.state.name || 'home', $state.previous.params);
-      $state.go('hackathons.list');
+
+      $state.go('^.hackathons.list');
     }
 
     function onUserSigninError(response) {
