@@ -5,12 +5,37 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
+
     ProjectsListController.$inject = ['ProjectsService', 'Socket', '$scope', 'BlockService'];
 
     function ProjectsListController(ProjectsService, Socket, $scope, BlockService) {
+
       var vm = this;
 
-      vm.hackathons = ProjectsService.query();
+      // Get hackathons (HTML will only display projects from active hackathon )
+      ProjectsService.query().$promise.then(function (results) {
+
+        // Need to check to see if the judge ID is valid (in the database)
+        // If invalid, send user to forbidden page
+        angular.forEach(results, function(result) {
+          
+          // Look for the active hackathon
+          if (result.active == true) {
+            let judges = result.judge;
+            let i=0;
+
+            // Check to see if the ID is in the DB 
+            // Continue iterating through the IDs if the current ID is invalid
+            while (i < judges.length && judges[i].id != $stateParams.judgeID) {
+              // Reached the end and the given ID is invalid - redirect to not-found
+              if (i == judges.length - 1)
+                $state.go('forbidden');
+              i++;
+            }
+          }
+        });
+        vm.hackathons = results;
+      });
 
       vm.blockchain = [];
       vm.saveVote = saveVote;

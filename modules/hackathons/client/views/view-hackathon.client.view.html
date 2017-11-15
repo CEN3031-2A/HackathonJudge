@@ -14,15 +14,16 @@
     </a>
   </div>
   Description: {{ vm.hackathon.description }} <br>
-  Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}} <br><br>
+  <p>Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}}</p>
   <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
   <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
 
-  Generate Link <br>
-  Link: {{ vm.hackathon.link ? vm.hackathon.link : 'Unavailable' }} <br><br>
-  Email links to judges <br>
-  <input name="csvFile" type="file">
-
+  <input type="file" fileread="vm.csvfile" accept=".csv">
+  <a type="button" class="btn btn-primary" ng-click="vm.send()">Send Emails</a>
+  <!--
+    Testing out unique ID generation
+    <a type="button" class="btn btn-primary" ng-click="vm.generateUID()">Generate UID</a>
+  -->
   <hr>
   <h2>Modification Section</h2>
   <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br><br>

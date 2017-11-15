@@ -4,11 +4,32 @@
   // Hackathons controller
   angular
     .module('hackathons')
-    .controller('HackathonsController', HackathonsController);
+    .controller('HackathonsController', HackathonsController)
+    .directive("fileread", [function () {
+      // Borrowed from StackOverflow https://stackoverflow.com/questions/17063000/ng-model-for-input-type-file
+      return {
+        scope: {
+          fileread: "="
+        },
+        link: function (scope, element, attributes) {
+          element.bind("change", function (changeEvent) {
+            var reader = new FileReader();
+            reader.onload = function (loadEvent) {
+              scope.$apply(function () {
+                scope.fileread = loadEvent.target.result;
+              });
+            }
+            reader.readAsText(changeEvent.target.files[0]);
+          });
+        }
+      }
+    }]);
 
-  HackathonsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve'];
+  HackathonsController.$inject = ['$scope', '$stateParams', '$state',
+    '$window', 'Authentication', 'hackathonResolve', '$http'];
 
-  function HackathonsController ($scope, $stateParams, $state, $window, Authentication, hackathon) {
+
+  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -24,13 +45,154 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+
+
+    /* Start of email sending code */
+
+    vm.send = send;   // Register the send function
+    var json;         // Hold the AWS information
+    var judges = [];  // Hold judges that will be generated when sending emails
     
+    // Get AWS credentials and email from aws.json
+    $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
+      json = data;
+      console.log(json.data);
+      json = json.data;
+    });
+
+    // Function for AWS to send emails
+    function sendMail(ses, to, from, subject, body) {
+      //console.log('sending mail');
+      ses.sendEmail({
+        Source: from,
+        Destination: {
+          ToAddresses: to
+        },
+        Message: {
+          Subject: {
+            Data: subject
+          },
+          Body: {
+            Text: {
+              Data: body,
+            }
+          }
+        }
+      }, function (err, data) {
+        if (err) {
+          console.log('ERROR sending mail', err);
+        }
+        //console.log('Email sent:');
+        //console.log(data);
+      });
+    }
+
+    // Function associated with the "Send Emails" button
+    // Parses through the CSV, generates judge IDs for each email and calls the AWS sendMail function
+    function send() {
+      try {
+        let file = Papa.parse(vm.csvfile);  // Parse CSV
+
+        // If the CSV file is empty, there will be an empty line and length of 1
+        if (file.data.length == 1) {
+          alert("Empty CSV file!");
+          return;
+        }
+
+        // Store emails found in the CSV
+        let emails = [];
+        for (let i = 0; i < file.data.length; i++) {
+          let email = String(file.data[i]);
+
+          // If there are any empty lines, ignore them
+          if (email != "") {
+            
+            // Eliminate the \t at the end of emails (appears if it's not the last email) 
+            if (email.substr(email.length-1, 1) == "\t") {
+              email = email.substring(0,email.length-1);
+            }
+            emails.push(email);
+          }
+        }
+        
+        /*
+        Print emails 
+        for (let i = 0; i < emails.length; i++) {
+          console.log(emails[i]);
+        }
+        */
+
+        // Load AWS credentials
+        AWS.config.accessKeyId = json.accessKeyId;
+        AWS.config.secretAccessKey = json.secretAccessKey;
+        AWS.config.region = json.region;
+
+        // Create AWS.SES object to prepare to send emails
+        let ses = new AWS.SES({
+          apiVersion: '2010-12-01'
+        });
+
+        let from = json.email;  // Get the sender email
+        
+        // Set subject of email to be: <hackathon_name> - Judge Link
+        let subject = vm.hackathon.name;
+        subject += " - Judge Link";
+
+        generateUID(emails);    // Links emails and ids together - pushes object into judges
+
+        for (let i = 0; i < vm.hackathon.judge.length; i++) {
+          // Create an array of and push a single email each time to send
+          // AWS only accepts arrays of emails, so it is not possible to send an email String as the destination
+          let temp_email = [];
+          temp_email.push(vm.hackathon.judge[i].email);
+
+          // Body of the email is currently the judge ID
+          let temp_body = vm.hackathon.judge[i].id;
+
+          sendMail(ses, temp_email, from, subject, temp_body);
+        }
+
+        alert("Emails sent!");
+      }
+      catch (err) {
+        console.log(err);
+        alert("No CSV file uploaded!");
+      }
+    }
+
+    // Generate unique IDs for each judge
+    // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
+    function generateUID(emails) {
+      for(let i=0; i < emails.length; i++) {
+        // I generate the UID from two parts here 
+        // to ensure the random number provide enough bits.
+        let firstPart = (Math.random() * 46656) | 0;
+        let secondPart = (Math.random() * 46656) | 0;
+        firstPart = ("000" + firstPart.toString(36)).slice(-3);
+        secondPart = ("000" + secondPart.toString(36)).slice(-3);
+        let temp_id = firstPart + secondPart;
+
+        // Create judge to push to judges array
+        let temp_judge = {
+          email: emails[i],
+          id: temp_id
+        };
+        judges.push(temp_judge);
+      }
+
+      // Push new judges to the database and save
+      vm.hackathon.judge = judges;
+      vm.save(true);
+    }
+
+    /* End of email sending code */
+
     // if statement to deal with the creation page (because it has no date field, no need to go through this)
     if (vm.hackathon.date != null) {
       // Make the date more readable
       var year = "";
       var month = "";
-      
+
       var i = 0;
       while (vm.hackathon.date[i] != '-') {
         year += vm.hackathon.date[i];
@@ -43,8 +205,8 @@
         i++;
       }
       month = parseInt(month);
-      
-      switch(month) {
+
+      switch (month) {
         case 1:
           month = "January";
           break;
@@ -89,6 +251,8 @@
       vm.hackathon.date = new Date(vm.hackathon.date);
     }
 
+    /* Code to dynamically add categories, projects, and criteria */
+    
     if ($stateParams.cat != null) {
       vm.catToUpdate = hackathon.category[$stateParams.cat];
       vm.cat = $stateParams.cat;
@@ -130,7 +294,7 @@
         description: ''
       };
       vm.hackathon.category[vm.hackathon.category.length] = newCategory;
-      if(save){
+      if (save) {
         vm.save(true);
       }
     }
