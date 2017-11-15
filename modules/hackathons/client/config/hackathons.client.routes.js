@@ -50,7 +50,7 @@
       })
       .state('hackathons.create', {
         url: '.create', // temporarily a . instead of / due to POST destination error (sent to hackathons/api/hackathons)
-        templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',
+        templateUrl: 'modules/hackathons/client/views/new-form-hackathon.client.view.html',
         controller: 'HackathonsController',
         controllerAs: 'vm',
         resolve: {
