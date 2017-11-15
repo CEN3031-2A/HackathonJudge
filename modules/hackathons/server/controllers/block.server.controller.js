@@ -37,6 +37,7 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
+      console.log(JSON.stringify(blocks));
       res.jsonp(blocks);
     }
   });
@@ -45,7 +46,7 @@ exports.list = function(req, res) {
 
 /**
  * Show the current Hackathon
- 
+
 exports.read = function(req, res) {
   // convert mongoose document to JSON
   var hackathon = req.hackathon ? req.hackathon.toJSON() : {};
@@ -59,7 +60,7 @@ exports.read = function(req, res) {
 
 /**
  * Update a Hackathon
- 
+
 exports.update = function(req, res) {
   var hackathon = req.hackathon;
 
@@ -73,12 +74,12 @@ exports.update = function(req, res) {
     } else {
       res.jsonp(hackathon);
     }
-  }); 
+  });
 }; */
 
 /**
  * Delete an Hackathon
- 
+
 exports.delete = function(req, res) {
   var hackathon = req.hackathon;
 
@@ -96,7 +97,7 @@ exports.delete = function(req, res) {
 
 /**
  * Hackathon middleware
- 
+
 exports.hackathonByID = function(req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
