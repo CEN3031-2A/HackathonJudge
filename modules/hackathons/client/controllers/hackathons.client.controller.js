@@ -30,6 +30,9 @@
 
 
   function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http) {
+    // Hold judges
+    var judges = [];
+
     var vm = this;
 
     vm.authentication = Authentication;
@@ -45,6 +48,9 @@
     vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+
+    // Test UID generation
+    vm.generateUID = generateUID;
 
     //Testing file upload
     vm.send = send;
@@ -111,13 +117,42 @@
         let subject = "Hackathon Judge test";
         let body = "Testing Hackathon Judge email system";
 
-        sendMail(ses, emails, from, subject, body);
+        generateUID(emails);    // Links emails and ids together - pushes object into judges
+
+        
+        //sendMail(ses, emails, from, subject, body);
+        alert("Emails sent!");
       }
       catch (err) {
         console.log(err);
         alert("No CSV file uploaded!");
       }
     }
+
+    // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
+    function generateUID(emails) {
+      // I generate the UID from two parts here 
+      // to ensure the random number provide enough bits.
+      for(let i=0; i < emails.length; i++) {
+        let firstPart = (Math.random() * 46656) | 0;
+        let secondPart = (Math.random() * 46656) | 0;
+        firstPart = ("000" + firstPart.toString(36)).slice(-3);
+        secondPart = ("000" + secondPart.toString(36)).slice(-3);
+        let temp_id = firstPart + secondPart;
+        //let temp_judge = new judge(emails[i], id);
+        let temp_judge = {
+          email: emails[i],
+          id: temp_id
+        };
+        judges.push(temp_judge);
+        console.log(temp_judge);
+      }
+
+      vm.hackathon.judge = judges;
+      console.log(vm.hackathon.judge);
+      vm.save(true);
+    }
+
 
     // if statement to deal with the creation page (because it has no date field, no need to go through this)
     if (vm.hackathon.date != null) {
