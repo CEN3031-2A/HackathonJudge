@@ -84,7 +84,7 @@
       Notification.info({ message: 'Welcome ' + response.firstName });
       // And redirect to the previous or home page
       //$state.go($state.previous.state.name || 'home', $state.previous.params);
-      $state.go('hackathons.list');
+      $state.go('^.hackathons.list');
     }
 
     function onUserSigninError(response) {
