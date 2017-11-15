@@ -8,7 +8,7 @@
     border: none;
     outline: none;
     transition: 0.4s;
-}
+}*/
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 /*button.accordion.active, button.accordion:hover {
@@ -21,7 +21,11 @@
     background-color: white;
     display: none;
 }*/
-
+body{
+background-color: #63666a;
+color: #003B5C;
+font-family: Arial;
+}
 textarea {
     resize: vertical;
 }
@@ -29,4 +33,7 @@ textarea {
     vertical-align: middle;
     height: 50px;
 }
-
+.panel-default {
+  background-color: blue;
+  color: red;
+}
