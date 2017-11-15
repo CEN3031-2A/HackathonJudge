@@ -46,7 +46,6 @@
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
-
     /* Start of email sending code */
 
     vm.send = send;   // Register the send function
@@ -205,6 +204,7 @@
         i++;
       }
       month = parseInt(month);
+
 
       switch (month) {
         case 1:

@@ -16,7 +16,7 @@
       angular.forEach(results, function(result) {
         var year = "";
         var month = "";
-        
+
         var i = 0;
         while (result.date[i] != '-') {
           year += result.date[i];
@@ -29,7 +29,7 @@
           i++;
         }
         month = parseInt(month);
-        
+
         switch(month) {
           case 1:
             month = "January";

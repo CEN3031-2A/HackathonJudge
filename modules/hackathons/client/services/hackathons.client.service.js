@@ -13,7 +13,7 @@
       hackathonId: '@_id'
     }, {
       update: {
-        method: 'PUT'
+        method: 'PUT', isArray:false
       }
     });
   }
