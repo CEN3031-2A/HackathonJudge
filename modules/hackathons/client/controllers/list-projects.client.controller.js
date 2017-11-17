@@ -6,10 +6,10 @@
       .controller('ProjectsListController', ProjectsListController);
 
 
-    ProjectsListController.$inject = ['ProjectsService', 'Socket', '$scope', 'BlockService'];
+    ProjectsListController.$inject = ['ProjectsService', '$stateParams', '$state', 'Socket', '$scope', 'BlockService'];
 
-    function ProjectsListController(ProjectsService, Socket, $scope, BlockService) {
-
+    function ProjectsListController(ProjectsService, $stateParams, $state, Socket, $scope, BlockService) {
+      console.log($stateParams.judgeID);
       var vm = this;
 
       // Get hackathons (HTML will only display projects from active hackathon )
