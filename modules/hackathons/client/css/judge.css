@@ -26,6 +26,49 @@ background-color: white;
 color: #003B5C;
 font-family: Arial;
 }
+.hackathons-list-buttons {
+    margin: auto;
+    width: 30%;
+}
+/*Button Two*/
+.button-two {
+    text-align: center;
+    cursor: pointer;
+    font-size:20px;
+    margin: 0 auto;
+    border-radius: 4px;
+    background-color:#1a57ca;
+    border: none;
+    padding: 20px;
+    width: 100%;
+    transition: all 0.5s;
+}
+.button-two span {
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button-two span:after {
+    content: '»';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button-two:hover span {
+    padding-right: 25px;
+}
+
+.button-two:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
 textarea {
     resize: vertical;
 }
@@ -39,8 +82,9 @@ textarea {
 }
 
 .hackathons-list-active {
-    background: lightgreen;
-    margin-bottom: 20px
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background: lightgreen; 
 }
 .hackathons-list-inactive {
     background: lightcoral;
