@@ -22,7 +22,7 @@
     display: none;
 }*/
 body{
-background-color: #63666a;
+background-color: white;
 color: #003B5C;
 font-family: Arial;
 }
@@ -36,4 +36,12 @@ textarea {
 .panel-default {
   background-color: blue;
   color: red;
+}
+
+.hackathons-list-active {
+    background: lightgreen;
+    margin-bottom: 20px
+}
+.hackathons-list-inactive {
+    background: lightcoral;
 }
