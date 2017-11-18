@@ -300,17 +300,23 @@
     }
 
     function removeProjectFromCategory(project) {
-      vm.catToUpdate.project.splice(vm.catToUpdate.project.indexOf(project), 1);
+      if ($window.confirm('Are you sure you want to delete?')) {
+        vm.catToUpdate.project.splice(vm.catToUpdate.project.indexOf(project), 1);
+      }
     }
 
     function removeCriteriaFromCategory(criteria) {
-      vm.catToUpdate.criteria.splice(vm.catToUpdate.criteria.indexOf(criteria), 1);
+      if ($window.confirm('Are you sure you want to delete?')) {
+        vm.catToUpdate.criteria.splice(vm.catToUpdate.criteria.indexOf(criteria), 1);
+      }
     }
 
     function removeCategoryFromHackathon() {
-      vm.hackathon.category.splice(vm.hackathon.category.indexOf(vm.catToUpdate), 1);
-      vm.catToUpdate = null;
-      vm.save(true);
+      if ($window.confirm('Are you sure you want to delete?')) {
+        vm.hackathon.category.splice(vm.hackathon.category.indexOf(vm.catToUpdate), 1);
+        vm.catToUpdate = null;
+        vm.save(true);
+      }
     }
 
     // Save Hackathon

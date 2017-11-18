@@ -1,6 +1,8 @@
 <section>
   <div class="page-header">
-		<a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a>
+		<a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
+			&larr; &nbsp; Back to {{vm.hackathon.name}}
+		</a>
     <h1>{{ vm.hackathon.name }} - View Votes</h1>
   </div>
   <div ng-repeat="category in vm.hackathon.category track by $index">

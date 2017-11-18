@@ -1,40 +1,56 @@
 <section>
   <div class="page-header">
-    <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
-    <h1 ng-bind="vm.hackathon.name"></h1>
-    {{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon <br>
-  </div>
-  <div class="pull-right">
-    <a class="btn btn-primary"
-       ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">
-      <i class="glyphicon glyphicon-edit"></i>
+    <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.list">
+      <i class="glyphicon glyphicon-home"></i>
+      &nbsp; Back to Hackathons list
     </a>
-    <a class="btn btn-primary" ng-click="vm.remove()">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
-  </div>
-  Description: {{ vm.hackathon.description }} <br>
-  <p>Date: {{ vm.hackathon.date ? vm.hackathon.string_date : 'Not set'}}</p>
-  <a ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results</a><br>
-  <a ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">View Votes</a> <br><br>
-
-  <input type="file" fileread="vm.csvfile" accept=".csv">
-  <a type="button" class="btn btn-primary" ng-click="vm.send()">Send Emails</a>
-  <!--
-    Testing out unique ID generation
-    <a type="button" class="btn btn-primary" ng-click="vm.generateUID()">Generate UID</a>
-  -->
-  <hr>
-  <h2>Modification Section</h2>
-  <a ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon</a> <br><br>
-
-  <div ng-repeat="category in vm.hackathon.category">
-    <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: $index})">Edit {{category.name}} Category</a> <br>
-  </div>
-
-  <div>
     <br>
-    <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.addCategoryToHackathon(true)">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
+    <h1 ng-bind="vm.hackathon.name"></h1>
+    <b>{{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon </b><br>
+    {{ vm.hackathon.date ? vm.hackathon.string_date : 'Date not set'}}
+  </div> 
+  <div class="col-md-6">
+      <h2><u>Description</u></h2>
+      <p style="color:#509e2f" class="enlarge">{{ vm.hackathon.description }}</p><br>
+      <a type="button" class="btn btn-primary" style="background: #115E67"
+        ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results  
+        <i class="glyphicon glyphicon-signal"></i>
+      </a>
+      &nbsp;&nbsp;
+      <a type="button" class="btn btn-primary" style="background: #115E67"
+        ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })"> View Votes
+      </a> <br><br>
+      <b>Upload CSV File of Judges' Emails</b>
+      <input type="file" fileread="vm.csvfile" accept=".csv">
+      <br>
+      <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.send()">Send Emails
+        <i class="glyphicon glyphicon-envelope"></i>
+      </a>
+  </div>
+  <div class="col-md-6">
+    <h2><u>Modification Section</u></h2>
+    <div class="pull-right">
+      <div class="justify-right">
+        <a class="btn btn-primary" style="background: #115E67" 
+          ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon
+          <i class="glyphicon glyphicon-edit"></i>
+        </a><br><br>
+        <a class="btn btn-primary btn-danger" ng-click="vm.remove()">Delete Hackathon
+          <i class="glyphicon glyphicon-trash"></i>
+        </a>
+      </div>
+    </div>
+    <div ng-repeat="category in vm.hackathon.category">
+      <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: $index})">Edit {{category.name}} Category</a>
+      <br>
+    </div>
+
+    <div>
+      <br>
+      <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.addCategoryToHackathon(true)">Add a Category
+        <span class="glyphicon glyphicon-plus-sign"></span>
+      </a>
+    </div>
   </div>
 
   <p class="lead" ng-bind="vm.hackathon.content"></p>
