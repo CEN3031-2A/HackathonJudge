@@ -4,7 +4,7 @@
       &larr; &nbsp; Back to {{vm.hackathon.name}}
     </a> 
     <br>
-    <h1>Edit {{vm.hackathon.name}} - {{ vm.catToUpdate.name }} Category</h1>
+    <center><img src="modules/hackathons/client/img/edit_category.png"></center>
   </div>
   <div class="col-md-12">
     <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
@@ -19,8 +19,7 @@
 
           <hr>
 
-
-          <h2>Projects Modification</h2>
+          <img src="modules/hackathons/client/img/project_modification.png">
           <div class="container">
             <div ng-repeat="project in vm.catToUpdate.project">
               <div ng-if="$even" style="float:left; width:40%;">
@@ -48,7 +47,7 @@
 
           <hr>
 
-          <h2>Criteria Modification</h2>
+          <img src="modules/hackathons/client/img/criteria_modification.png">
           <div class="container">
             <div ng-repeat="criteria in vm.catToUpdate.criteria">
               <div ng-if="$even" style="float:left; width:40%;">

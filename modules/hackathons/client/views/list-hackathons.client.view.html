@@ -1,18 +1,18 @@
 <section>
   <div class="page-header">
-    <h1>Hackathon List</h1>
+    <img src="/modules/hackathons/client/img/hackathon_list.png">
   </div>
   <a ui-sref="hackathons.create">Create Hackathon</a> <br>
-  <a ui-sref="hackathons.projectList">List Projects</a>
-  <h3>Active Hackathons</h3>
+  <a ui-sref="hackathons.projectList">List Projects</a><br><br>
+  <img src="modules/hackathons/client/img/active_hackathon.png"><br>
   <div class="list-group-active">
     <a ng-repeat="hackathon in vm.hackathons | filter: { active: 'true' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
       Description: {{ hackathon.description }} <br>
       Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
     </a>
-  </div>
-  <h3>Inactive Hackathons</h3>
+  </div><br>
+  <img src="modules/hackathons/client/img/inactive_hackathon.png"><br>
   <div class="list-group-inactive">
     <a ng-repeat="hackathon in vm.hackathons | filter: { active : '!!', active: 'false' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
       <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>

@@ -2,8 +2,8 @@
   <div class="page-header">
     <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
       &larr; &nbsp; Back to {{vm.hackathon.name}}
-    </a>
-    <h1>Edit Hackathon - {{vm.hackathon.name}}</h1>
+    </a><br>
+    <center><img src="modules/hackathons/client/img/edit_hackathon.png"></center>
   </div>
   <div class="col-md-12">
     <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
