@@ -13,8 +13,9 @@
       <img src="modules/hackathons/client/img/description.png">
       <p style="color:#509e2f" class="enlarge">{{ vm.hackathon.description }}</p><br>
       <a type="button" class="btn btn-primary" style="background: #115E67"
-        ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">View Results  
+        ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })"> 
         <i class="glyphicon glyphicon-signal"></i>
+        &nbsp; View Results  
       </a>
       &nbsp;&nbsp;
       <a type="button" class="btn btn-primary" style="background: #003B5C"
@@ -23,8 +24,9 @@
       <b>Upload CSV File of Judges' Emails</b>
       <input type="file" fileread="vm.csvfile" accept=".csv">
       <br>  
-      <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.send()">Send Emails
+      <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.send()">
         <i class="glyphicon glyphicon-envelope"></i>
+        &nbsp; Send Emails
       </a>
   </div>
   <div class="col-md-6">
@@ -33,9 +35,11 @@
       <div class="justify-right">
         <a class="btn btn-primary" style="background: #115E67" 
           ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon
+          &nbsp;
           <i class="glyphicon glyphicon-edit"></i>
         </a><br><br>
         <a class="btn btn-primary btn-danger" ng-click="vm.remove()">Delete Hackathon
+          &nbsp;
           <i class="glyphicon glyphicon-trash"></i>
         </a>
       </div>
@@ -48,6 +52,7 @@
     <div>
       <br>
       <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.addCategoryToHackathon(true)">Add a Category
+        &nbsp;
         <span class="glyphicon glyphicon-plus-sign"></span>
       </a>
     </div>

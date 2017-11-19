@@ -39,10 +39,6 @@
     vm.remove = remove;
     vm.save = save;
     vm.create = create;
-    vm.addProjectToCategory = addProjectToCategory;
-    vm.addCriteriaToCategory = addCriteriaToCategory;
-    vm.removeProjectFromCategory = removeProjectFromCategory;
-    vm.removeCriteriaFromCategory = removeCriteriaFromCategory;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
@@ -55,7 +51,6 @@
     // Get AWS credentials and email from aws.json
     $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
       json = data;
-      console.log(json.data);
       json = json.data;
     });
 
@@ -246,17 +241,11 @@
 
       vm.hackathon.string_date = month + " " + year;
 
-
       // Also convert the date into a Date object
       vm.hackathon.date = new Date(vm.hackathon.date);
     }
 
-    /* Code to dynamically add categories, projects, and criteria */
-    
-    if ($stateParams.cat != null) {
-      vm.catToUpdate = hackathon.category[$stateParams.cat];
-      vm.cat = $stateParams.cat;
-    }
+    /* Code to dynamically add categories */
 
     // Remove existing Hackathon
     function remove() {
@@ -270,24 +259,6 @@
       vm.hackathon = new Hackathon();
     }
 
-    function addProjectToCategory() {
-      var newProj = {
-        name: '',
-        description: '',
-        link: ''
-      };
-      vm.catToUpdate.project[vm.catToUpdate.project.length] = newProj;
-    }
-
-    function addCriteriaToCategory() {
-      var newCriteria = {
-        name: '',
-        description: '',
-        input_type: ''
-      };
-      vm.catToUpdate.criteria[vm.catToUpdate.criteria.length] = newCriteria;
-    }
-
     function addCategoryToHackathon(save) {
       var newCategory = {
         name: 'New Category',
@@ -296,18 +267,6 @@
       vm.hackathon.category[vm.hackathon.category.length] = newCategory;
       if (save) {
         vm.save(true);
-      }
-    }
-
-    function removeProjectFromCategory(project) {
-      if ($window.confirm('Are you sure you want to delete?')) {
-        vm.catToUpdate.project.splice(vm.catToUpdate.project.indexOf(project), 1);
-      }
-    }
-
-    function removeCriteriaFromCategory(criteria) {
-      if ($window.confirm('Are you sure you want to delete?')) {
-        vm.catToUpdate.criteria.splice(vm.catToUpdate.criteria.indexOf(criteria), 1);
       }
     }
 
