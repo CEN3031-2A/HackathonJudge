@@ -1,23 +1,29 @@
 <section>
   <div class="page-header">
-    <img src="/modules/hackathons/client/img/hackathon_list.png">
+    <center><img src="modules/hackathons/client/img/hackathon_list.png"></center>
   </div>
-  <a ui-sref="hackathons.create">Create Hackathon</a> <br>
-  <a ui-sref="hackathons.projectList">List Projects</a><br><br>
-  <img src="modules/hackathons/client/img/active_hackathon.png"><br>
-  <div class="list-group-active">
-    <a ng-repeat="hackathon in vm.hackathons | filter: { active: 'true' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
-      <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
-      Description: {{ hackathon.description }} <br>
-      Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
-    </a>
-  </div><br>
-  <img src="modules/hackathons/client/img/inactive_hackathon.png"><br>
-  <div class="list-group-inactive">
-    <a ng-repeat="hackathon in vm.hackathons | filter: { active : '!!', active: 'false' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
-      <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
-      Description: {{ hackathon.description }} <br>
-      Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
-    </a>
+  <div class="hackathons-list-buttons">
+    <button class="button-two" ui-sref="hackathons.create"><span>Create Hackathon</span></button> <br>
+    <a ui-sref="hackathons.projectList({judgeID: 'zq0wpt'})">List Projects</a>
+  </div>
+  <div class="col-lg-12 hackathons-list-active"><br>
+    <img src="modules/hackathons/client/img/active_hackathons.png"><br><br>
+    <div class="list-group-active">
+      <a ng-repeat="hackathon in vm.hackathons | filter: { active: 'true' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
+        <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
+        Description: {{ hackathon.description }} <br>
+        Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
+      </a>
+    </div> <br>
+  </div>
+  <div class="col-lg-12 hackathons-list-inactive"><br>
+    <img src="modules/hackathons/client/img/inactive_hackathons.png"><br><br>
+    <div class="list-group-inactive">
+      <a ng-repeat="hackathon in vm.hackathons | filter: { active : '!!', active: 'false' } | orderBy:'date':true" ui-sref="hackathons.view({ hackathonId: hackathon._id })" class="list-group-item">
+        <h4 class="list-group-item-heading" ng-bind="hackathon.name"></h4>
+        Description: {{ hackathon.description }} <br>
+        Date: {{ hackathon.date ? hackathon.string_date : 'Not set' }}
+      </a>
+    </div> <br>
   </div>
 </section>

@@ -19,7 +19,9 @@
       </a>
       &nbsp;&nbsp;
       <a type="button" class="btn btn-primary" style="background: #003B5C"
-        ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })"> View Votes
+        ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })"> 
+        <i class="glyphicon glyphicon-list-alt"></i>
+        &nbsp;View Votes
       </a> <br><br>
       <b>Upload CSV File of Judges' Emails</b>
       <input type="file" fileread="vm.csvfile" accept=".csv">
@@ -28,6 +30,10 @@
         <i class="glyphicon glyphicon-envelope"></i>
         &nbsp; Send Emails
       </a>
+      &nbsp;&nbsp;&nbsp;
+      <a type="button" class="btn btn-primary" ng-click="vm.resend()" style="background:#003B5C">
+        <i class="glyphicon glyphicon-share"></i>
+        &nbsp;Resend Emails</a>
   </div>
   <div class="col-md-6">
     <img src="modules/hackathons/client/img/modification.png"><br><br>
