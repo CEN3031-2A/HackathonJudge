@@ -1,7 +1,10 @@
 <section>
   <div class="page-header">
-    <a ui-sref="hackathons.list">Back to Hackathons List</a> <br>
-    <h1>{{vm.hackathon._id ? 'Edit Hackathon' : 'New Hackathon'}}</h1>
+    <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.list">
+      <i class="glyphicon glyphicon-home"></i>
+        &nbsp; Back to Hackathons list
+    </a><br>
+    <center><img src="modules/hackathons/client/img/create_hackathon.png"></center>
   </div>
   <div class="col-md-12">
     <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
@@ -18,27 +21,11 @@
             <input type="checkbox" id="booleanTrue" name="true" ng-model="vm.hackathon.active">
             <label for="booleanTrue">Active Hackathon</label>
           </div>
-
-          <div ng-repeat="category in vm.hackathon.category">
-            <div ng-if="$even" style="float:left; width:40%;">
-              <label class="control-label" for="cat{{$index}}_name"> Category {{$index+1}} Name</label>
-              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name"><br>
-            </div>
-            <div ng-if="$odd" style="float:right; width:40%; margin-right:200px">
-              <label class="control-label" for="cat{{$index}}_name"> Category {{$index+1}} Name</label>
-              <input name="cat{{$index+1}}_name" style="width:300px" type="text" ng-model="vm.hackathon.category[$index].name" id="cat{{$index+1}}_name" class="form-control" placeholder="Name"><br>
-            </div>
-          </div>
-
         </div>
-
-        <div>
-          <a type="button" class="btn btn-primary" style="background: green" ng-click="vm.addCategoryToHackathon(false)">Add a Category <span class="glyphicon glyphicon-plus-sign"></span></a>
-          <br><br>
-        </div>
-
         <div class="form-group">
-          <button type="submit" class="btn btn-default">{{vm.hackathon._id ? 'Update' : 'Create'}}</button>
+          <button type="submit" class="btn btn-primary" style="background:#509e2f">Create New Hackathon</button>
+          &nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-primary" style="background:#115E67" ng-click="vm.duplicate()">Duplicate Latest Hackathon</button>
         </div>
         <div ng-show="vm.error" class="text-danger">
           <strong ng-bind="vm.error"></strong>

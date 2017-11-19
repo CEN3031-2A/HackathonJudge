@@ -1,30 +1,6 @@
-/*button.accordion {
-    background-color: #eee;
-    color: #444;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-    transition: 0.4s;
-}*/
-
-/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-/*button.accordion.active, button.accordion:hover {
-    background-color: #ccc;
-}
-
- /*Style the accordion panel. Note: hidden by default */
-/*div.panel {
-    padding: 0 18px;
-    background-color: white;
-    display: none;
-}*/
 body{
-/*background-color: #63666a;*/
-color: #003B5C;
-font-family: Arial;
+  color: #003B5C;
+  font-family: Arial;
 }
 textarea {
     resize: vertical;
@@ -33,146 +9,67 @@ textarea {
     vertical-align: middle;
     height: 50px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//updated ver
-* {
-  box-sizing:border-box;
+.enlarge {
+  font-size: 20px;
 }
-@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
-body {
-
-  font-family:'Lato';
-}
-.heading-primary {
-  font-size:2em;
-  padding:2em;
-  text-align:center;
-}
-.accordion dl,
-.accordion-list {
-   border:1px solid #ddd;
-   &:after {
-       content: "";
-       display:block;
-       height:1em;
-       width:100%;
-       background-color:darken(#38cc70, 10%);
-     }
-}
-.accordion dd,
-.accordion__panel {
-   background-color:#eee;
-   font-size:1em;
-   line-height:1.5em;
-}
-.accordion p {
-  padding:1em 2em 1em 2em;
+.justify-right {
+  text-align: right;
 }
 
-.accordion {
-    position:relative;
-    background-color:#eee;
+.hackathons-list-buttons {
+  margin: auto;
+  width: 30%;
 }
-.container {
-  max-width:960px;
-  margin:0 auto;
-  padding:2em 0 2em 0;
+/*Button Two*/
+.button-two {
+  text-align: center;
+  cursor: pointer;
+  font-size:20px;
+  margin: 0 auto;
+  border-radius: 4px;
+  background-color:#1a57ca;
+  border: none;
+  padding: 20px;
+  width: 100%;
+  transition: all 0.5s;
 }
-.accordionTitle,
-.accordion__Heading {
- background-color:#38cc70;
-   text-align:center;
-     font-weight:700;
-          padding:2em;
-          display:block;
-          text-decoration:none;
-          color:#fff;
-          transition:background-color 0.5s ease-in-out;
-  border-bottom:1px solid darken(#38cc70, 5%);
-  &:before {
-   content: "+";
-   font-size:1.5em;
-   line-height:0.5em;
-   float:left;
-   transition: transform 0.3s ease-in-out;
-  }
-  &:hover {
-    background-color:darken(#38cc70, 10%);
-  }
-}
-.accordionTitleActive,
-.accordionTitle.is-expanded {
-   background-color:darken(#38cc70, 10%);
-    &:before {
-
-      transform:rotate(-225deg);
-    }
-}
-.accordionItem {
-    height:auto;
-    overflow:hidden;
-    //SHAME: magic number to allow the accordion to animate
-
-     max-height:50em;
-    transition:max-height 1s;
-
-
-    @media screen and (min-width:48em) {
-         max-height:15em;
-        transition:max-height 0.5s
-
-    }
-
-
+.button-two span {
+  color: white;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
 }
 
-.accordionItem.is-collapsed {
-    max-height:0;
-}
-.no-js .accordionItem.is-collapsed {
-  max-height: auto;
-}
-.animateIn {
-     animation: accordionIn 0.45s normal ease-in-out both 1;
-}
-.animateOut {
-     animation: accordionOut 0.45s alternate ease-in-out both 1;
-}
-@keyframes accordionIn {
-  0% {
-    opacity: 0;
-    transform:scale(0.9) rotateX(-60deg);
-    transform-origin: 50% 0;
-  }
-  100% {
-    opacity:1;
-    transform:scale(1);
-  }
+.button-two span:after {
+  content: '»';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
 }
 
-@keyframes accordionOut {
-    0% {
-       opacity: 1;
-       transform:scale(1);
-     }
-     100% {
-          opacity:0;
-           transform:scale(0.9) rotateX(-60deg);
-       }
+.button-two:hover span {
+  padding-right: 25px;
+}
+
+.button-two:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/*
+.panel-default {
+background-color: blue;
+color: red;
+} */
+
+.hackathons-list-active {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  background: rgb(179, 238, 179);
+}
+.hackathons-list-inactive {
+  background: rgb(243, 173, 173);
 }

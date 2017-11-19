@@ -5,7 +5,6 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-
     ProjectsListController.$inject = ['ProjectsService', '$stateParams', '$state', 'Socket', '$scope', 'BlockService'];
 
     function ProjectsListController(ProjectsService, $stateParams, $state, Socket, $scope, BlockService) {
@@ -21,6 +20,7 @@
 
           // Look for the active hackathon
           if (result.active == true) {
+            vm.hackathon = result;
             let judges = result.judge;
             let i=0;
 
@@ -34,7 +34,7 @@
             }
           }
         });
-        vm.hackathons = results;
+        //vm.hackathons = results;
       });
 
       vm.blockchain = [];
@@ -104,5 +104,5 @@
 
 
     }
-    
+
 }());

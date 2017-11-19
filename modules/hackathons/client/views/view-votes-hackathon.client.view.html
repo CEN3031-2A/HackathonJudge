@@ -1,7 +1,10 @@
 <section>
   <div class="page-header">
-		<a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a>
-    <h1>{{ vm.hackathon.name }} - View Votes</h1>
+		<a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
+			<i class="glyphicon glyphicon-arrow-left"></i>
+			&nbsp; Back to {{vm.hackathon.name}}
+		</a><br>
+		<center><img src="modules/hackathons/client/img/view_votes.png"></center>
   </div>
   <div ng-repeat="category in vm.hackathon.category track by $index">
 		<h2>{{ category.name }}</h2>
