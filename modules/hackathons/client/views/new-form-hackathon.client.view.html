@@ -1,0 +1,36 @@
+<section>
+  <div class="page-header">
+    <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.list">
+      <i class="glyphicon glyphicon-home"></i>
+        &nbsp; Back to Hackathons list
+    </a><br>
+    <center><img src="modules/hackathons/client/img/create_hackathon.png"></center>
+  </div>
+  <div class="col-md-12">
+    <form name="vm.form.hackathonForm" class="form-horizontal" ng-submit="vm.save(vm.form.hackathonForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label class="control-label" for="name">Name</label>
+          <input name="name" style="width:300px" type="text" ng-model="vm.hackathon.name" id="name" class="form-control" placeholder="Name" required>
+          <label class="control-label" for="description">Description</label> <br>
+          <textarea name="description" ng-model="vm.hackathon.description" id="description" rows="4" cols="50" required></textarea>
+          <br>
+          <label class="control-label" for="month">Date of Hackathon</label> <br>
+          <input type="month" ng-model="vm.hackathon.date"> <br><br>
+          <div>
+            <input type="checkbox" id="booleanTrue" name="true" ng-model="vm.hackathon.active">
+            <label for="booleanTrue">Active Hackathon</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" style="background:#509e2f">Create New Hackathon</button>
+          &nbsp;&nbsp;&nbsp;
+          <button type="button" class="btn btn-primary" style="background:#115E67" ng-click="vm.duplicate()">Duplicate Latest Hackathon</button>
+        </div>
+        <div ng-show="vm.error" class="text-danger">
+          <strong ng-bind="vm.error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>

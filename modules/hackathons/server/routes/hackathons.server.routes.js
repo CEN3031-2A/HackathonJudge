@@ -4,6 +4,7 @@
  * Module dependencies
  */
 var hackathonsPolicy = require('../policies/hackathons.server.policy'),
+  blocks = require('../controllers/block.server.controller'),
   hackathons = require('../controllers/hackathons.server.controller');
 
 module.exports = function(app) {
@@ -16,6 +17,10 @@ module.exports = function(app) {
     .get(hackathons.read)
     .put(hackathons.update)
     .delete(hackathons.delete);
+
+  app.route('/api/blocks')
+    .get(blocks.list)
+    .post(blocks.create);
 
   // Finish by binding the Hackathon middleware
   app.param('hackathonId', hackathons.hackathonByID);
