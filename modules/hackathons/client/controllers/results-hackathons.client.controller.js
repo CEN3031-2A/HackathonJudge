@@ -102,10 +102,11 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   {
     BlockService.get().then(function(res) {
       vm.blockchain = res.data;
-      console.log('Received chain: ' + JSON.stringify(vm.blockchain));
+      
       BlockService.set(vm.blockchain);
       for(var i = 0; i < vm.blockchain.length; i++)
       {
+        console.log('Adding data for: ' + JSON.stringify(vm.blockchain[i]) + "\n");
         addDataToChart(vm.blockchain[i]);
       }
     });
@@ -130,7 +131,9 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
               var criteria = category.criteria[curr_criteria];
               if(criteria.name == block.vote[curr_criteria].criteria)
               {
-                $scope.data[cat][curr_criteria][proj] += block.vote[curr_criteria].value;
+                let i = parseFloat($scope.data[cat][curr_criteria][proj]);
+                let j = parseFloat(block.vote[curr_criteria].value);
+                $scope.data[cat][curr_criteria][proj] = i+j;
               }
             }
             break;
@@ -162,8 +165,9 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     Socket.on('voteMessage', function (newBlock) {
       if(newBlock.type == 'vote')
       {
-        vm.blockchain.push(newBlock);
+        
         addDataToChart(newBlock);
+        vm.blockchain.push(newBlock);
         // add to existing total
       }
       console.log('New Block: ' + JSON.stringify(newBlock));
