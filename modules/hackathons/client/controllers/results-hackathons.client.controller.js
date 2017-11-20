@@ -136,7 +136,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     });
   }
 
-  
+
 
   // Sample data for reference
   /*
