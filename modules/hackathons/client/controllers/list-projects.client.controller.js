@@ -5,13 +5,11 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-
     ProjectsListController.$inject = ['ProjectsService', '$stateParams', 
     '$state', 'Socket', '$scope', 'BlockService', '$http'];
 
     function ProjectsListController(ProjectsService, $stateParams, 
       $state, Socket, $scope, BlockService, $http) {
-      
       var vm = this;
       $scope.contains;
       var indexOfJudge; // Store index of judge for array vm.hackathon.judge
@@ -121,5 +119,7 @@
         BlockService.add(data);
       }
 
+
     }
+
 }());

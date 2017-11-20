@@ -36,7 +36,9 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
       title: {
         display: true,
-        text: vm.hackathon.category[cat].name + " - Results"
+        text: vm.hackathon.category[cat].name + " - Results",
+        fontSize: 20,
+        fontColor: '#509e2f'
       },
 
       scales: {
@@ -50,6 +52,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
       responsive: false,
       maintainAspectRatio: false
     };
+
+
 
     $scope.options.push(options);
 
@@ -92,7 +96,6 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
       projects[curr_project].vote_size = notes.length;  // Store how many votes a project has
     }
-
     $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data
     vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects
   }
@@ -178,6 +181,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
       Socket.removeListener('voteMessage');
     });
   }
+
+  
 
   // Sample data for reference
   /*

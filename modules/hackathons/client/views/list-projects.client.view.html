@@ -1,30 +1,39 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <base href="/">
-  <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/../css/judge.css">
-  <title>judgePage</title>
+  <head>
+    <base href="/">
+    <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/../css/projects.css">
+    <title>judgePage</title>
+    <!-- <meta http-equiv="refresh" content="0"> -->
+  </head>
+  <body>
+    <style>
+      body{
+        background-color: #004d36;
+        margin: 0;
+        padding: 0;
+        color: #509e2f;
 
-</head>
 
-<body>
-  <h1> {{vm.hackathon.name}} </h1>
-  <uib-tabset active="active">
-    <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
-      <section>
-        <uib-accordion class="panel-default">
-          <div ng-repeat="project in cat.project">
-            <span ng-if="contains(project.name) == true">
-            <div uib-accordion-group heading="{{project.name}} - Finished">
-              You have already voted for this!
-            </div>
-            </span>
-            <span ng-if="contains(project.name) == false">
-            <div uib-accordion-group heading="{{project.name}}">
-            </span>
-              <form ng-submit="vm.saveVote(project, cat)">
+        background-image: url("modules/hackathons/client/views/background.png");
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        background-size: 30%;
+        background-attachment: fixed;
+      }
+      </style>
+      <center>
+        <h1>Voting Page For:</h1>
+        <h1> {{vm.hackathon.name}} </h1>
+      </center>
+      <uib-tabset active="active">
+        <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
+          <section>
+            <uib-accordion class="panel-default" panel-class="panel-danger">
+              <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project" panel-class="panel-success">
+                <form ng-submit="vm.saveVote(project, cat)">
                 <div class="row">
                   <div class="col-sm-4">
                     <a href="{{project.link}}">Project Link</a>
@@ -53,16 +62,17 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
-            </div>
-          </div>
-        </uib-accordion>
-      </section>
-    </uib-tab>
-  </uib-tabset>
-  <li class="vote-message" ng-repeat="block in vm.blockchain">
-    Sender: {{block.sender}} Recipient: {{block.recipient}} vote1: {{block.voteCriteria1}} vote2: {{block.voteCriteria2}} vote3:
-    {{block.voteCriteria3}} vote4: {{block.voteCriteria4}}
-  </li>
-</body>
-
+              </div>
+            </uib-accordion>
+          </section>
+        </uib-tab>
+      </uib-tabset>
+      <li class="vote-message" ng-repeat="block in vm.blockchain">
+        Sender: {{block.sender}} Recipient: {{block.recipient}}
+        vote1: {{block.voteCriteria1}}
+        vote2: {{block.voteCriteria2}}
+        vote3: {{block.voteCriteria3}}
+        vote4: {{block.voteCriteria4}}
+      </li>
+  </body>
 </html>
