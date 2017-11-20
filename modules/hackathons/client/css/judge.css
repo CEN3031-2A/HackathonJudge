@@ -18,7 +18,7 @@ textarea {
 
 .hackathons-list-buttons {
   margin: auto;
-  width: 30%;
+  width: 100%;
 }
 /*Button Two*/
 .button-two {
@@ -30,8 +30,10 @@ textarea {
   background-color:#1a57ca;
   border: none;
   padding: 20px;
-  width: 100%;
+  width: 30%;
   transition: all 0.5s;
+  min-width: 250px;
+  min-height: 30px;
 }
 .button-two span {
   color: white;
