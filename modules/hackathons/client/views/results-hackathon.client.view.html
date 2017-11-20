@@ -2,11 +2,14 @@
 <!--If project names are too long, it will shove off other projects from the graph-->
 <section>
   <div class="page-header">
-      <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a><br>
-    <h1>{{ vm.hackathon.name }} - Results</h1>
+    <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      &nbsp; Back to {{vm.hackathon.name}}
+    </a><br>
+    <center><img src="modules/hackathons/client/img/results.png"></center>
   </div>
 
-  <div class="container">
+  <!-- <div class="container">
     <li ng-repeat="block in vm.blockchain">
       Sender: {{block.data.sender}} Recipient: {{block.data.recipient}}
       vote1: {{block.data.voteCriteria1}}
@@ -14,13 +17,13 @@
       vote3: {{block.data.voteCriteria3}}
       vote4: {{block.data.voteCriteria4}}
     </li>
-  </div>
+  </div> -->
 
   <div ng-repeat="category in vm.hackathon.category track by $index">
-    <div ng-if="$even" style="float:left; width:40%; margin-left:-100px">
+    <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" >
       <canvas id="bar" class="chart chart-bar"
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
-      </canvas>
+      </canvas> 
 
       <h2>Vote Counts</h2>
       <div ng-repeat="project in vm.projects[$index]">

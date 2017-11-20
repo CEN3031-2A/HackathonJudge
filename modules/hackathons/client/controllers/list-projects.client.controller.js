@@ -5,7 +5,6 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-
     ProjectsListController.$inject = ['ProjectsService', '$stateParams', '$state', 'Socket', '$scope', 'BlockService'];
 
     function ProjectsListController(ProjectsService, $stateParams, $state, Socket, $scope, BlockService) {
@@ -18,13 +17,14 @@
         // Need to check to see if the judge ID is valid (in the database)
         // If invalid, send user to forbidden page
         angular.forEach(results, function(result) {
-          
+
           // Look for the active hackathon
           if (result.active == true) {
+            vm.hackathon = result;
             let judges = result.judge;
             let i=0;
 
-            // Check to see if the ID is in the DB 
+            // Check to see if the ID is in the DB
             // Continue iterating through the IDs if the current ID is invalid
             while (i < judges.length && judges[i].id != $stateParams.judgeID) {
               // Reached the end and the given ID is invalid - redirect to not-found
@@ -34,7 +34,7 @@
             }
           }
         });
-        vm.hackathons = results;
+        //vm.hackathons = results;
       });
 
       vm.blockchain = [];
@@ -102,5 +102,7 @@
         // Clear the message text?
       }
 
+
     }
+
 }());
