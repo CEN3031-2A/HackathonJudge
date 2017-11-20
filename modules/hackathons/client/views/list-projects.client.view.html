@@ -23,8 +23,10 @@
         background-attachment: fixed;
       }
       </style>
-
-      <h1> {{vm.hackathon.name}} </h1>
+      <center>
+        <h1>Voting Page For:</h1>
+        <h1> {{vm.hackathon.name}} </h1>
+      </center>
       <uib-tabset active="active">
         <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
           <section>
