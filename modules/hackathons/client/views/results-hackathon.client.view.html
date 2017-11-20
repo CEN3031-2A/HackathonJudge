@@ -17,21 +17,21 @@
       vote4: {{block.data.voteCriteria4}}
     </li>
   </div> -->
-
+<div class="col-12">
   <div ng-repeat="category in vm.hackathon.category track by $index">
-    <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" >
-      <canvas id="bar" class="chart chart-bar"
+    <!-- <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" > -->
+      <center><canvas id="bar" class="chart chart-horizontal-bar"
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
-      </canvas> 
+      </canvas></center>
 
       <h2>Vote Counts</h2>
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
       </div>
-    </div>
+    <!-- </div> -->
 
-    <div ng-if="$odd" style="float:right; width:40%;">
-      <canvas id="bar" class="chart chart-bar"
+    <!-- <div ng-if="$odd" style="float:right; width:40%;">
+      <canvas id="bar" class="chart chart-horizontal-bar"
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
       </canvas>
 
@@ -39,7 +39,7 @@
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
       </div>
-    </div>
+    </div> -->
   </div>
-
+</div>
 </section>
