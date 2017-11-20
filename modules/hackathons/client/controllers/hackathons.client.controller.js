@@ -90,6 +90,7 @@
         alert("Hackathon is inactive; cannot send emails.");
         return;
       }
+      var emails = [];  // Store emails
       try {
         let file = Papa.parse(vm.csvfile);  // Parse CSV
 
@@ -100,7 +101,6 @@
         }
 
         // Store emails found in the CSV
-        let emails = [];
         for (let i = 0; i < file.data.length; i++) {
           let email = String(file.data[i]);
 
