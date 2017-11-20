@@ -23,10 +23,13 @@
     position: absolute;
     width: 100%;
     left: 5px;
-    padding-top: 0;
+    padding-top: 5px;
     text-align: center;
     margin:0 auto;
+
 }
+
+
 
 
 .open .header-profile-image,
