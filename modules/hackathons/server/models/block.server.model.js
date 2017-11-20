@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
 var blockSchema = new Schema({
   index: {type: Number, require: true},
   previousHash: {type: String, require: true},
+  hash: {type: String, require: true},
   timestamp: {type: Number, require: true},
   data: {
     sender: String,

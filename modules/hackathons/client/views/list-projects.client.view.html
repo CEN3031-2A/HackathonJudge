@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <base href="/">
     <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.min.css">
@@ -35,9 +36,11 @@
                 <form ng-submit="vm.saveVote(project, cat)">
                 <div class="row">
                   <div class="col-sm-4">
-                    <a href="{{project.link}}">Project Link</a><br/><br>
-                    <ins>Description:</ins><br/>
-                    {{project.description}}
+                    <a href="{{project.link}}">Project Link</a>
+                    <br/>
+                    <br>
+                    <ins>Description:</ins>
+                    <br/> {{project.description}}
                   </div>
                   <div class="col-sm-5">
                     <div class="form-group">
@@ -48,9 +51,12 @@
                   <div class="col-sm-3">
                     <div ng-repeat="criteria in cat.criteria">
                       <label>{{criteria.name}}</label>
-                      <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]" ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
-                      <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}" ng-model="project.tempVote[$index]"></input>
-                      <br><br>
+                      <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]"
+                        ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
+                      <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}"
+                        ng-model="project.tempVote[$index]"></input>
+                      <br>
+                      <br>
                     </div>
                   </div>
                 </div>
@@ -68,6 +74,5 @@
         vote3: {{block.voteCriteria3}}
         vote4: {{block.voteCriteria4}}
       </li>
-
   </body>
 </html>

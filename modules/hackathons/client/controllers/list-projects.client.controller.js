@@ -5,11 +5,14 @@
       .module('hackathons')
       .controller('ProjectsListController', ProjectsListController);
 
-    ProjectsListController.$inject = ['ProjectsService', '$stateParams', '$state', 'Socket', '$scope', 'BlockService'];
+    ProjectsListController.$inject = ['ProjectsService', '$stateParams', 
+    '$state', 'Socket', '$scope', 'BlockService', '$http'];
 
-    function ProjectsListController(ProjectsService, $stateParams, $state, Socket, $scope, BlockService) {
-      console.log($stateParams.judgeID);
+    function ProjectsListController(ProjectsService, $stateParams, 
+      $state, Socket, $scope, BlockService, $http) {
       var vm = this;
+      $scope.contains;
+      var indexOfJudge; // Store index of judge for array vm.hackathon.judge
 
       // Get hackathons (HTML will only display projects from active hackathon )
       ProjectsService.query().$promise.then(function (results) {
@@ -31,6 +34,23 @@
               if (i == judges.length - 1)
                 $state.go('forbidden');
               i++;
+            }
+          
+            // Store index of judge for array vm.hackathon.judge
+            for (let i = 0; i < vm.hackathon.judge.length; i++) {
+              if (vm.hackathon.judge[i].id == $stateParams.judgeID) {
+                indexOfJudge = i;
+
+                $scope.contains = function(project_name) {
+                  for (let i=0; i < vm.hackathon.judge[indexOfJudge].vote.length; i++) {
+                    if (vm.hackathon.judge[indexOfJudge].vote[i] == project_name)
+                      return true;
+                  }
+                  return false;
+                }
+
+                break;
+              }
             }
           }
         });
@@ -57,49 +77,46 @@
         ['1','2','3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
         ['1','2','3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
       ];
-
-      init();
-
-      function init() {
-        // Make sure the Socket is connected
-        if (!Socket.socket) {
-          Socket.connect();
-        }
-
-        // Add an event listener to the 'chatMessage' event
-        Socket.on('voteMessage', function (newBlock) {
-          if(newBlock.type == 'vote')
-          {
-            vm.blockchain.push(newBlock);
-          }
-        });
-
-        // Remove the event listener when the controller instance is destroyed
-        $scope.$on('$destroy', function () {
-          Socket.removeListener('voteMessage');
-        });
-      }
-
       // Create a controller method for sending messages
       function saveVote(project, category) {
+        for (let j = 0; j < vm.hackathon.judge[indexOfJudge].vote.length; j++) {
+          //Check to see if any of the votes correspond to the current vote
+          if (vm.hackathon.judge[indexOfJudge].vote[j] == project.name) {
+            alert("You have already voted for this project! Cannot vote again!");
+            return;
+          }
+        }
+        // Append project name to the vote array to remember that the judge has already voted for a project
+        vm.hackathon.judge[indexOfJudge].vote.push(project.name);
+        let url = "/api/hackathons/";
+        url += vm.hackathon._id;
+
+        $http.put(url, vm.hackathon)
+          .then(
+            function(response){
+              // success callback
+              vm.hackathon = response.data;
+            }, 
+            function(response){
+              // failure callback
+            }
+         );
+
+        var votes = [];
+        for(var i = 0; i < category.criteria.length; i++)
+        {
+          votes[i] = {criteria: category.criteria[i].name, value: project.tempVote[i]};
+        }
         // Create a new message object
         var data = {
-          sender: 2,
+          sender: $stateParams.judgeID,
           recipient: project.name,
           category: category.name,
-          voteCriteria1: project.tempVote[0],
-          voteCriteria2: project.tempVote[1],
-          voteCriteria3: project.tempVote[2],
-          voteCriteria4: project.tempVote[3]
+          note: project.note,
+          vote: votes
         };
 
-        // console.log(data);
-        var newBlock = BlockService.add(data);
-
-        // Emit a 'voteMessage' message event
-        Socket.emit('voteMessage', newBlock);
-
-        // Clear the message text?
+        BlockService.add(data);
       }
 
 
