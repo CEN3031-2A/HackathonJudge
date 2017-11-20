@@ -34,10 +34,10 @@ exports.invokeRolesPolicies = function () {
     roles: ['guest'],
     allows: [{
       resources: '/api/hackathons',
-      permissions: ['get'] 
+      permissions: ['*'] 
     }, {
       resources: '/api/hackathons/:hackathonId',
-      permissions: ['get']  
+      permissions: ['*']  
     }]
   }]);
 };
