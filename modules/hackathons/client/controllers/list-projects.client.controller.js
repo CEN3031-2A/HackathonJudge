@@ -6,11 +6,15 @@
       .controller('ProjectsListController', ProjectsListController);
 
 
-    ProjectsListController.$inject = ['ProjectsService', '$stateParams', '$state', 'Socket', '$scope', 'BlockService'];
+    ProjectsListController.$inject = ['ProjectsService', '$stateParams', 
+    '$state', 'Socket', '$scope', 'BlockService', '$http'];
 
-    function ProjectsListController(ProjectsService, $stateParams, $state, Socket, $scope, BlockService) {
-
+    function ProjectsListController(ProjectsService, $stateParams, 
+      $state, Socket, $scope, BlockService, $http) {
+      
       var vm = this;
+      $scope.contains;
+      var indexOfJudge; // Store index of judge for array vm.hackathon.judge
 
       // Get hackathons (HTML will only display projects from active hackathon )
       ProjectsService.query().$promise.then(function (results) {
@@ -21,6 +25,7 @@
 
           // Look for the active hackathon
           if (result.active == true) {
+            vm.hackathon = result;
             let judges = result.judge;
             let i=0;
 
@@ -32,9 +37,26 @@
                 $state.go('forbidden');
               i++;
             }
+          
+            // Store index of judge for array vm.hackathon.judge
+            for (let i = 0; i < vm.hackathon.judge.length; i++) {
+              if (vm.hackathon.judge[i].id == $stateParams.judgeID) {
+                indexOfJudge = i;
+
+                $scope.contains = function(project_name) {
+                  for (let i=0; i < vm.hackathon.judge[indexOfJudge].vote.length; i++) {
+                    if (vm.hackathon.judge[indexOfJudge].vote[i] == project_name)
+                      return true;
+                  }
+                  return false;
+                }
+
+                break;
+              }
+            }
           }
         });
-        vm.hackathons = results;
+        //vm.hackathons = results;
       });
 
       vm.blockchain = [];
@@ -57,9 +79,31 @@
         ['1','2','3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14'],
         ['1','2','3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']
       ];
-
       // Create a controller method for sending messages
       function saveVote(project, category) {
+        for (let j = 0; j < vm.hackathon.judge[indexOfJudge].vote.length; j++) {
+          //Check to see if any of the votes correspond to the current vote
+          if (vm.hackathon.judge[indexOfJudge].vote[j] == project.name) {
+            alert("You have already voted for this project! Cannot vote again!");
+            return;
+          }
+        }
+        // Append project name to the vote array to remember that the judge has already voted for a project
+        vm.hackathon.judge[indexOfJudge].vote.push(project.name);
+        let url = "/api/hackathons/";
+        url += vm.hackathon._id;
+
+        $http.put(url, vm.hackathon)
+          .then(
+            function(response){
+              // success callback
+              vm.hackathon = response.data;
+            }, 
+            function(response){
+              // failure callback
+            }
+         );
+
         var votes = [];
         for(var i = 0; i < category.criteria.length; i++)
         {
