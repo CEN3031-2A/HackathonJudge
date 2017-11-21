@@ -115,16 +115,23 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     });
   }
 
+  vm.winners = [];
+  vm.winner_votes = [];
+
   function addDataToChart(newestBlock)
   {
     var block = newestBlock.data;
     for(var cat=0; cat<vm.hackathon.category.length; cat++)
     {
+      vm.winner_votes.push(0);
+      vm.winners.push("None");
       var category = vm.hackathon.category[cat];
       if(category.name == block.category)
       {
         for(var proj = 0; proj < category.project.length; proj++)
         {
+          let vote_sum = 0;
+          let vote_count = 0;
           var project = category.project[proj];
           if(project.name == block.recipient)
           {
@@ -137,6 +144,16 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
                 let i = parseFloat($scope.data[cat][curr_criteria][proj]);
                 let j = parseFloat(block.vote[curr_criteria].value);
                 $scope.data[cat][curr_criteria][proj] = i+j;
+                vote_count++;
+                vote_sum += i+j;
+                if (curr_criteria == category.criteria.length - 1) {
+                  if (vote_sum > vm.winner_votes[cat]) {
+                    vm.winners[cat] = project.name;
+                    vm.winner_votes[cat] = vote_sum;
+                    console.log("Winner: " + project.name);
+                    console.log("Vote count: " + vote_count);
+                  }
+                }
               }
             }
             break;
