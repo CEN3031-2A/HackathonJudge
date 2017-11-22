@@ -11,6 +11,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
 
+  vm.winners = [];      // Hold winners of each category
+  vm.winner_votes = []; // Hold votes (scores) of each winner
+
+  for (let i=0; i < vm.hackathon.category.length; i++) {
+    vm.winners.push("None");
+    vm.winner_votes.push(0);
+  }
+
   // Graph variables
   $scope.labels = [];   // 2D array that holds x-axis labels for each graph -- e.g. $scope.labels[0] accesses labels for category 0
   $scope.series = [];   // 3D array that holds how many bars there will be per label (i.e. criteria) -- e.g. $scope.series[0] accesses criteria for category 0
@@ -79,6 +87,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Inside for loop to iterate across all projects
     for (var curr_project=0; curr_project < projects.length; curr_project++) {
       var notes = projects[curr_project].note;  // Store notes (and their associated votes as well)
+      //let vote_sum = 0;
+      //let vote_count = 0;
 
       // Loop to iterate across all the votes corresponding to each criteria
       // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
@@ -115,16 +125,11 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     });
   }
 
-  vm.winners = [];
-  vm.winner_votes = [];
-
   function addDataToChart(newestBlock)
   {
     var block = newestBlock.data;
     for(var cat=0; cat<vm.hackathon.category.length; cat++)
     {
-      vm.winner_votes.push(0);
-      vm.winners.push("None");
       var category = vm.hackathon.category[cat];
       if(category.name == block.category)
       {
