@@ -131,7 +131,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
       }
 
 
-      $scope.labels[cat][curr_project] = projects[curr_project].name + " (" + notes.length + ")";
+      $scope.labels[cat][curr_project] = projects[curr_project].name + " (" + notes.length + " votes)";
       projects[curr_project].vote_size = notes.length;  // Store how many votes a project has
     }
     $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data
@@ -208,7 +208,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
             }
             vm.vote_count[cat][proj] += 1;
             //console.log(project.name + ": " + vm.vote_count[cat][proj]);
-            $scope.labels[cat][proj] = project.name + " (" + vm.vote_count[cat][proj] + ")";
+            $scope.labels[cat][proj] = project.name + " (" + vm.vote_count[cat][proj] + " votes)";
             break;
           }
         }
