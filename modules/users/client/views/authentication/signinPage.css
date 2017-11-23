@@ -7,14 +7,13 @@ body {
   /*background-image: url("ultimate.png");
   background-position: left top;*/
 
-  background-image: url("ultimate.png"),url("hackathon.jpg");
+  background-image: url("hackathon2.jpg");
   background-repeat: no-repeat;
-  background-position: left top,center center;
-  background-size: 12% 10%,100% 80%;
+  background-position: center center;
+  background-size: cover;
   background-attachment: fixed;
 }
 .nav{
-
   list-style: none;
     font-weight: bold;
     margin-bottom: 10px;
@@ -35,12 +34,23 @@ body {
 
 
 h2{
+  padding-top: 7%;
   font-size: 40px;
   /*color: #509e2f;*/
   color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 h3{
   /*color: #509e2f;*/
   color: white;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;  
 }

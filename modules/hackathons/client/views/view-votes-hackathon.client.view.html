@@ -1,0 +1,39 @@
+<section>
+  <div class="page-header">
+		<a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
+			<i class="glyphicon glyphicon-arrow-left"></i>
+			&nbsp; Back to {{vm.hackathon.name}}
+		</a><br>
+		<!-- <center><img src="modules/hackathons/client/img/view_votes.png"></center> -->
+    <center> <h2>{{ vm.hackathon.name }} - View Votes</h2></center>
+  </div>
+
+
+
+
+
+
+
+
+
+
+<div ng-repeat="category in vm.hackathon.category track by $index">
+  <div class="jumbotron" style="background: #509e2f">
+  <h1 class="display-3" style="color: white">{{ category.name }}</h1>
+
+    <div ng-repeat="project in category.project track by $index" style="color: white">
+    <h3>{{ project.name }}</h3>
+      <div ng-repeat="note in project.note track by $index">
+      Notes: {{ note.text }} <br>
+        <div ng-repeat="vote in note.vote track by $index">
+        {{ vote.criteria_name }} - {{ vote.number }} <br>
+        </div>
+      <br>
+      </div>
+    <hr class="my-4">
+    <br>
+    </div>
+  </div>
+</div>
+
+</section>

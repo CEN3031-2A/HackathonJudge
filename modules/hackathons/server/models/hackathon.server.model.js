@@ -14,7 +14,13 @@ var hackathonSchema = new Schema({
   description: String,
   date: Date, 
   active: Boolean,
-  link: String,
+  judge: [{
+    email: String,
+    id: String,
+    vote: [
+      String
+    ]
+  }],
 
   category: [{
     name: String,
@@ -28,7 +34,7 @@ var hackathonSchema = new Schema({
       note: [{
         text: String,
         vote: [{
-          criteria_id: String,
+          criteria_name: String,
           number: Number
         }]
       }],

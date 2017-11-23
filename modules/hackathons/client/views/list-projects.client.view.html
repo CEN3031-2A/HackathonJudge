@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base href="/">
+  <link rel="stylesheet" href="/public/lib/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/../css/projects.css">
+  <title>judgePage</title>
+  <!-- <meta http-equiv="refresh" content="0"> -->
+</head>
+
+<body>
+  <style>
+    body {
+      background-color: #004d36;
+      margin: 0;
+      padding: 0;
+      color: #509e2f;
+
+
+      background-image: url("modules/hackathons/client/views/background.png");
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      background-size: 30%;
+      background-attachment: fixed;
+    }
+  </style>
+  <center>
+    <h1>Voting Page For:</h1>
+    <h1> {{vm.hackathon.name}} </h1>
+  </center>
+  <uib-tabset active="active">
+    <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
+      <section>
+        <uib-accordion class="panel-default" panel-class="panel-danger">
+          <span ng-repeat="project in cat.project">
+            <span ng-if="contains(project.name) == true">
+              <div uib-accordion-group heading="{{project.name}} - Finished" panel-class="panel-success">
+                You have already voted for this project!
+              </div>
+            </span>
+            <span ng-if="contains(project.name) == false">
+              <div uib-accordion-group heading="{{project.name}}" panel-class="panel-success">
+                <form ng-submit="vm.saveVote(project, cat)">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <a href="{{project.link}}">Project Link</a>
+                      <br/>
+                      <br>
+                      <ins>Description:</ins>
+                      <br/> {{project.description}}
+                    </div>
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label for="comment">Notes:</label>
+                        <textarea ng-model="project.note" class="form-control" rows="5" id="comment" placeholder="Take notes about the {{project.name}} project here!"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div ng-repeat="criteria in cat.criteria">
+                        <label>{{criteria.name}}</label>
+                        <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]"
+                          ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
+                        <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}"
+                          ng-model="project.tempVote[$index]"></input>
+                        <br>
+                        <br>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+
+            </span>
+        </uib-accordion>
+      </section>
+    </uib-tab>
+  </uib-tabset>
+  <li class="vote-message" ng-repeat="block in vm.blockchain">
+    Sender: {{block.sender}} Recipient: {{block.recipient}} vote1: {{block.voteCriteria1}} vote2: {{block.voteCriteria2}} vote3:
+    {{block.voteCriteria3}} vote4: {{block.voteCriteria4}}
+  </li>
+</body>
+
+</html>

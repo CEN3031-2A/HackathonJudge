@@ -30,13 +30,7 @@
       .state('home', {
         url: '/',
         templateUrl: '/modules/core/client/views/home.client.view.html',
-        controller: 'HomeController',
-        controllerAs: 'vm'
-      })
-      .state('judge', {
-        url: '/judge',
-        templateUrl: '/modules/core/client/views/judge.client.view.html',
-        controller: 'HomeController',
+        controller: 'AuthenticationController',
         controllerAs: 'vm'
       })
       .state('manage', {

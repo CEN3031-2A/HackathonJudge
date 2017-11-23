@@ -25,19 +25,19 @@ exports.invokeRolesPolicies = function () {
     roles: ['user'],
     allows: [{
       resources: '/api/hackathons',
-      permissions: ['get', 'post']
+      permissions: '*'
     }, {
       resources: '/api/hackathons/:hackathonId',
-      permissions: ['get']
+      permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
       resources: '/api/hackathons',
-      permissions: '*'  // allow all temporarily, should be only get
+      permissions: ['*'] 
     }, {
       resources: '/api/hackathons/:hackathonId',
-      permissions: '*'  // allow all temporarily, used to be get
+      permissions: ['*']  
     }]
   }]);
 };
