@@ -6,10 +6,10 @@
       .controller('ProjectsListController', ProjectsListController);
 
     ProjectsListController.$inject = ['ProjectsService', '$stateParams', 
-    '$state', 'Socket', '$scope', 'BlockService', '$http'];
+    '$state', 'Socket', '$scope', 'BlockService', '$http', '$window'];
 
     function ProjectsListController(ProjectsService, $stateParams, 
-      $state, Socket, $scope, BlockService, $http) {
+      $state, Socket, $scope, BlockService, $http, $window) {
       var vm = this;
       $scope.contains;
       var indexOfJudge; // Store index of judge for array vm.hackathon.judge
@@ -30,7 +30,7 @@
             // Check to see if the ID is in the DB
             // Continue iterating through the IDs if the current ID is invalid
             while (i < judges.length && judges[i].id != $stateParams.judgeID) {
-              // Reached the end and the given ID is invalid - redirect to not-found
+              // Reached the end and the given ID is invalid - redirect to forbidden
               if (i == judges.length - 1)
                 $state.go('forbidden');
               i++;
@@ -79,13 +79,28 @@
       ];
       // Create a controller method for sending messages
       function saveVote(project, category) {
+        // Make sure that the user wants to finalize his/her vote
+        if(!$window.confirm("Are you sure you want to vote? All votes are final and cannot be edited."))
+          return;
+
+        // Check to see if the judge has already voted for a project (ideally an alert should not a appear because it is already check beforehand)
         for (let j = 0; j < vm.hackathon.judge[indexOfJudge].vote.length; j++) {
-          //Check to see if any of the votes correspond to the current vote
+          //Check to see if any of the judge's votes correspond to the current vote
           if (vm.hackathon.judge[indexOfJudge].vote[j] == project.name) {
             alert("You have already voted for this project! Cannot vote again!");
             return;
           }
         }
+
+
+        // Make sure that the judge has filled in values for all criteria
+        for (let i=0; i < category.criteria.length; i++) {
+          if (project.tempVote[i] == undefined) {
+            alert("Please fill in all criteria.");
+            return;
+          }
+        }
+
         // Append project name to the vote array to remember that the judge has already voted for a project
         vm.hackathon.judge[indexOfJudge].vote.push(project.name);
         let url = "/api/hackathons/";
