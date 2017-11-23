@@ -17,6 +17,7 @@
       vote4: {{block.data.voteCriteria4}}
     </li>
   </div> -->
+  <h2>Overall Winner: {{vm.overall_winner}}</h2>
 <div class="col-12">
   <div ng-repeat="category in vm.hackathon.category track by $index">
     <!-- <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" > -->
@@ -29,7 +30,7 @@
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
       </div>-->
-      Winner: {{ vm.winners[$index] }}
+      Category Winner: {{ vm.winners[$index] }} <br><br>
     <!-- </div> -->
 
     <!-- <div ng-if="$odd" style="float:right; width:40%;">
