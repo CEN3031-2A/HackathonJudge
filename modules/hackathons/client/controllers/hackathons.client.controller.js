@@ -42,10 +42,8 @@
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
-    vm.test = test;
-    var new_judges = JudgesService.query();
-    console.log(new_judges);
-
+    
+    // Create a judge document (called in generateUID)
     function createJudge(email, id) {
       var newJudge = {
         email: email,
@@ -54,22 +52,7 @@
       }
 
       $http({method: 'POST', url: '/api/judges', data: newJudge}).then(function(res) {
-        //console.log("OK");
-      }, function(err) {
-        //console.log("NO");
-      });
-    }
-
-    function test() {
-      var newJudge = {
-        email: "mai.tim1997@gmail.com",
-        id: "12345",
-        votes: []
-      };
-
-      $http({method: 'GET', url: '/api/judges', data: newJudge}).then(function(res) {
         console.log("OK");
-        console.log(res.config[0]);
       }, function(err) {
         console.log("NO");
       });
@@ -205,6 +188,7 @@
           id: temp_id
         };
         judges.push(temp_judge);
+        createJudge(emails[i], temp_id);
       }
 
       // Push new judges to the database and save
