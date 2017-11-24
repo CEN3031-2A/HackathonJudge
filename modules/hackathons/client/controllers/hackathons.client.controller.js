@@ -26,10 +26,10 @@
     }]);
 
   HackathonsController.$inject = ['$scope', '$stateParams', '$state',
-    '$window', 'Authentication', 'hackathonResolve', '$http'];
+    '$window', 'Authentication', 'hackathonResolve', '$http', 'JudgesService'];
 
 
-  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http) {
+  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http, JudgesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -41,6 +41,39 @@
     vm.create = create;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+
+    vm.test = test;
+    var new_judges = JudgesService.query();
+    console.log(new_judges);
+
+    function createJudge(email, id) {
+      var newJudge = {
+        email: email,
+        id: id,
+        vote: []
+      }
+
+      $http({method: 'POST', url: '/api/judges', data: newJudge}).then(function(res) {
+        //console.log("OK");
+      }, function(err) {
+        //console.log("NO");
+      });
+    }
+
+    function test() {
+      var newJudge = {
+        email: "mai.tim1997@gmail.com",
+        id: "12345",
+        votes: []
+      };
+
+      $http({method: 'GET', url: '/api/judges', data: newJudge}).then(function(res) {
+        console.log("OK");
+        console.log(res.config[0]);
+      }, function(err) {
+        console.log("NO");
+      });
+    }
 
     /* Start of email sending code */
 
