@@ -22,6 +22,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
   vm.blockchain = [];
 
+  Chart.scaleService.updateScaleDefaults('linear', {
+    ticks: {
+        beginAtZero: true,
+        stepSize: 1,
+        maxTicksLimit: 6
+    }
+});
+
   // Iterate over the categories to extract information for above variables
   for (var cat=0; cat < vm.hackathon.category.length; cat++) {
     // Variables which will be pushed into the respective $scope variables (series and data will be 2D arrays, labels is 1D, options is an object)
