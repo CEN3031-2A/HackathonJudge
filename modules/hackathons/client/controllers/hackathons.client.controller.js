@@ -74,7 +74,6 @@
 
     // Function for AWS to send emails
     function sendMail(ses, to, from, subject, body) {
-      //console.log('sending mail');
       ses.sendEmail({
         Source: from,
         Destination: {
@@ -94,8 +93,6 @@
         if (err) {
           console.log('ERROR sending mail', err);
         }
-        //console.log('Email sent:');
-        //console.log(data);
       });
     }
 
@@ -156,13 +153,14 @@
       generateUID(emails);    // Links emails and ids together - pushes object into judges
 
       for (let i = 0; i < vm.hackathon.judge.length; i++) {
-        // Create an array of and push a single email each time to send
-        // AWS only accepts arrays of emails, so it is not possible to send an email String as the destination
+        // Create an array of size one and push a single email each time to send
+        // AWS only accepts arrays of emails, so it is not possible to send an email String as the destination email
         let temp_email = [];
         temp_email.push(vm.hackathon.judge[i].email);
 
-        // Body of the email is currently the judge ID
-        let temp_body = vm.hackathon.judge[i].id;
+        // Body of the email is link to the voting page
+        let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
+        temp_body += vm.hackathon.judge[i].id;
 
         sendMail(ses, temp_email, from, subject, temp_body);
       }
@@ -173,14 +171,30 @@
     // Generate unique IDs for each judge
     // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
     function generateUID(emails) {
+      var id_array = [];  // Keep track of IDs in the unlikely event that there is a duplicate
+      
       for (let i = 0; i < emails.length; i++) {
-        // I generate the UID from two parts here 
-        // to ensure the random number provide enough bits.
-        let firstPart = (Math.random() * 46656) | 0;
-        let secondPart = (Math.random() * 46656) | 0;
-        firstPart = ("000" + firstPart.toString(36)).slice(-3);
-        secondPart = ("000" + secondPart.toString(36)).slice(-3);
-        let temp_id = firstPart + secondPart;
+        var temp_id = undefined;  // Hold the ID
+
+        while (temp_id == undefined) {
+          // Generate the UID from two parts here 
+          // to ensure the random number provide enough bits.
+          let firstPart = (Math.random() * 46656) | 0;
+          let secondPart = (Math.random() * 46656) | 0;
+          firstPart = ("000" + firstPart.toString(36)).slice(-3);
+          secondPart = ("000" + secondPart.toString(36)).slice(-3);
+          temp_id = firstPart + secondPart;
+
+          // Check if the ID has already been generated (very unlikely)
+          for (let j=0; j < id_array.length; j++) {
+            if (id_array[j] == temp_id) {
+              temp_id = undefined;  // There is a duplicate - need to create another ID
+              break;
+            }
+          }
+        }
+
+        id_array.push(temp_id); // Keep track of IDs
 
         // Create judge to push to judges array
         let temp_judge = {
@@ -241,9 +255,8 @@
 
     /* End of email sending code */
 
-    // if statement to deal with the creation page (because it has no date field, no need to go through this)
+    // Check to see if the date needs to be more readable (if there is a date)
     if (vm.hackathon.date != null) {
-      // Make the date more readable
       var year = "";
       var month = "";
 
@@ -299,6 +312,7 @@
           month = "December";
       }
 
+      // String that will be displayed to the admin
       vm.hackathon.string_date = month + " " + year;
 
       // Also convert the date into a Date object
