@@ -27,22 +27,22 @@
       <h1> {{vm.hackathon.name}} </h1>
     </center>
 
-    <uib-tabset active="active">		
-      <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">		
-        <section>		
-          <uib-accordion class="panel-default" panel-class="panel-danger">		
-            <span ng-repeat="project in cat.project">		
-              <span ng-if="contains(project.name) == true">		
-                <div uib-accordion-group heading="{{project.name}} - Finished" panel-class="panel-success">		
-                  You have already voted for this project!		
-                </div>		
-              </span>		
-              <span ng-if="contains(project.name) == false">		
+    <uib-tabset active="active">
+      <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
+        <section>
+          <uib-accordion class="panel-default" panel-class="panel-danger">
+            <span ng-repeat="project in cat.project">
+              <span ng-if="contains(project.name) == true">
+                <div uib-accordion-group heading="{{project.name}} - Finished" panel-class="panel-success">
+                  You have already voted for this project!
+                </div>
+              </span>
+              <span ng-if="contains(project.name) == false">
                 <div uib-accordion-group heading="{{project.name}}" panel-class="panel-success">
                   <form ng-submit="vm.saveVote(project, cat)">
                     <div class="row">
                       <div class="col-sm-4">
-                        <a href="{{project.link}}">Project Link</a>
+                        <a href="{{project.link}}" target="_blank">Project Link</a>
                         <br/>
                         <br>
                         <ins>Description:</ins>
