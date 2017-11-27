@@ -22,13 +22,13 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
   vm.blockchain = [];
 
-  Chart.scaleService.updateScaleDefaults('linear', {
-    ticks: {
-        beginAtZero: true,
-        stepSize: 1,
-        maxTicksLimit: 6
-    }
-});
+//   Chart.scaleService.updateScaleDefaults('linear', {
+//     ticks: {
+//         beginAtZero: true,
+//         // stepSize: 1,
+//         // maxTicksLimit: 6
+//     }
+// });
 
   // Iterate over the categories to extract information for above variables
   for (var cat=0; cat < vm.hackathon.category.length; cat++) {
@@ -54,8 +54,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
           ticks: {
             min: 0
           }
+        }],
+        xAxes: [{
+          ticks: {
+            min: 0
+          }
         }]
       },
+
 
       responsive: false,
       maintainAspectRatio: false
