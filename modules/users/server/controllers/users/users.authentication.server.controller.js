@@ -11,8 +11,8 @@ var path = require('path'),
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
-  '/authentication/signin',
-  '/authentication/signup'
+  '/authentication/signup',
+  '/'
 ];
 
 /**
@@ -98,14 +98,14 @@ exports.oauthCallback = function (req, res, next) {
   // info.redirect_to contains inteded redirect path
   passport.authenticate(strategy, function (err, user, info) {
     if (err) {
-      return res.redirect('/authentication/signin?err=' + encodeURIComponent(errorHandler.getErrorMessage(err)));
+      return res.redirect('/' + encodeURIComponent(errorHandler.getErrorMessage(err)));
     }
     if (!user) {
-      return res.redirect('/authentication/signin');
+      return res.redirect('/');
     }
     req.login(user, function (err) {
       if (err) {
-        return res.redirect('/authentication/signin');
+        return res.redirect('/');
       }
 
       return res.redirect(info.redirect_to || '/');

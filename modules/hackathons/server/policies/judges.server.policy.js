@@ -9,47 +9,47 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke Hackathons Permissions
+ * Invoke Judges Permissions
  */
 exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/hackathons',
+      resources: '/api/judges',
       permissions: '*'
     }, {
-      resources: '/api/hackathons/:hackathonId',
+      resources: '/api/judges/:judgeId',
       permissions: '*'
     }]
   }, {
     roles: ['user'],
     allows: [{
-      resources: '/api/hackathons',
+      resources: '/api/judges',
       permissions: '*'
     }, {
-      resources: '/api/hackathons/:hackathonId',
+      resources: '/api/judges/:judgeId',
       permissions: '*'
     }]
   }, {
     roles: ['guest'],
     allows: [{
-      resources: '/api/hackathons',
-      permissions: ['*'] 
+      resources: '/api/judges',
+      permissions: '*'
     }, {
-      resources: '/api/hackathons/:hackathonId',
-      permissions: ['*']  
+      resources: '/api/judges/:judgeId',
+      permissions: '*'
     }]
   }]);
 };
 
 /**
- * Check If Hackathons Policy Allows
+ * Check If Judges Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
-  // If an Hackathon is being processed and the current user created it then allow any manipulation
-  if (req.hackathon && req.user && req.hackathon.user && req.hackathon.user.id === req.user.id) {
+  // If an Judge is being processed and the current user created it then allow any manipulation
+  if (req.judge && req.user && req.judge.user && req.judge.user.id === req.user.id) {
     return next();
   }
 

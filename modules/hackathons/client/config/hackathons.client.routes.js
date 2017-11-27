@@ -9,21 +9,20 @@
 
   function routeConfig($stateProvider) {
     $stateProvider
-
       .state('hackathons', {
         abstract: true,
         url: '/hackathons',
         template: '<ui-view/>'
       })
       .state('hackathons.projectList', {
-        url: '.projects',
+        url: '.projects.:judgeID',
         templateUrl: 'modules/hackathons/client/views/list-projects.client.view.html',
         controller: 'ProjectsListController',
         controllerAs: 'vm',
         data: {
-          roles: ['user', 'admin'],
+          roles: ['guest', 'user', 'admin'],  // Guest is judge
           pageTitle: 'Projects List'
-        }
+        },
       })
       .state('hackathons.list', {
         url: '',
@@ -33,7 +32,7 @@
         data: {
           roles: ['user', 'admin'],
           pageTitle: 'Hackathons List'
-        }
+        },
       })
       .state('hackathons.results', {
         url: '.:hackathonId.results',
@@ -50,8 +49,8 @@
       })
       .state('hackathons.create', {
         url: '.create', // temporarily a . instead of / due to POST destination error (sent to hackathons/api/hackathons)
-        templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',
-        controller: 'HackathonsController',
+        templateUrl: 'modules/hackathons/client/views/new-form-hackathon.client.view.html',
+        controller: 'CreationController',
         controllerAs: 'vm',
         resolve: {
           hackathonResolve: newHackathon
@@ -64,7 +63,7 @@
       .state('hackathons.edit', {
         url: '.:hackathonId.edit',  // temporariliy using . instead of /
         templateUrl: 'modules/hackathons/client/views/form-hackathon.client.view.html',
-        controller: 'HackathonsController',
+        controller: 'CreationController',
         controllerAs: 'vm',
         resolve: {
           hackathonResolve: getHackathon
@@ -91,7 +90,7 @@
       .state('hackathons.edit_cat', {
         url: ':hackathonId.:cat.edit',
         templateUrl: '/modules/hackathons/client/views/edit-hackathon-cat.client.view.html',
-        controller: 'HackathonsController',
+        controller: 'CategoryController',
         controllerAs: 'vm',
         params: {
           cat: null

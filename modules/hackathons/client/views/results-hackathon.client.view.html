@@ -2,13 +2,41 @@
 <!--If project names are too long, it will shove off other projects from the graph-->
 <section>
   <div class="page-header">
-      <a ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">Back to {{ vm.hackathon.name }}</a><br>
-    <h1>{{ vm.hackathon.name }} - Results</h1>
+    <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
+      <i class="glyphicon glyphicon-arrow-left"></i>
+      &nbsp; Back to {{vm.hackathon.name}}
+    </a><br>
+    <center><img src="modules/hackathons/client/img/results.png"></center>
   </div>
-
+  <center>
+    <div class="winner"> 
+      <center>
+        <h3>Current Overall Winner: </h3><h2>{{vm.overall_winner}}</h2>
+      </center>
+    </div>
+  </center>
+  <br><br>
+<div class="col-12">
   <div ng-repeat="category in vm.hackathon.category track by $index">
-    <div ng-if="$even" style="float:left; width:40%; margin-left:-100px">
-      <canvas id="bar" class="chart chart-bar"
+    <!-- <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" > -->
+      <center><canvas id="bar" class="chart chart-horizontal-bar"
+        height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
+      </canvas></center>
+
+      <!--
+      <h2>Vote Counts</h2>
+      <div ng-repeat="project in vm.projects[$index]">
+        {{ project.name }} - {{ project.vote_size }} <br>
+      </div>-->
+      <center>
+        <div class="winner">
+          <h4>Current Category Winner:</h4><h3> {{ vm.winners[$index] }} </h3>
+        </div><br><br>
+      </center>
+    <!-- </div> -->
+
+    <!-- <div ng-if="$odd" style="float:right; width:40%;">
+      <canvas id="bar" class="chart chart-horizontal-bar"
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
       </canvas>
 
@@ -16,18 +44,7 @@
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
       </div>
-    </div>
-
-    <div ng-if="$odd" style="float:right; width:40%;">
-      <canvas id="bar" class="chart chart-bar"
-        height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
-      </canvas>
-
-      <h2>Vote Counts</h2>
-      <div ng-repeat="project in vm.projects[$index]">
-        {{ project.name }} - {{ project.vote_size }} <br>
-      </div>
-    </div>
+    </div> -->
   </div>
-
+</div>
 </section>

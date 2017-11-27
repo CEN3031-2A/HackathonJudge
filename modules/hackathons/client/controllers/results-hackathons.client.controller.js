@@ -4,23 +4,54 @@
 
 angular.module("hackathons").controller("ResultsController", ResultsController);
 
-ResultsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve'];
+ResultsController.$inject = ['$scope', '$stateParams', '$state', '$window', 'Authentication', 'hackathonResolve', 'Socket', 'BlockService'];
 
-function ResultsController($scope, $stateParams, $state, $window, Authentication, hackathon) {
+function ResultsController($scope, $stateParams, $state, $window, Authentication, hackathon, Socket, BlockService) {
   var vm = this;
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
-  
-  // Graph variables 
+
+  // Prepare to store winners
+  vm.winners = [];      // Hold winners of each category
+  vm.winner_votes = []; // Hold votes (scores) of each winner
+
+  vm.overall_winner = "None";
+  vm.overall_winner_vote = 0;
+
+  for (let i=0; i < vm.hackathon.category.length; i++) {
+    vm.winners.push("None");
+    vm.winner_votes.push(0);
+  }
+
+  vm.vote_count = []; // Hold number of votes of each project (2D array - vm.vote_count[category][project])
+
+  for (let i=0; i < vm.hackathon.category.length; i++) {
+    let temp_array = [];
+    for (let j=0; j < vm.hackathon.category[i].project.length; j++) {
+      temp_array.push(0);
+    }
+    vm.vote_count.push(temp_array);
+  }
+
+  // Graph variables
   $scope.labels = [];   // 2D array that holds x-axis labels for each graph -- e.g. $scope.labels[0] accesses labels for category 0
   $scope.series = [];   // 3D array that holds how many bars there will be per label (i.e. criteria) -- e.g. $scope.series[0] accesses criteria for category 0
   $scope.data = [];     // 3D array that holds data points for each graph -- e.g. $scope.data[0] accesses data points for category 0
   $scope.options = [];  // 1D array that holds how each graph will be structured - only part that changes per option is the title
-  
+
   // Variables accessed by the results view
   vm.projects = [];   // 2D array which will hold the projects -- e.g. vm.projects[0] contains projects corresponding to category 0
 
-  
+  vm.blockchain = [];
+
+//   Chart.scaleService.updateScaleDefaults('linear', {
+//     ticks: {
+//         beginAtZero: true,
+//         // stepSize: 1,
+//         // maxTicksLimit: 6
+//     }
+// });
+
   // Iterate over the categories to extract information for above variables
   for (var cat=0; cat < vm.hackathon.category.length; cat++) {
     // Variables which will be pushed into the respective $scope variables (series and data will be 2D arrays, labels is 1D, options is an object)
@@ -35,7 +66,9 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
       title: {
         display: true,
-        text: vm.hackathon.category[cat].name + " - Results"
+        text: vm.hackathon.category[cat].name + " - Results",
+        fontSize: 20,
+        fontColor: '#509e2f'
       },
 
       scales: {
@@ -43,8 +76,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
           ticks: {
             min: 0
           }
+        }],
+        xAxes: [{
+          ticks: {
+            min: 0
+          }
         }]
       },
+
 
       responsive: false,
       maintainAspectRatio: false
@@ -54,18 +93,19 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
 
     var projects = vm.hackathon.category[cat].project;  // Holds projects of given category
     var criteria = vm.hackathon.category[cat].criteria; // Holds criteria of given category
-    
+
     // Push project names into labels
     for (var i=0; i < projects.length; i++) {
-      labels.push(projects[i].name);  
+      labels.push(projects[i].name);
     }
 
     $scope.labels.push(labels); // Push 1D array of labels into $scope.labels (forming 2D array)
 
     // Push criteria into series
     for(var i=0; i < criteria.length; i++) {
-      series.push(criteria[i].name);  
-      data.push([]);                  // Push empty arrays to hold the votes later
+      series.push(criteria[i].name);
+
+      data.push([]);  // Push empty arrays to hold the votes later
     }
 
     $scope.series.push(series); // Push 1D array of series into $scope.series (forming 2D array)
@@ -74,6 +114,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Inside for loop to iterate across all projects
     for (var curr_project=0; curr_project < projects.length; curr_project++) {
       var notes = projects[curr_project].note;  // Store notes (and their associated votes as well)
+
+      let proj_score = 0; // Store total score of the project
 
       // Loop to iterate across all the votes corresponding to each criteria
       // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
@@ -86,20 +128,148 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
           vote_sum += notes[curr_note].vote[curr_criteria].number;
         }
 
-        // Get average of votes
-        if (notes.length != 0)
-          vote_sum = vote_sum / notes.length;
-
-        data[curr_criteria].push(vote_sum); // Push average into data
+        proj_score += vote_sum; // Add the score of each criteria
+        data[curr_criteria].push(vote_sum); // Push total into data
       }
 
-      projects[curr_project].vote_size = notes.length;  // Store how many votes a project has      
+      // Get the winner of a category
+      if (proj_score > vm.winner_votes[cat]) {
+        vm.winners[cat] = projects[curr_project].name;
+        vm.winner_votes[cat] = proj_score;
+      }
+
+
+      $scope.labels[cat][curr_project] = projects[curr_project].name + " (" + notes.length + " votes)";
+      projects[curr_project].vote_size = notes.length;  // Store how many votes a project has
+    }
+    $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data
+    vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects
+  }
+
+  // Determine winner of the entire hackathon
+  for (let cat=0; cat < vm.winners.length; cat++) {
+    if (vm.winner_votes[cat] > vm.overall_winner_vote) {
+      vm.overall_winner = vm.winners[cat];
+      vm.overall_winner_vote = vm.winner_votes[cat];
+    }
+  }
+
+
+  if(vm.blockchain.length == 0 && vm.hackathon.active == true)
+  {
+    BlockService.get().then(function(res) {
+      vm.blockchain = res.data;
+
+      BlockService.set(vm.blockchain);
+      for(var i = 0; i < vm.blockchain.length; i++)
+      {
+        console.log('Adding data for: ' + JSON.stringify(vm.blockchain[i]) + "\n");
+        addDataToChart(vm.blockchain[i]);
+      }
+    });
+  }
+
+
+
+
+  function addDataToChart(newestBlock)
+  {
+    var block = newestBlock.data;
+    for(var cat=0; cat<vm.hackathon.category.length; cat++)
+    {
+      var category = vm.hackathon.category[cat];
+
+      if(category.name == block.category)
+      {
+        for(var proj = 0; proj < category.project.length; proj++)
+        {
+          // Store the summation of scores from each criteria for a project
+          let proj_score = 0;
+
+          var project = category.project[proj];
+
+          if(project.name == block.recipient)
+          {
+            // now we have the project to apply the votes to.
+            for(var curr_criteria = 0; curr_criteria < category.criteria.length; curr_criteria++)
+            {
+              var criteria = category.criteria[curr_criteria];
+
+              if(criteria.name == block.vote[curr_criteria].criteria)
+              {
+                // Add the new vote to the graph
+                let i = parseFloat($scope.data[cat][curr_criteria][proj]);
+                let j = parseFloat(block.vote[curr_criteria].value);
+                $scope.data[cat][curr_criteria][proj] = i+j;
+
+                proj_score += i+j;
+                if (curr_criteria == category.criteria.length - 1) {
+                  // Check to see if the current project is the new winner
+                  if (proj_score > vm.winner_votes[cat]) {
+                    vm.winners[cat] = project.name;
+                    vm.winner_votes[cat] = proj_score;
+                    //console.log("Winner: " + project.name);
+                    //console.log("Vote count: " + vote_count);
+                  }
+                }
+              }
+            }
+            vm.vote_count[cat][proj] += 1;
+            //console.log(project.name + ": " + vm.vote_count[cat][proj]);
+            $scope.labels[cat][proj] = project.name + " (" + vm.vote_count[cat][proj] + " votes)";
+            break;
+          }
+        }
+        break;
+      }
+      // var str = "bar-" + block.category;
+      // var chart = document.getElementById(str);
+      // if(chart != null)
+      // {
+      //   chart.update();
+      // }
     }
 
-    $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data 
-    vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects 
+    // Determine/update overall winner
+    for (let cat=0; cat < vm.winners.length; cat++) {
+      if (vm.winner_votes[cat] > vm.overall_winner_vote) {
+        vm.overall_winner = vm.winners[cat];
+        vm.overall_winner_vote = vm.winner_votes[cat];
+      }
+    }
+
   }
-  
+
+  if(vm.hackathon.active == true)
+  {
+    init();
+  }
+
+  function init() {
+    // Make sure the Socket is connected
+    if (!Socket.socket) {
+      Socket.connect();
+    }
+
+    // Add an event listener to the 'chatMessage' event
+    Socket.on('voteMessage', function (newBlock) {
+      if(newBlock.type == 'vote')
+      {
+
+        addDataToChart(newBlock);
+        vm.blockchain.push(newBlock);
+        // add to existing total
+      }
+      console.log('New Block: ' + JSON.stringify(newBlock));
+    });
+
+    // Remove the event listener when the controller instance is destroyed
+    $scope.$on('$destroy', function () {
+      Socket.removeListener('voteMessage');
+    });
+  }
+
+
 
   // Sample data for reference
   /*
