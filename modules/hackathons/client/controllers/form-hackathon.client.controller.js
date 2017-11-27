@@ -23,7 +23,11 @@
     vm.create = create;
     vm.duplicate = duplicate;
 
-    vm.judges = JudgesService.query();  // Get the judge collection in case the admin wants to deactivate a hackathon
+    // Get hackathons to check see if there are multiple hackathons
+    var hackathons = HackathonsService.query();
+
+    // Get the judge collection in case the admin wants to deactivate a hackathon
+    vm.judges = JudgesService.query();
 
     // Instead of creating a new hackathon from scratch, duplicate the latest hackathon 
     // (minus the results, ID, array of judges, projects)
@@ -75,6 +79,17 @@
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.form.hackathonForm');
         return false;
+      }
+
+      // If this hackathon is active, make sure no other hackathons are active (only allow one active hackathon at a time)
+      if (vm.hackathon.active == true) {
+        for (let i=0; i < hackathons.length; i++) {
+          // If the another hackathon is active and it isn't this hackathon, don't set this hackathon to be active
+          if (hackathons[i].active == true && vm.hackathon._id != hackathons[i]._id) {
+            alert("Another hackathon is already active!");
+            return;
+          }
+        }
       }
 
       if (vm.hackathon.active != true) {
