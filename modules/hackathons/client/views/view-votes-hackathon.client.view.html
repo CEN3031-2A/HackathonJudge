@@ -10,13 +10,34 @@
 
 
 
+<!-- <div ng-repeat="category in vm.hackathon.category track by $index"> -->
+  <uib-tabset active="active">
+    <uib-tab index="$index" heading="{{cat.name}}" ng-repeat="cat in vm.hackathon.category">
+      <section>
+        <uib-accordion class="panel-default" panel-class="panel-danger">
+          <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project" panel-class="panel-success">
+            <form ng-submit="vm.saveVote(project, cat)">
+            <!-- <div class="row"> -->
+              <div ng-repeat="note in project.note track by $index">
+              Notes: {{ note.text }} <br>
+                <div ng-repeat="vote in note.vote track by $index">
+                {{ vote.criteria_name }} - {{ vote.number }} <br>
+                </div>
+              <br>
+              <hr class="my-4">
+              </div>
+            <!-- </div> -->
+          </form>
+          </div>
+        </uib-accordion>
+      </section>
+    </uib-tab>
+  </uib-tabset>
+<!-- </div> -->
 
 
 
-
-
-
-
+<!--
 <div ng-repeat="category in vm.hackathon.category track by $index">
   <div class="jumbotron" style="background: #509e2f">
   <h1 class="display-3" style="color: white">{{ category.name }}</h1>
@@ -34,6 +55,6 @@
     <br>
     </div>
   </div>
-</div>
+</div> -->
 
 </section>
