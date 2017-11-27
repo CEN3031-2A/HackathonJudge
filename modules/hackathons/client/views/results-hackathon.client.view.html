@@ -8,16 +8,14 @@
     </a><br>
     <center><img src="modules/hackathons/client/img/results.png"></center>
   </div>
-  <!-- <div class="container">
-    <li ng-repeat="block in vm.blockchain">
-      Sender: {{block.data.sender}} Recipient: {{block.data.recipient}}
-      vote1: {{block.data.voteCriteria1}}
-      vote2: {{block.data.voteCriteria2}}
-      vote3: {{block.data.voteCriteria3}}
-      vote4: {{block.data.voteCriteria4}}
-    </li>
-  </div> -->
-  <h2>Overall Winner: {{vm.overall_winner}}</h2>
+  <center>
+    <div class="winner"> 
+      <center>
+        <h3>Current Overall Winner: </h3><h2>{{vm.overall_winner}}</h2>
+      </center>
+    </div>
+  </center>
+  <br><br>
 <div class="col-12">
   <div ng-repeat="category in vm.hackathon.category track by $index">
     <!-- <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" > -->
@@ -30,7 +28,11 @@
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
       </div>-->
-      Category Winner: {{ vm.winners[$index] }} <br><br>
+      <center>
+        <div class="winner">
+          <h4>Current Category Winner:</h4><h3> {{ vm.winners[$index] }} </h3>
+        </div><br><br>
+      </center>
     <!-- </div> -->
 
     <!-- <div ng-if="$odd" style="float:right; width:40%;">
