@@ -245,8 +245,9 @@
         let temp_email = [];
         temp_email.push(vm.hackathon.judge[i].email);
 
-        // Body of the email is currently the judge ID
-        let temp_body = vm.hackathon.judge[i].id;
+        // Body of the email is link to the voting page
+        let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
+        temp_body += vm.hackathon.judge[i].id;
 
         sendMail(ses, temp_email, from, subject, temp_body);
       }
