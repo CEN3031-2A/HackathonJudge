@@ -78,6 +78,14 @@
       }
 
       if (vm.hackathon.active != true) {
+
+        // If the admin is deactivating a hackathon, make sure the admin truly wants to do it
+        if (vm.hackathon.judge != undefined) {
+          if (vm.hackathon.judge.length != 0) {
+            if (!$window.confirm("Are you sure you sure you want to deactivate this hackathon? All associated hackathon judges will be deleted."))
+              return;
+          }
+        }
         vm.hackathon.active = false;
 
         // Clear out the judges (if any) -- this occurs when a hackathon is completed and set to inactive

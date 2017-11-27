@@ -88,7 +88,8 @@
       if (!$window.confirm("Are you sure you want to vote? All votes are final and cannot be edited."))
         return;
 
-      // Check to see if the judge has already voted for a project (ideally an alert should not a appear because it is already check beforehand)
+      // Check to see if the judge has already voted for a project (secondary measure)
+      // Ideally an alert should not appear because votes are already checked for (judges won't see a submit button)
       for (let j = 0; j < curr_judge.vote.length; j++) {
         //Check to see if any of the judge's votes correspond to the current vote
         if (curr_judge.vote[j] == project.name) {

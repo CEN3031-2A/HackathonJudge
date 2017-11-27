@@ -42,6 +42,8 @@
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
+    vm.judges = JudgesService.query(); 
+
     
     // Create a judge document (called in generateUID)
     function createJudge(email, id) {
@@ -102,6 +104,41 @@
       if (vm.hackathon.active == false) {
         alert("Hackathon is inactive; cannot send emails.");
         return;
+      }
+
+      // Check to see if the admin has already sent emails
+      // If admin chooses to send new emails instead of resnding, old IDs will be wiped from the DB and new IDs will be created
+      if (vm.hackathon.judge != undefined) {
+        if (vm.hackathon.judge.length != 0) {
+          if (!$window.confirm('You have already sent emails.\nDo you want to send new emails and generate new IDs for the judges? Old IDs will be removed and replaced.')) {
+            return;
+          }
+
+          // Need to delete judges from judge collection since they are being overwritten
+          let to_delete = []; // Store the judges that need to be deleted in the judge collection
+
+          for (let i=0; i < vm.hackathon.judge.length; i++) {
+            for (let j=0; j < vm.judges.length; j++) {
+              if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                break;
+              }
+            }
+          }
+
+          // Delete the judges
+          vm.hackathon.judge = [];
+          for (let i=0; i < to_delete.length; i++) {
+            let url = "/api/judges/";
+            url += to_delete[i];
+            $http({method: 'DELETE', url: url}).then(function(res) {
+              console.log("Deleted");
+            }, function(err) {
+              console.log("Fail");
+            });
+          }
+
+        }
       }
       var emails = [];  // Store emails
       try {
@@ -165,7 +202,9 @@
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
-      alert("Emails sent!");
+      let text = vm.hackathon.judge.length.toString();
+      text += " emails have been sent!";
+      alert(text);
     }
 
     // Generate unique IDs for each judge
@@ -201,11 +240,11 @@
           email: emails[i],
           id: temp_id
         };
-        judges.push(temp_judge);
-        createJudge(emails[i], temp_id);
+        judges.push(temp_judge);  // To store judges in the hackathon collection
+        createJudge(emails[i], temp_id);  // To store judges in the judge collection
       }
 
-      // Push new judges to the database and save
+      // Push new judges to the hackathon collection and save
       vm.hackathon.judge = judges;
       vm.save(true);
     }
@@ -251,7 +290,10 @@
 
         sendMail(ses, temp_email, from, subject, temp_body);
       }
-      alert("Emails have been resent.");
+
+      let text = vm.hackathon.judge.length.toString();
+      text += " have been resent!";
+      alert(text);
     }
 
     /* End of email sending code */
