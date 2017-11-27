@@ -26,10 +26,10 @@
     }]);
 
   HackathonsController.$inject = ['$scope', '$stateParams', '$state',
-    '$window', 'Authentication', 'hackathonResolve', '$http', 'JudgesService'];
+    '$window', 'Authentication', 'hackathonResolve', '$http', 'JudgesService', 'BlockService'];
 
 
-  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http, JudgesService) {
+  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http, JudgesService, BlockService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -42,9 +42,8 @@
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
 
-    vm.judges = JudgesService.query(); 
+    vm.judges = JudgesService.query();
 
-    
     // Create a judge document (called in generateUID)
     function createJudge(email, id) {
       var newJudge = {
@@ -69,9 +68,16 @@
     var judges = [];    // Hold judges that will be generated when sending emails
 
     // Get AWS credentials and email from aws.json
-    $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
+    // $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
+    //   json = data;
+    //   json = json.data;
+    // });
+
+    var headers = {"Authorization": "Basic cm1vbGx3YXlAdWZsLmVkdTpSTTkyMTEwNA==", "Accept": "application/vnd.heroku+json; version=3"};
+    $http.get('https://api.heroku.com/apps/hackathonjudge/config-vars', {headers: headers}).then(function(data){
       json = data;
       json = json.data;
+      console.log(JSON.stringify(json));
     });
 
     // Function for AWS to send emails
@@ -157,7 +163,7 @@
           // If there are any empty lines, ignore them
           if (email != "") {
 
-            // Eliminate the \t at the end of emails (appears if it's not the last email) 
+            // Eliminate the \t at the end of emails (appears if it's not the last email)
             if (email.substr(email.length - 1, 1) == "\t") {
               email = email.substring(0, email.length - 1);
             }
@@ -211,12 +217,12 @@
     // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
     function generateUID(emails) {
       var id_array = [];  // Keep track of IDs in the unlikely event that there is a duplicate
-      
+
       for (let i = 0; i < emails.length; i++) {
         var temp_id = undefined;  // Hold the ID
 
         while (temp_id == undefined) {
-          // Generate the UID from two parts here 
+          // Generate the UID from two parts here
           // to ensure the random number provide enough bits.
           let firstPart = (Math.random() * 46656) | 0;
           let secondPart = (Math.random() * 46656) | 0;
@@ -419,5 +425,27 @@
         vm.error = res.data.message;
       }
     }
+
+
+    // Function to archive the active hackathon
+    // function archive() {
+    //   if ($window.confirm('Are you sure you want to archive this Hackathon?')) {
+    //     vm.hackathon.active = false;
+    //
+    //     // get the blockchain and store individual votes into the hackathon object
+    //     BlockService.get().then(function(res) {
+    //       let blockchain = res.data;
+    //       for(var i = 0; i < blockchain.length; i++)
+    //       {
+    //         addDataToChart(blockchain[i]);
+    //       }
+    //
+    //     }
+    //
+    //   }
+    // }
+
+
+
   }
 }());

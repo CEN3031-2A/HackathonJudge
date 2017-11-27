@@ -130,7 +130,7 @@
         sender: $stateParams.judgeID,
         recipient: project.name,
         category: category.name,
-        note: project.note,
+        note: project.note.text,
         vote: votes
       };
 

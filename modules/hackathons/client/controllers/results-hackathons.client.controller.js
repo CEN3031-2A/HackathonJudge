@@ -104,7 +104,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Push criteria into series
     for(var i=0; i < criteria.length; i++) {
       series.push(criteria[i].name);
-      
+
       data.push([]);  // Push empty arrays to hold the votes later
     }
 
@@ -159,7 +159,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   {
     BlockService.get().then(function(res) {
       vm.blockchain = res.data;
-      
+
       BlockService.set(vm.blockchain);
       for(var i = 0; i < vm.blockchain.length; i++)
       {
@@ -169,7 +169,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     });
   }
 
-  
+
 
 
   function addDataToChart(newestBlock)
@@ -222,12 +222,12 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
         }
         break;
       }
-      var str = "bar-" + block.category;
-      var chart = document.getElementById(str);
-      if(chart != null)
-      {
-        chart.update();
-      }
+      // var str = "bar-" + block.category;
+      // var chart = document.getElementById(str);
+      // if(chart != null)
+      // {
+      //   chart.update();
+      // }
     }
 
     // Determine/update overall winner
@@ -255,7 +255,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     Socket.on('voteMessage', function (newBlock) {
       if(newBlock.type == 'vote')
       {
-        
+
         addDataToChart(newBlock);
         vm.blockchain.push(newBlock);
         // add to existing total
