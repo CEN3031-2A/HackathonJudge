@@ -42,7 +42,15 @@
         
         vm.hackathon._id = undefined;   // Make sure that there are no duplicate IDs in the database
         vm.hackathon.active = false;
-        vm.hackathon.date = new Date(latest_hackathon.date);
+
+        // Shift the date of the hackathon forward one year
+        let temp_date = latest_hackathon.date;
+        temp_date = new Date(temp_date);
+        let month = temp_date.getMonth();
+        let year = temp_date.getFullYear();
+        let day = temp_date.getDay();
+        vm.hackathon.date = new Date (year+1, month, day);
+        
         vm.hackathon.judge = undefined;
 
         // Remove projects from the duplicated hackathon

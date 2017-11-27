@@ -14,8 +14,6 @@
         margin: 0;
         padding: 0;
         color: #509e2f;
-
-
         background-image: url("modules/hackathons/client/views/background.png");
         background-repeat: no-repeat;
         background-position: center bottom;
@@ -35,41 +33,45 @@
             <uib-accordion class="panel-default" panel-class="panel-danger">
               <div uib-accordion-group heading="{{project.name}}" ng-repeat="project in cat.project" panel-class="panel-success">
                 <form ng-submit="vm.saveVote(project, cat)">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <a href="{{project.link}}">Project Link</a><br/><br>
-                    <ins>Description:</ins><br/>
-                    {{project.description}}
-                  </div>
-                  <div class="col-sm-5">
-                    <div class="form-group">
-                      <label for="comment">Notes:</label>
-                      <textarea ng-model="project.note" class="form-control" rows="5" id="comment" placeholder="Take notes about the {{project.name}} project here!"></textarea>
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <a href="{{project.link}}">Project Link</a>
+                      <br/>
+                      <br>
+                      <ins>Description:</ins>
+                      <br/> {{project.description}}
+                    </div>
+                    <div class="col-sm-5">
+                      <div class="form-group">
+                        <label for="comment">Notes:</label>
+                        <textarea ng-model="project.note" class="form-control" rows="5" id="comment" placeholder="Take notes about the {{project.name}} project here!"></textarea>
+                      </div>
+                    </div>
+                    <div class="col-sm-3">
+                      <div ng-repeat="criteria in cat.criteria">
+                        <label>{{criteria.name}}</label>
+                        <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]"
+                          ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
+                        <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}"
+                          ng-model="project.tempVote[$index]"></input>
+                        <br>
+                        <br>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-sm-3">
-                    <div ng-repeat="criteria in cat.criteria">
-                      <label>{{criteria.name}}</label>
-                      <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]" ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
-                      <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}" ng-model="project.tempVote[$index]"></input>
-                      <br><br>
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-              </form>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
               </div>
-            </uib-accordion>
-          </section>
-        </uib-tab>
-      </uib-tabset>
-      <li class="vote-message" ng-repeat="block in vm.blockchain">
-        Sender: {{block.sender}} Recipient: {{block.recipient}}
-        vote1: {{block.voteCriteria1}}
-        vote2: {{block.voteCriteria2}}
-        vote3: {{block.voteCriteria3}}
-        vote4: {{block.voteCriteria4}}
-      </li>
 
-  </body>
+            </span>
+        </uib-accordion>
+      </section>
+    </uib-tab>
+  </uib-tabset>
+  <li class="vote-message" ng-repeat="block in vm.blockchain">
+    Sender: {{block.sender}} Recipient: {{block.recipient}} vote1: {{block.voteCriteria1}} vote2: {{block.voteCriteria2}} vote3:
+    {{block.voteCriteria3}} vote4: {{block.voteCriteria4}}
+  </li>
+</body>
+
 </html>

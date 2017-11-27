@@ -11,6 +11,14 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
 
+  vm.winners = [];      // Hold winners of each category
+  vm.winner_votes = []; // Hold votes (scores) of each winner
+
+  for (let i=0; i < vm.hackathon.category.length; i++) {
+    vm.winners.push("None");
+    vm.winner_votes.push(0);
+  }
+
   // Graph variables
   $scope.labels = [];   // 2D array that holds x-axis labels for each graph -- e.g. $scope.labels[0] accesses labels for category 0
   $scope.series = [];   // 3D array that holds how many bars there will be per label (i.e. criteria) -- e.g. $scope.series[0] accesses criteria for category 0
@@ -93,6 +101,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Inside for loop to iterate across all projects
     for (var curr_project=0; curr_project < projects.length; curr_project++) {
       var notes = projects[curr_project].note;  // Store notes (and their associated votes as well)
+      //let vote_sum = 0;
+      //let vote_count = 0;
 
       // Loop to iterate across all the votes corresponding to each criteria
       // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
@@ -105,11 +115,7 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
           vote_sum += notes[curr_note].vote[curr_criteria].number;
         }
 
-        // Get average of votes
-        if (notes.length != 0)
-          vote_sum = vote_sum / notes.length;
-
-        data[curr_criteria].push(vote_sum); // Push average into data
+        data[curr_criteria].push(vote_sum); // Push total into data
       }
 
       projects[curr_project].vote_size = notes.length;  // Store how many votes a project has
@@ -118,19 +124,78 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects
   }
 
-  init();
 
-  if(vm.blockchain.length == 0)
+  if(vm.blockchain.length == 0 && vm.hackathon.active == true)
   {
-    vm.blockchain = BlockService.get();
-    console.log('Gen Block');
-    console.log(vm.blockchain[0]);
+    BlockService.get().then(function(res) {
+      vm.blockchain = res.data;
+      
+      BlockService.set(vm.blockchain);
+      for(var i = 0; i < vm.blockchain.length; i++)
+      {
+        console.log('Adding data for: ' + JSON.stringify(vm.blockchain[i]) + "\n");
+        addDataToChart(vm.blockchain[i]);
+      }
+    });
+  }
+
+  function addDataToChart(newestBlock)
+  {
+    var block = newestBlock.data;
+    for(var cat=0; cat<vm.hackathon.category.length; cat++)
+    {
+      var category = vm.hackathon.category[cat];
+      if(category.name == block.category)
+      {
+        for(var proj = 0; proj < category.project.length; proj++)
+        {
+          let vote_sum = 0;
+          let vote_count = 0;
+          var project = category.project[proj];
+          if(project.name == block.recipient)
+          {
+            // now we have the project to apply the votes to.
+            for(var curr_criteria = 0; curr_criteria < category.criteria.length; curr_criteria++)
+            {
+              var criteria = category.criteria[curr_criteria];
+              if(criteria.name == block.vote[curr_criteria].criteria)
+              {
+                let i = parseFloat($scope.data[cat][curr_criteria][proj]);
+                let j = parseFloat(block.vote[curr_criteria].value);
+                $scope.data[cat][curr_criteria][proj] = i+j;
+                vote_count++;
+                vote_sum += i+j;
+                if (curr_criteria == category.criteria.length - 1) {
+                  if (vote_sum > vm.winner_votes[cat]) {
+                    vm.winners[cat] = project.name;
+                    vm.winner_votes[cat] = vote_sum;
+                    console.log("Winner: " + project.name);
+                    console.log("Vote count: " + vote_count);
+                  }
+                }
+              }
+            }
+            break;
+          }
+        }
+        break;
+      }
+      var str = "bar-" + block.category;
+      var chart = document.getElementById(str);
+      if(chart != null)
+      {
+        chart.update();
+      }
+    }
+  }
+
+  if(vm.hackathon.active == true)
+  {
+    init();
   }
 
   function init() {
     // Make sure the Socket is connected
-
-
     if (!Socket.socket) {
       Socket.connect();
     }
@@ -139,9 +204,12 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     Socket.on('voteMessage', function (newBlock) {
       if(newBlock.type == 'vote')
       {
+        
+        addDataToChart(newBlock);
         vm.blockchain.push(newBlock);
+        // add to existing total
       }
-      console.log(newBlock);
+      console.log('New Block: ' + JSON.stringify(newBlock));
     });
 
     // Remove the event listener when the controller instance is destroyed

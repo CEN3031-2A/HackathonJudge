@@ -8,7 +8,6 @@
     </a><br>
     <center><img src="modules/hackathons/client/img/results.png"></center>
   </div>
-
   <!-- <div class="container">
     <li ng-repeat="block in vm.blockchain">
       Sender: {{block.data.sender}} Recipient: {{block.data.recipient}}
@@ -25,10 +24,12 @@
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
       </canvas></center>
 
+      <!--
       <h2>Vote Counts</h2>
       <div ng-repeat="project in vm.projects[$index]">
         {{ project.name }} - {{ project.vote_size }} <br>
-      </div>
+      </div>-->
+      Winner: {{ vm.winners[$index] }}
     <!-- </div> -->
 
     <!-- <div ng-if="$odd" style="float:right; width:40%;">

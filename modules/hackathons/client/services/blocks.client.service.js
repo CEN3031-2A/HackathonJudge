@@ -5,12 +5,14 @@
     .module('hackathons')
     .factory('BlockService', BlockService);
 
- function BlockService() {
+    BlockService.$inject = ['$resource', '$http', 'Socket'];
+
+ function BlockService($resource, $http, Socket) {
 
     class Block {
         constructor(index, previousHash, timestamp, data, hash) {
             this.index = index;
-            this.previousHash = previousHash.toString();
+            this.previousHash = previousHash;
             this.timestamp = timestamp;
             this.data = data;
             this.hash = hash.toString();
@@ -21,15 +23,18 @@
         var data = {
             sender: 'Genesis Block',
             category: 'Genesis Category',
-            recipient: 'Wireless Microwave',
-            voteCriteria1: 0,
-            voteCriteria2: 0,
-            voteCriteria3: 0,
-            voteCriteria4: 0
+            recipient: 'Genesis Project',
+            vote: [
+              {criteria: 'GenesisVotingCriteria1', value: 0},
+              {criteria: 'GenesisVotingCriteria2', value: 0},
+              {criteria: 'GenesisVotingCriteria3', value: 0},
+              {criteria: 'GenesisVotingCriteria4', value: 0}
+            ]
         }
         return new Block(0, "0", 1465154705, data, "816534932c2b7154836da6afc367695e6337db8a921823784c14378abed4f7d7");
     };
-    var blockchain = [getGenesisBlock()];
+
+    var blockchain = [];
 
     /* Generate the Next Block in the chain */
     var generateNextBlock = (blockData) => {
@@ -65,25 +70,70 @@
         return true;
     };
 
+    init();
 
     var getLatestBlock = () => blockchain[blockchain.length - 1];
+
+    var get = () => {
+      return $http({method: 'GET', url: '/api/blocks'}).then(function(res) {
+        blockchain = res.data;
+      }, function(err) {
+        return [];
+      });
+    };
+
+    if(blockchain.length == 0)
+    {
+      get();
+    }
+
+    function init() {
+      // Make sure the Socket is connected
+      if (!Socket.socket) {
+        Socket.connect();
+      }
+
+      // Add an event listener to the 'chatMessage' event
+      Socket.on('voteMessage', function (newBlock) {
+        if(newBlock.type == 'vote')
+        {
+          console.log('Service New Block: ' + JSON.stringify(newBlock));
+          blockchain.push(newBlock);
+        }
+      });
+    }
 
     return {
         set: function (data) {
             blockchain = data;
         },
+
         get: function () {
-            return blockchain;
+          return $http({url: '/api/blocks', method: 'GET'});
+        },
+
+        // Don't call this function unless blockchain in DB is empty!
+        saveGenesisBlock: function () {
+          var block = getGenesisBlock();
+          $http({method: 'POST', url:'/api/blocks', data: block}).then(function(res) {
+            console.log('Successfully saved Gen Block: ' + JSON.stringify(res.data));
+          }, function(err) {
+            console.log('Save Gen Block Error: ' + err);
+          });
         },
         add: function (newBlockData) {
-            var newBlock = generateNextBlock(newBlockData);
-            if (isValidNewBlock(newBlock, getLatestBlock())) {
-                blockchain.push(newBlock);
-                console.log(JSON.stringify(newBlock));
-            }
-            return getLatestBlock();
+          var newBlock = generateNextBlock(newBlockData);
+          if (isValidNewBlock(newBlock, getLatestBlock())) {
+              $http({method: 'POST', url:'/api/blocks', data: newBlock}).then(function(res) {
+                //blockchain.push(newBlock);
+                Socket.emit('voteMessage', newBlock);
+                console.log('Saved Block: ' + JSON.stringify(res.data));
+              }, function(err) {
+                console.log('Save Error: ' + err);
+              });
+          }
         }
-     }
-   }
+      }
+    }
 
 }());
