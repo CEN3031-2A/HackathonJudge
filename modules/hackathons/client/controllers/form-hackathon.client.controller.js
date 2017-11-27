@@ -7,10 +7,11 @@
     .controller('CreationController', CreationController)
 
   CreationController.$inject = ['$scope', '$stateParams', '$state',
-    '$window', 'Authentication', 'hackathonResolve', '$http', 'HackathonsService'];
+    '$window', 'Authentication', 'hackathonResolve', '$http', 'HackathonsService', 'JudgesService'];
 
 
-  function CreationController($scope, $stateParams, $state, $window, Authentication, hackathon, $http, HackathonsService) {
+  function CreationController($scope, $stateParams, $state, $window, 
+    Authentication, hackathon, $http, HackathonsService, JudgesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -22,7 +23,10 @@
     vm.create = create;
     vm.duplicate = duplicate;
 
-    // Instead of creating a new hackathon from scratch, duplicate the latest hackathon (minus the results, ID, array of judges, projects)
+    vm.judges = JudgesService.query();  // Get the judge collection in case the admin wants to deactivate a hackathon
+
+    // Instead of creating a new hackathon from scratch, duplicate the latest hackathon 
+    // (minus the results, ID, array of judges, projects)
     function duplicate() {
       HackathonsService.query().$promise.then(function (results) {
         var latest_hackathon = undefined;
@@ -43,7 +47,7 @@
         vm.hackathon._id = undefined;   // Make sure that there are no duplicate IDs in the database
         vm.hackathon.active = false;
 
-        // Shift the date of the hackathon forward one year
+        // Shift the date of the hackathon forward one year (for visibility purposes - it can be manually changed by admin)
         let temp_date = latest_hackathon.date;
         temp_date = new Date(temp_date);
         let month = temp_date.getMonth();
@@ -73,8 +77,46 @@
         return false;
       }
 
-      if (vm.hackathon.active != true)
+      if (vm.hackathon.active != true) {
+
+        // If the admin is deactivating a hackathon, make sure the admin truly wants to do it
+        if (vm.hackathon.judge != undefined) {
+          if (vm.hackathon.judge.length != 0) {
+            if (!$window.confirm("Are you sure you sure you want to deactivate this hackathon? All associated hackathon judges will be deleted."))
+              return;
+          }
+        }
         vm.hackathon.active = false;
+
+        // Clear out the judges (if any) -- this occurs when a hackathon is completed and set to inactive
+        if (vm.hackathon.judge != undefined) {
+          let to_delete = []; // Store the judges to delete
+
+          // Get the judges that belong to the current hackathon to delete
+          // Ideally since there should be only one active hackathon at a time, all the judges
+          // from the judge collection will be deleted
+          for (let i=0; i < vm.hackathon.judge.length; i++) {
+            for (let j=0; j < vm.judges.length; j++) {
+              if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                break;
+              }
+            }
+          }
+
+          // Delete the judges
+          vm.hackathon.judge = [];
+          for (let i=0; i < to_delete.length; i++) {
+            let url = "/api/judges/";
+            url += to_delete[i];
+            $http({method: 'DELETE', url: url}).then(function(res) {
+              console.log("Deleted");
+            }, function(err) {
+              console.log("Fail");
+            });
+          }
+        }
+      }
 
       // TODO: move create/update logic to service
       if (vm.hackathon._id) {

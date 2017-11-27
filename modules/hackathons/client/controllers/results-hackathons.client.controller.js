@@ -11,12 +11,26 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
   vm.authentication = Authentication;
   vm.hackathon = hackathon;
 
+  // Prepare to store winners
   vm.winners = [];      // Hold winners of each category
   vm.winner_votes = []; // Hold votes (scores) of each winner
+
+  vm.overall_winner = "None";
+  vm.overall_winner_vote = 0;
 
   for (let i=0; i < vm.hackathon.category.length; i++) {
     vm.winners.push("None");
     vm.winner_votes.push(0);
+  }
+
+  vm.vote_count = []; // Hold number of votes of each project (2D array - vm.vote_count[category][project])
+
+  for (let i=0; i < vm.hackathon.category.length; i++) {
+    let temp_array = [];
+    for (let j=0; j < vm.hackathon.category[i].project.length; j++) {
+      temp_array.push(0);
+    }
+    vm.vote_count.push(temp_array);
   }
 
   // Graph variables
@@ -75,8 +89,6 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
       maintainAspectRatio: false
     };
 
-
-
     $scope.options.push(options);
 
     var projects = vm.hackathon.category[cat].project;  // Holds projects of given category
@@ -92,7 +104,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Push criteria into series
     for(var i=0; i < criteria.length; i++) {
       series.push(criteria[i].name);
-      data.push([]);                  // Push empty arrays to hold the votes later
+      
+      data.push([]);  // Push empty arrays to hold the votes later
     }
 
     $scope.series.push(series); // Push 1D array of series into $scope.series (forming 2D array)
@@ -101,8 +114,8 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     // Inside for loop to iterate across all projects
     for (var curr_project=0; curr_project < projects.length; curr_project++) {
       var notes = projects[curr_project].note;  // Store notes (and their associated votes as well)
-      //let vote_sum = 0;
-      //let vote_count = 0;
+
+      let proj_score = 0; // Store total score of the project
 
       // Loop to iterate across all the votes corresponding to each criteria
       // Sum up all the votes for a given criteria of one project and then move to the next criteria until the end
@@ -115,13 +128,30 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
           vote_sum += notes[curr_note].vote[curr_criteria].number;
         }
 
+        proj_score += vote_sum; // Add the score of each criteria
         data[curr_criteria].push(vote_sum); // Push total into data
       }
 
+      // Get the winner of a category
+      if (proj_score > vm.winner_votes[cat]) {
+        vm.winners[cat] = projects[curr_project].name;
+        vm.winner_votes[cat] = proj_score;
+      }
+
+
+      $scope.labels[cat][curr_project] = projects[curr_project].name + " (" + notes.length + " votes)";
       projects[curr_project].vote_size = notes.length;  // Store how many votes a project has
     }
     $scope.data.push(data);     // Push 2D array of data corresponding to its category into $scope.data
     vm.projects.push(projects); // Push 1D array of projects corresponding to its category into vm.projects
+  }
+
+  // Determine winner of the entire hackathon
+  for (let cat=0; cat < vm.winners.length; cat++) {
+    if (vm.winner_votes[cat] > vm.overall_winner_vote) {
+      vm.overall_winner = vm.winners[cat];
+      vm.overall_winner_vote = vm.winner_votes[cat];
+    }
   }
 
 
@@ -139,42 +169,54 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
     });
   }
 
+  
+
+
   function addDataToChart(newestBlock)
   {
     var block = newestBlock.data;
     for(var cat=0; cat<vm.hackathon.category.length; cat++)
     {
       var category = vm.hackathon.category[cat];
+
       if(category.name == block.category)
       {
         for(var proj = 0; proj < category.project.length; proj++)
         {
-          let vote_sum = 0;
-          let vote_count = 0;
+          // Store the summation of scores from each criteria for a project
+          let proj_score = 0;
+
           var project = category.project[proj];
+
           if(project.name == block.recipient)
           {
             // now we have the project to apply the votes to.
             for(var curr_criteria = 0; curr_criteria < category.criteria.length; curr_criteria++)
             {
               var criteria = category.criteria[curr_criteria];
+
               if(criteria.name == block.vote[curr_criteria].criteria)
               {
+                // Add the new vote to the graph
                 let i = parseFloat($scope.data[cat][curr_criteria][proj]);
                 let j = parseFloat(block.vote[curr_criteria].value);
                 $scope.data[cat][curr_criteria][proj] = i+j;
-                vote_count++;
-                vote_sum += i+j;
+
+                proj_score += i+j;
                 if (curr_criteria == category.criteria.length - 1) {
-                  if (vote_sum > vm.winner_votes[cat]) {
+                  // Check to see if the current project is the new winner
+                  if (proj_score > vm.winner_votes[cat]) {
                     vm.winners[cat] = project.name;
-                    vm.winner_votes[cat] = vote_sum;
-                    console.log("Winner: " + project.name);
-                    console.log("Vote count: " + vote_count);
+                    vm.winner_votes[cat] = proj_score;
+                    //console.log("Winner: " + project.name);
+                    //console.log("Vote count: " + vote_count);
                   }
                 }
               }
             }
+            vm.vote_count[cat][proj] += 1;
+            //console.log(project.name + ": " + vm.vote_count[cat][proj]);
+            $scope.labels[cat][proj] = project.name + " (" + vm.vote_count[cat][proj] + " votes)";
             break;
           }
         }
@@ -187,6 +229,15 @@ function ResultsController($scope, $stateParams, $state, $window, Authentication
         chart.update();
       }
     }
+
+    // Determine/update overall winner
+    for (let cat=0; cat < vm.winners.length; cat++) {
+      if (vm.winner_votes[cat] > vm.overall_winner_vote) {
+        vm.overall_winner = vm.winners[cat];
+        vm.overall_winner_vote = vm.winner_votes[cat];
+      }
+    }
+
   }
 
   if(vm.hackathon.active == true)

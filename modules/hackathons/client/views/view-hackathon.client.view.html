@@ -6,8 +6,8 @@
     </a>
     <br>
     <center><h1 ng-bind="vm.hackathon.name"></h1></center>
-    <b>{{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon </b><br>
-    {{ vm.hackathon.date ? vm.hackathon.string_date : 'Date not set'}}
+    <center><b>{{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon </b></center>
+    <center>{{ vm.hackathon.date ? vm.hackathon.string_date : 'Date not set'}}</center>
   </div> 
   <div class="col-md-6">
       <img src="modules/hackathons/client/img/description.png">
@@ -34,6 +34,7 @@
       <a type="button" class="btn btn-primary" ng-click="vm.resend()" style="background:#003B5C">
         <i class="glyphicon glyphicon-share"></i>
         &nbsp;Resend Emails</a>
+        
   </div>
   <div class="col-md-6">
     <img src="modules/hackathons/client/img/modification.png"><br><br>

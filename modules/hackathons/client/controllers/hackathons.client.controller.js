@@ -26,10 +26,10 @@
     }]);
 
   HackathonsController.$inject = ['$scope', '$stateParams', '$state',
-    '$window', 'Authentication', 'hackathonResolve', '$http'];
+    '$window', 'Authentication', 'hackathonResolve', '$http', 'JudgesService'];
 
 
-  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http) {
+  function HackathonsController($scope, $stateParams, $state, $window, Authentication, hackathon, $http, JudgesService) {
     var vm = this;
 
     vm.authentication = Authentication;
@@ -41,6 +41,24 @@
     vm.create = create;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+
+    vm.judges = JudgesService.query(); 
+
+    
+    // Create a judge document (called in generateUID)
+    function createJudge(email, id) {
+      var newJudge = {
+        email: email,
+        id: id,
+        vote: []
+      }
+
+      $http({method: 'POST', url: '/api/judges', data: newJudge}).then(function(res) {
+        console.log("OK");
+      }, function(err) {
+        console.log("NO");
+      });
+    }
 
     /* Start of email sending code */
 
@@ -58,7 +76,6 @@
 
     // Function for AWS to send emails
     function sendMail(ses, to, from, subject, body) {
-      //console.log('sending mail');
       ses.sendEmail({
         Source: from,
         Destination: {
@@ -78,8 +95,6 @@
         if (err) {
           console.log('ERROR sending mail', err);
         }
-        //console.log('Email sent:');
-        //console.log(data);
       });
     }
 
@@ -89,6 +104,41 @@
       if (vm.hackathon.active == false) {
         alert("Hackathon is inactive; cannot send emails.");
         return;
+      }
+
+      // Check to see if the admin has already sent emails
+      // If admin chooses to send new emails instead of resnding, old IDs will be wiped from the DB and new IDs will be created
+      if (vm.hackathon.judge != undefined) {
+        if (vm.hackathon.judge.length != 0) {
+          if (!$window.confirm('You have already sent emails.\nDo you want to send new emails and generate new IDs for the judges? Old IDs will be removed and replaced.')) {
+            return;
+          }
+
+          // Need to delete judges from judge collection since they are being overwritten
+          let to_delete = []; // Store the judges that need to be deleted in the judge collection
+
+          for (let i=0; i < vm.hackathon.judge.length; i++) {
+            for (let j=0; j < vm.judges.length; j++) {
+              if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                break;
+              }
+            }
+          }
+
+          // Delete the judges
+          vm.hackathon.judge = [];
+          for (let i=0; i < to_delete.length; i++) {
+            let url = "/api/judges/";
+            url += to_delete[i];
+            $http({method: 'DELETE', url: url}).then(function(res) {
+              console.log("Deleted");
+            }, function(err) {
+              console.log("Fail");
+            });
+          }
+
+        }
       }
       var emails = [];  // Store emails
       try {
@@ -140,41 +190,61 @@
       generateUID(emails);    // Links emails and ids together - pushes object into judges
 
       for (let i = 0; i < vm.hackathon.judge.length; i++) {
-        // Create an array of and push a single email each time to send
-        // AWS only accepts arrays of emails, so it is not possible to send an email String as the destination
+        // Create an array of size one and push a single email each time to send
+        // AWS only accepts arrays of emails, so it is not possible to send an email String as the destination email
         let temp_email = [];
         temp_email.push(vm.hackathon.judge[i].email);
 
-        // Body of the email is currently the judge ID
-        let temp_body = vm.hackathon.judge[i].id;
+        // Body of the email is link to the voting page
+        let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
+        temp_body += vm.hackathon.judge[i].id;
 
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
-      alert("Emails sent!");
+      let text = vm.hackathon.judge.length.toString();
+      text += " emails have been sent!";
+      alert(text);
     }
 
     // Generate unique IDs for each judge
     // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
     function generateUID(emails) {
+      var id_array = [];  // Keep track of IDs in the unlikely event that there is a duplicate
+      
       for (let i = 0; i < emails.length; i++) {
-        // I generate the UID from two parts here 
-        // to ensure the random number provide enough bits.
-        let firstPart = (Math.random() * 46656) | 0;
-        let secondPart = (Math.random() * 46656) | 0;
-        firstPart = ("000" + firstPart.toString(36)).slice(-3);
-        secondPart = ("000" + secondPart.toString(36)).slice(-3);
-        let temp_id = firstPart + secondPart;
+        var temp_id = undefined;  // Hold the ID
+
+        while (temp_id == undefined) {
+          // Generate the UID from two parts here 
+          // to ensure the random number provide enough bits.
+          let firstPart = (Math.random() * 46656) | 0;
+          let secondPart = (Math.random() * 46656) | 0;
+          firstPart = ("000" + firstPart.toString(36)).slice(-3);
+          secondPart = ("000" + secondPart.toString(36)).slice(-3);
+          temp_id = firstPart + secondPart;
+
+          // Check if the ID has already been generated (very unlikely)
+          for (let j=0; j < id_array.length; j++) {
+            if (id_array[j] == temp_id) {
+              temp_id = undefined;  // There is a duplicate - need to create another ID
+              break;
+            }
+          }
+        }
+
+        id_array.push(temp_id); // Keep track of IDs
 
         // Create judge to push to judges array
         let temp_judge = {
           email: emails[i],
           id: temp_id
         };
-        judges.push(temp_judge);
+        judges.push(temp_judge);  // To store judges in the hackathon collection
+        createJudge(emails[i], temp_id);  // To store judges in the judge collection
       }
 
-      // Push new judges to the database and save
+      // Push new judges to the hackathon collection and save
       vm.hackathon.judge = judges;
       vm.save(true);
     }
@@ -214,19 +284,22 @@
         let temp_email = [];
         temp_email.push(vm.hackathon.judge[i].email);
 
-        // Body of the email is currently the judge ID
-        let temp_body = vm.hackathon.judge[i].id;
+        // Body of the email is link to the voting page
+        let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
+        temp_body += vm.hackathon.judge[i].id;
 
         sendMail(ses, temp_email, from, subject, temp_body);
       }
-      alert("Emails have been resent.");
+
+      let text = vm.hackathon.judge.length.toString();
+      text += " have been resent!";
+      alert(text);
     }
 
     /* End of email sending code */
 
-    // if statement to deal with the creation page (because it has no date field, no need to go through this)
+    // Check to see if the date needs to be more readable (if there is a date)
     if (vm.hackathon.date != null) {
-      // Make the date more readable
       var year = "";
       var month = "";
 
@@ -282,6 +355,7 @@
           month = "December";
       }
 
+      // String that will be displayed to the admin
       vm.hackathon.string_date = month + " " + year;
 
       // Also convert the date into a Date object

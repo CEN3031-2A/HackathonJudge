@@ -51,9 +51,9 @@
                       <div ng-repeat="criteria in cat.criteria">
                         <label>{{criteria.name}}</label>
                         <select ng-if="criteria.input_type == 'scale'" id="tempVote[$index]" name="tempVote[$index]" ng-model="project.tempVote[$index]"
-                          ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]">{{x}}</select>
+                          ng-options="x for x in vm.scaleArray[{{criteria.high_num-1}}]" required>{{x}}</select>
                         <input ng-if="criteria.input_type == 'custom'" id="tempVote[$index]" name="tempVote[$index]" type="number" min="0" max="{{criteria.high_num}}"
-                          ng-model="project.tempVote[$index]"></input>
+                          ng-model="project.tempVote[$index]" required></input>
                         <br>
                         <br>
                       </div>
