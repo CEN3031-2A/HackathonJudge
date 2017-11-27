@@ -127,3 +127,19 @@ color: red;
 .hackathons-list-inactive {
     background: lightcoral;
 }
+
+.modify-box {
+  border-radius: 10px;
+  background: #ced9e5;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.desc-box {
+  border-radius: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
