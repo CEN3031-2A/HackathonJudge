@@ -129,7 +129,7 @@
           if (isValidNewBlock(newBlock, getLatestBlock())) {
               $http({method: 'POST', url:'/api/blocks', data: newBlock}).then(function(res) {
                 //blockchain.push(newBlock);
-                Socket.emit('voteMessage', newBlock);
+                Socket.send('voteMessage', JSON.stringify(newBlock));
                 Socket.on('error', function (err) {
                   console.log(err);
                 });
