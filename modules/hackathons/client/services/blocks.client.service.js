@@ -92,7 +92,10 @@
       if (!Socket.socket) {
         Socket.connect();
       }
-
+      console.log('check 1', Socket.connected);
+      Socket.on('connect', function (newBlock) {
+        console.log('Connected to web socket');
+      });
       // Add an event listener to the 'chatMessage' event
       Socket.on('voteMessage', function (newBlock) {
         if(newBlock.type == 'vote')
@@ -127,7 +130,10 @@
               $http({method: 'POST', url:'/api/blocks', data: newBlock}).then(function(res) {
                 //blockchain.push(newBlock);
                 Socket.emit('voteMessage', newBlock);
-                console.log('Saved Block: ' + JSON.stringify(res.data));
+                Socket.on('error', function (err) {
+                  console.log(err);
+                });
+                console.log('Saved Block to DB: ' + JSON.stringify(res.data));
               }, function(err) {
                 console.log('Save Error: ' + err);
               });
