@@ -7,16 +7,16 @@ module.exports = function (io, socket) {
     type: 'status',
     text: 'Is now connected',
     created: Date.now(),
-    profileImageURL: socket.request.user.profileImageURL,
-    username: socket.request.user.username
+    // profileImageURL: socket.request.user.profileImageURL,
+    // username: socket.request.user.username
   });
 
   // Send a chat messages to all connected sockets when a message is received
   socket.on('chatMessage', function (message) {
     message.type = 'message';
     message.created = Date.now();
-    message.profileImageURL = socket.request.user.profileImageURL;
-    message.username = socket.request.user.username;
+    // message.profileImageURL = socket.request.user.profileImageURL;
+    // message.username = socket.request.user.username;
 
     // Emit the 'chatMessage' event
     io.emit('chatMessage', message);
@@ -28,8 +28,8 @@ module.exports = function (io, socket) {
       type: 'status',
       text: 'disconnected',
       created: Date.now(),
-      profileImageURL: socket.request.user.profileImageURL,
-      username: socket.request.user.username
+      // profileImageURL: socket.request.user.profileImageURL,
+      // username: socket.request.user.username
     });
   });
 };
