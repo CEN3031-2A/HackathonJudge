@@ -53,9 +53,9 @@
       }
 
       $http({method: 'POST', url: '/api/judges', data: newJudge}).then(function(res) {
-        console.log("OK");
+        //console.log("OK");
       }, function(err) {
-        console.log("NO");
+        //console.log("NO");
       });
     }
 
@@ -67,7 +67,7 @@
     var json;           // Hold the AWS information
     var judges = [];    // Hold judges that will be generated when sending emails
 
-    // Get AWS credentials and email from aws.json
+    // Get AWS credentials and email from aws.json - this is 
     // $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
     //   json = data;
     //   json = json.data;
@@ -126,7 +126,7 @@
           for (let i=0; i < vm.hackathon.judge.length; i++) {
             for (let j=0; j < vm.judges.length; j++) {
               if (vm.hackathon.judge[i].id == vm.judges[j].id) {
-                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID of the judge in the judge collection to delete
                 break;
               }
             }
@@ -193,7 +193,7 @@
       let subject = vm.hackathon.name;
       subject += " - Judge Link";
 
-      generateUID(emails);    // Links emails and ids together - pushes object into judges
+      generateUID(emails);    // Links emails and ids together - pushes objects into vm.hackathon.judge
 
       for (let i = 0; i < vm.hackathon.judge.length; i++) {
         // Create an array of size one and push a single email each time to send
@@ -205,6 +205,7 @@
         let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
         temp_body += vm.hackathon.judge[i].id;
 
+        // AWS sends the email
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
@@ -216,7 +217,7 @@
     // Generate unique IDs for each judge
     // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
     function generateUID(emails) {
-      var id_array = [];  // Keep track of IDs in the unlikely event that there is a duplicate
+      var id_array = [];  // Keep track of IDs in the unlikely event that two generated IDs are the same
 
       for (let i = 0; i < emails.length; i++) {
         var temp_id = undefined;  // Hold the ID
@@ -246,6 +247,7 @@
           email: emails[i],
           id: temp_id
         };
+
         judges.push(temp_judge);  // To store judges in the hackathon collection
         createJudge(emails[i], temp_id);  // To store judges in the judge collection
       }
@@ -294,6 +296,7 @@
         let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
         temp_body += vm.hackathon.judge[i].id;
 
+        // AWS sends email
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
@@ -303,6 +306,7 @@
     }
 
     /* End of email sending code */
+    
 
     // Check to see if the date needs to be more readable (if there is a date)
     if (vm.hackathon.date != null) {
