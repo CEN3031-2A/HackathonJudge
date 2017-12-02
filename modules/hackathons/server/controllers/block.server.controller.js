@@ -18,23 +18,26 @@ exports.create = function(req, res) {
   block.user = req.user;
   
   //First check if the judge ID of the vote is in database
+  //Or if Genesis Block
   Judges.findOne({'id': block.data.sender}, function(error, exist) {
-    if(exist && !error){
-      block.save(function(err) {
-        if (err) {
-          return res.status(400).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.jsonp(block);
+    Block.count({}, function(err, count) {
+      if((exist && !error) || (count == 0)){
+        block.save(function(err) {
+          if (err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            res.jsonp(block);
+          }
+        });
+      } else {
+        var message = {
+          msg: 'Nice try. . . Better Luck Next Time!'
         }
-      });
-    } else {
-      var message = {
-        msg: 'Nice try. . . Better Luck Next Time!'
+        res.jsonp(message);
       }
-      res.jsonp(message);
-    }
+    });
   });
 };
 
@@ -48,7 +51,6 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      // console.log('List: ' + JSON.stringify(blocks));
       res.jsonp(blocks);
     }
   });

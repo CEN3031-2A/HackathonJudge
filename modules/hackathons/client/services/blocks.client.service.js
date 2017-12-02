@@ -8,7 +8,7 @@
     BlockService.$inject = ['$resource', '$http', 'Socket'];
 
  function BlockService($resource, $http, Socket) {
-
+    //Structureof the block
     class Block {
         constructor(index, previousHash, timestamp, data, hash) {
             this.index = index;
@@ -18,7 +18,7 @@
             this.hash = hash.toString();
         }
     };
-
+    //Genesis block definition, keep in mind there is no note
     var getGenesisBlock = () => {
         var data = {
             sender: 'Genesis Block',
