@@ -453,7 +453,7 @@
                   vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
                 }
               }
-              projct.note.text.push(block.note);
+              project.note.text.push(block.note);
               project.note.vote.push(vote);
             }
           }
