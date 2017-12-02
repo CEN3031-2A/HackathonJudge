@@ -449,7 +449,7 @@
               var vote = [];
               for(var i = 0; i < block.vote.length; i++) {
 
-                if(block.vote.criteria[i] != undefined) {
+                if(block.vote.criteria != undefined) {
                   vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
                 }
               }
@@ -474,45 +474,44 @@
           {
             addVoteToHackathon(blockchain[i]);
           }
-        });
+          // now we need to clear the judges
+          if (vm.hackathon.judge != undefined) {
+            let to_delete = []; // Store the judges to delete
 
-        // now we need to clear the judges
-        if (vm.hackathon.judge != undefined) {
-          let to_delete = []; // Store the judges to delete
-
-          // Get the judges that belong to the current hackathon to delete
-          // There should be only one active hackathon at a time, so all judges
-          // from the judge collection will be deleted
-          for (let i=0; i < vm.hackathon.judge.length; i++) {
-            for (let j=0; j < vm.judges.length; j++) {
-              if (vm.hackathon.judge[i].id == vm.judges[j].id) {
-                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
-                break;
+            // Get the judges that belong to the current hackathon to delete
+            // There should be only one active hackathon at a time, so all judges
+            // from the judge collection will be deleted
+            for (let i=0; i < vm.hackathon.judge.length; i++) {
+              for (let j=0; j < vm.judges.length; j++) {
+                if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                  to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                  break;
+                }
               }
+            }
+
+            // Delete the judges
+            vm.hackathon.judge = [];
+            for (let i=0; i < to_delete.length; i++) {
+              let url = "/api/judges/";
+              url += to_delete[i];
+              $http({method: 'DELETE', url: url}).then(function(res) {
+                console.log("Deleted");
+              }, function(err) {
+                console.log("Fail");
+              });
             }
           }
 
-          // Delete the judges
-          vm.hackathon.judge = [];
-          for (let i=0; i < to_delete.length; i++) {
-            let url = "/api/judges/";
-            url += to_delete[i];
-            $http({method: 'DELETE', url: url}).then(function(res) {
-              console.log("Deleted");
-            }, function(err) {
-              console.log("Fail");
-            });
-          }
-        }
+          // now we need to clear the blockchain & save the genesis block to set
+          // it up for the next active hackathon
+          BlockService.clearBlocks().then(function(res) {
+            BlockService.saveGenesisBlock();
+          });
 
-        // now we need to clear the blockchain & save the genesis block to set
-        // it up for the next active hackathon
-        BlockService.clearBlocks().then(function(res) {
-          BlockService.saveGenesisBlock();
+          // finally, save the hackathon
+          vm.save(true);
         });
-
-        // finally, save the hackathon
-        vm.save(true);
       }
     }
 

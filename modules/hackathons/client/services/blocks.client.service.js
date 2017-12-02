@@ -140,10 +140,10 @@
           if (isValidNewBlock(newBlock, getLatestBlock())) {
               $http({method: 'POST', url:'/api/blocks', data: newBlock}).then(function(res) {
                 //blockchain.push(newBlock);
-                Socket.send('voteMessage', JSON.stringify(newBlock));
-                Socket.on('error', function (err) {
-                  console.log(err);
-                });
+                Socket.send('voteMessage', newBlock);
+                // Socket.on('error', function (err) {
+                //   console.log(err);
+                // });
                 console.log('Saved Block to DB: ' + JSON.stringify(res.data));
               }, function(err) {
                 console.log('Save Error: ' + err);
