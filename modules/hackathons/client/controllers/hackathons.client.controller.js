@@ -461,7 +461,7 @@
                 text: block.note,
                 vote: vote
               };
-              project.note[project.note.length-1] = obj;
+              project.note.push(obj);
               console.log(JSON.stringify(project.note));
             }
           }
