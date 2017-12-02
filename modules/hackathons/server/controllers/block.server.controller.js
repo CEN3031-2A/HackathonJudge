@@ -38,8 +38,16 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log('List: ' + JSON.stringify(blocks));
+      // console.log('List: ' + JSON.stringify(blocks));
       res.jsonp(blocks);
     }
   });
+};
+
+/**
+* Clear the blockchain
+*/
+exports.clear = function(req, res) {
+  var result = Blocks.remove( { } );
+  
 };

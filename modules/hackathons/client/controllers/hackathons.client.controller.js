@@ -41,6 +41,7 @@
     vm.create = create;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+    vm.archive = archive;
 
     vm.judges = JudgesService.query();
 
@@ -77,7 +78,7 @@
     $http.get('https://api.heroku.com/apps/hackathonjudge/config-vars', {headers: headers}).then(function(data){
       json = data;
       json = json.data;
-      console.log(JSON.stringify(json));
+      // console.log(JSON.stringify(json));
     });
 
     // Function for AWS to send emails
@@ -426,26 +427,86 @@
       }
     }
 
+    // takes in a block from the chain and saves it into the hackathon model
+    // this is only called from the archive function
+    function addVoteToHackathon(nextBlock) {
+
+      var block = nextBlock.data;
+
+      for(var cat = 0; cat < vm.hackathon.category.length; cat++) {
+        var category = vm.hackathon.category[cat];
+        if(category.name == block.category)
+        {
+          // find the project to add the votes to
+          for(var proj = 0; proj < category.project.length; proj++) {
+            var project = category.project[proj];
+            if(project.name == block.recipient) {
+              // now we have the project
+              var vote = [];
+              for(var i = 0; i < block.vote.length; i++) {
+                vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
+              }
+              projct.note.text.push(block.note);
+              project.note.vote.push(vote);
+            }
+          }
+        }
+      }
+    }
 
     // Function to archive the active hackathon
-    // function archive() {
-    //   if ($window.confirm('Are you sure you want to archive this Hackathon?')) {
-    //     vm.hackathon.active = false;
-    //
-    //     // get the blockchain and store individual votes into the hackathon object
-    //     BlockService.get().then(function(res) {
-    //       let blockchain = res.data;
-    //       for(var i = 0; i < blockchain.length; i++)
-    //       {
-    //         addDataToChart(blockchain[i]);
-    //       }
-    //
-    //     }
-    //
-    //   }
-    // }
+    function archive() {
+      if ($window.confirm('Are you sure you want to archive this Hackathon? This will clear the judges')) {
+        vm.hackathon.active = false;
 
+        // get the blockchain and store individual votes into the hackathon model
+        BlockService.get().then(function(res) {
+          let blockchain = res.data;
+          for(var i = 0; i < blockchain.length; i++)
+          {
+            addVoteToHackathon(blockchain[i]);
+          }
+        });
 
+        // now we need to clear the judges
+        if (vm.hackathon.judge != undefined) {
+          let to_delete = []; // Store the judges to delete
+
+          // Get the judges that belong to the current hackathon to delete
+          // There should be only one active hackathon at a time, so all judges
+          // from the judge collection will be deleted
+          for (let i=0; i < vm.hackathon.judge.length; i++) {
+            for (let j=0; j < vm.judges.length; j++) {
+              if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                break;
+              }
+            }
+          }
+
+          // Delete the judges
+          vm.hackathon.judge = [];
+          for (let i=0; i < to_delete.length; i++) {
+            let url = "/api/judges/";
+            url += to_delete[i];
+            $http({method: 'DELETE', url: url}).then(function(res) {
+              console.log("Deleted");
+            }, function(err) {
+              console.log("Fail");
+            });
+          }
+        }
+
+        // now we need to clear the blockchain & save the genesis block to set
+        // it up for the next active hackathon
+        BlockService.clear().then(function() {
+          BlockService.saveGenesisBlock();
+        });
+
+        // finally, save the hackathon
+        vm.save(true);
+      }
+    }
 
   }
 }());

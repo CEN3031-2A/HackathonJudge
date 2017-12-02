@@ -124,6 +124,15 @@
             console.log('Save Gen Block Error: ' + err);
           });
         },
+
+        // Clears all the blocks in the DB. This function should only be called
+        // during the archive oparation
+        clear: function() {
+          $http({method: 'DELETE', url:'/api/blocks'}).then(function(res) {
+            console.log('Cleared all blocks in DB');
+          });
+        },
+
         add: function (newBlockData) {
           var newBlock = generateNextBlock(newBlockData);
           if (isValidNewBlock(newBlock, getLatestBlock())) {

@@ -20,7 +20,8 @@ module.exports = function(app) {
 
   app.route('/api/blocks')
     .get(blocks.list)
-    .post(blocks.create);
+    .post(blocks.create)
+    .delete(blocks.clear);
 
   // Finish by binding the Hackathon middleware
   app.param('hackathonId', hackathons.hackathonByID);
