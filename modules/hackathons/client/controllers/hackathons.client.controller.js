@@ -453,8 +453,16 @@
                   vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
                 }
               }
-              project.note.text.push(block.note);
-              project.note.vote.push(vote);
+              if(block.note == undefined)
+              {
+                block.note = " ";
+              }
+              var obj = {
+                text: block.note,
+                vote: vote
+              };
+              project.note[project.note.length-1] = obj;
+              console.log(JSON.stringify(project.note));
             }
           }
         }
