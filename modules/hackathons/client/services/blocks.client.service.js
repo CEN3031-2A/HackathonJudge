@@ -92,11 +92,11 @@
       if (!Socket.socket) {
         Socket.connect();
       }
-      console.log('check 1', Socket.connected);
+      //Websocket connect check
       Socket.on('connect', function (newBlock) {
         console.log('Connected to web socket');
       });
-      // Add an event listener to the 'chatMessage' event
+      // Add an event listener to the 'voteMessage' event
       Socket.on('voteMessage', function (newBlock) {
         if(newBlock.type == 'vote')
         {
