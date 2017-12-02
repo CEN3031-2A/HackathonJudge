@@ -115,6 +115,16 @@
           return $http({url: '/api/blocks', method: 'GET'});
         },
 
+        // Clears all the blocks in the DB. This function should only be called
+        // during the archive oparation
+        clearBlocks: function () {
+          return $http({method: 'DELETE', url:'/api/blocks'}).then(function(res) {
+            console.log('Cleared all blocks in DB');
+          }, function(err) {
+            console.log('Error: ' + JSON.stringify(err));
+          });
+        },
+
         // Don't call this function unless blockchain in DB is empty!
         saveGenesisBlock: function () {
           var block = getGenesisBlock();
@@ -122,14 +132,6 @@
             console.log('Successfully saved Gen Block: ' + JSON.stringify(res.data));
           }, function(err) {
             console.log('Save Gen Block Error: ' + err);
-          });
-        },
-
-        // Clears all the blocks in the DB. This function should only be called
-        // during the archive oparation
-        clear: function() {
-          $http({method: 'DELETE', url:'/api/blocks'}).then(function(res) {
-            console.log('Cleared all blocks in DB');
           });
         },
 

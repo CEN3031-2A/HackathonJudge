@@ -68,7 +68,7 @@
     var json;           // Hold the AWS information
     var judges = [];    // Hold judges that will be generated when sending emails
 
-    // Get AWS credentials and email from aws.json - this is 
+    // Get AWS credentials and email from aws.json - this is
     // $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
     //   json = data;
     //   json = json.data;
@@ -307,7 +307,7 @@
     }
 
     /* End of email sending code */
-    
+
 
     // Check to see if the date needs to be more readable (if there is a date)
     if (vm.hackathon.date != null) {
@@ -436,7 +436,7 @@
     function addVoteToHackathon(nextBlock) {
 
       var block = nextBlock.data;
-
+      console.log('Block: ' + JSON.stringify(block));
       for(var cat = 0; cat < vm.hackathon.category.length; cat++) {
         var category = vm.hackathon.category[cat];
         if(category.name == block.category)
@@ -448,7 +448,10 @@
               // now we have the project
               var vote = [];
               for(var i = 0; i < block.vote.length; i++) {
-                vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
+
+                if(block.vote.criteria[i] != undefined) {
+                  vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
+                }
               }
               projct.note.text.push(block.note);
               project.note.vote.push(vote);
@@ -466,6 +469,7 @@
         // get the blockchain and store individual votes into the hackathon model
         BlockService.get().then(function(res) {
           let blockchain = res.data;
+          // console.log('Chain: ' + JSON.stringify(blockchain));
           for(var i = 0; i < blockchain.length; i++)
           {
             addVoteToHackathon(blockchain[i]);
@@ -503,7 +507,7 @@
 
         // now we need to clear the blockchain & save the genesis block to set
         // it up for the next active hackathon
-        BlockService.clear().then(function() {
+        BlockService.clearBlocks().then(function(res) {
           BlockService.saveGenesisBlock();
         });
 
