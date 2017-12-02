@@ -69,7 +69,7 @@
               month = "December";
           }
 
-          result.string_date = month + " " + year;
+          result.string_date = month + " " + year;  // String that will be shown to the admin
         }
       });
 
