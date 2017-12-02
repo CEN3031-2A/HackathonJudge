@@ -75,4 +75,8 @@ be implemented later.
     });
 ```
 + To run the app locally the commented code must be uncommented, and the uncommented code should be commented.
-
++ To run the app open terminal and run:
+```
+    node server.js
+```
++ On your browser navigate to localhost:3000
