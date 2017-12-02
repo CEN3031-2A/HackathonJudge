@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Block = mongoose.model('Block'),
+  Judges = mongoose.model('Judge'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -14,16 +15,25 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var block = new Block(req.body);
-  console.log('New Block: ' + JSON.stringify(block));
   block.user = req.user;
-
-  block.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+  
+  //First check if the judge ID of the vote is in database
+  Judges.findOne({'id': block.data.sender}, function(error, exist) {
+    if(exist && !error){
+      block.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(block);
+        }
       });
     } else {
-      res.jsonp(block);
+      var message = {
+        msg: 'Nice try. . . Better Luck Next Time!'
+      }
+      res.jsonp(message);
     }
   });
 };
