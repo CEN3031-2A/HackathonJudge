@@ -24,9 +24,9 @@
           curr_judge = result;
 
           // Check to see if a judge has already voted for a project - return true if yes
-          $scope.contains = function (project_name) {
+          $scope.contains = function (project_id) {
             for (let i = 0; i < curr_judge.vote.length; i++) {
-              if (curr_judge.vote[i] == project_name)
+              if (curr_judge.vote[i] == project_id)
                 return true;
             }
             return false;
@@ -92,7 +92,7 @@
       // Ideally an alert should not appear because votes are already checked for (judges won't see a submit button)
       for (let j = 0; j < curr_judge.vote.length; j++) {
         //Check to see if any of the judge's votes correspond to the current vote
-        if (curr_judge.vote[j] == project.name) {
+        if (curr_judge.vote[j] == project._id) {
           alert("You have already voted for this project! Cannot vote again!");
           return;
         }
@@ -108,7 +108,7 @@
       }
 
       // Remember that a judge has already voted for a project
-      curr_judge.vote.push(project.name);
+      curr_judge.vote.push(project._id);
       let new_url = "/api/judges/"
       new_url += curr_judge._id;
 

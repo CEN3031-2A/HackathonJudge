@@ -32,12 +32,12 @@
         <section>
           <uib-accordion class="panel-default" panel-class="panel-danger">
             <span ng-repeat="project in cat.project">
-              <span ng-if="contains(project.name) == true">
+              <span ng-if="contains(project._id) == true">
                 <div uib-accordion-group heading="{{project.name}} - Finished" panel-class="panel-success">
                   You have already voted for this project!
                 </div>
               </span>
-              <span ng-if="contains(project.name) == false">
+              <span ng-if="contains(project._id) == false">
                 <div uib-accordion-group heading="{{project.name}}" panel-class="panel-success">
                   <form ng-submit="vm.saveVote(project, cat)">
                     <div class="row">
