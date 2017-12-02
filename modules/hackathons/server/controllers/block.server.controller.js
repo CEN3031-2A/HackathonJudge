@@ -58,6 +58,13 @@ exports.list = function(req, res) {
 * Clear the blockchain
 */
 exports.clear = function(req, res) {
-  var result = Blocks.remove( { } );
-  
+  var result = Block.remove( { } ).exec(function(err, blocks){
+    if(err) {
+      console.log('Error on Clear: ' + err);
+    }
+    else {
+      res.jsonp(blocks);
+    }
+  });
+
 };
