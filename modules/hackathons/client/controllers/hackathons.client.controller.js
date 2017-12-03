@@ -448,7 +448,7 @@
               // now we have the project
               var vote = [];
               for(var i = 0; i < block.vote.length; i++) {
-                  vote[i] = {criteria_name: block.vote.criteria[i], number: block.vote.value[i]};
+                  vote[i] = {criteria_name: block.vote[i].criteria, number: block.vote[i].value};
               }
               if(block.note == undefined)
               {
