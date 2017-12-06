@@ -23,6 +23,15 @@
     vm.create = create;
     vm.duplicate = duplicate;
 
+    // Hold the database's information about the hackathon's active status
+    // temp_active holds DB info. vm.hackathon.active holds DB info and is modified by the user
+    // temp_active is to show different options on the new/edit hackathon screen
+    vm.temp_active = vm.hackathon.active;
+    
+    if (vm.temp_active == undefined || vm.temp_active == null)
+      vm.temp_active = false; // Instantiate as false if creating a new hackathon 
+
+
     // Get hackathons to check see if there are multiple hackathons
     var hackathons = HackathonsService.query();
 
