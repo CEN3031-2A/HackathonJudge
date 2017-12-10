@@ -9,7 +9,7 @@ var acl = require('acl');
 acl = new acl(new acl.memoryBackend());
 
 /**
- * Invoke Judges Permissions
+ * Invoke Judges Permissions TODO: update roles
  */
 exports.invokeRolesPolicies = function () {
   acl.allow([{

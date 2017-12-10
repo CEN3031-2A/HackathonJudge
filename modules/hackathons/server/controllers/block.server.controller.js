@@ -6,6 +6,7 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Block = mongoose.model('Block'),
+  Judges = mongoose.model('Judge'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
@@ -14,17 +15,29 @@ var path = require('path'),
  */
 exports.create = function(req, res) {
   var block = new Block(req.body);
-  console.log('New Block: ' + JSON.stringify(block));
   block.user = req.user;
-
-  block.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(block);
-    }
+  
+  //First check if the judge ID of the vote is in database
+  //Or if Genesis Block
+  Judges.findOne({'id': block.data.sender}, function(error, exist) {
+    Block.count({}, function(err, count) {
+      if((exist && !error) || (count == 0)){
+        block.save(function(err) {
+          if (err) {
+            return res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            res.jsonp(block);
+          }
+        });
+      } else {
+        var message = {
+          msg: 'Nice try. . . Better Luck Next Time!'
+        }
+        res.jsonp(message);
+      }
+    });
   });
 };
 
@@ -38,8 +51,22 @@ exports.list = function(req, res) {
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      console.log('List: ' + JSON.stringify(blocks));
       res.jsonp(blocks);
     }
   });
+};
+
+/**
+* Clear the blockchain
+*/
+exports.clear = function(req, res) {
+  var result = Block.remove( { } ).exec(function(err, blocks){
+    if(err) {
+      console.log('Error on Clear: ' + err);
+    }
+    else {
+      res.jsonp(blocks);
+    }
+  });
+
 };

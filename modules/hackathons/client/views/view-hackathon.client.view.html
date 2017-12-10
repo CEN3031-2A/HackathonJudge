@@ -6,11 +6,18 @@
     </a>
       <div class="pull-right">
         <div class="justify-right">
-          <a class="btn btn-primary" style="background: #115E67" 
+          <a class="btn btn-primary" style="background: #115E67"
             ui-sref="hackathons.edit({ hackathonId: vm.hackathon._id })">Edit Hackathon
             &nbsp;
             <i class="glyphicon glyphicon-edit"></i>
           </a>
+
+          <a ng-if="vm.hackathon.active" class="btn btn-primary" style="background: #115E67"
+            ng-click="vm.archive()">Inactivate Hackathon
+            &nbsp;
+            <i class=" 	glyphicon glyphicon-hdd"></i>
+          </a>
+
           <a class="btn btn-primary btn-danger" ng-click="vm.remove()">Delete Hackathon
             &nbsp;
             <i class="glyphicon glyphicon-trash"></i>
@@ -20,40 +27,42 @@
     <center><h1 ng-bind="vm.hackathon.name"></h1></center>
     <center><b>{{vm.hackathon.active ? 'Active' : 'Inactive'}} Hackathon </b></center>
     <center>{{ vm.hackathon.date ? vm.hackathon.string_date : 'Date not set'}}</center>
-  </div> 
+  </div>
   <div class="col-md-6">
     <div class="desc-box">
       <img src="modules/hackathons/client/img/description.png">
       <p style="color:#509e2f" class="enlarge">{{ vm.hackathon.description }}</p><br>
       <a type="button" class="btn btn-primary" style="background: #115E67"
-        ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })"> 
+        ui-sref="hackathons.results({ hackathonId: vm.hackathon._id })">
         <i class="glyphicon glyphicon-signal"></i>
-        &nbsp; View Results  
+        &nbsp; View Results
       </a>
       &nbsp;&nbsp;
       <a type="button" class="btn btn-primary" style="background: #003B5C"
-        ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })"> 
+        ui-sref="hackathons.view_votes({ hackathonId: vm.hackathon._id })">
         <i class="glyphicon glyphicon-list-alt"></i>
         &nbsp;View Votes
       </a> <br><br>
-      <b>Upload CSV File of Judges' Emails</b>
-      <input type="file" fileread="vm.csvfile" accept=".csv">
-      <br>  
-      <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.send()">
-        <i class="glyphicon glyphicon-envelope"></i>
-        &nbsp; Send Emails
-      </a>
-      &nbsp;&nbsp;&nbsp;
-      <a type="button" class="btn btn-primary" ng-click="vm.resend()" style="background:#003B5C">
-        <i class="glyphicon glyphicon-share"></i>
-        &nbsp;Resend Emails</a>
+      <div ng-if="vm.hackathon.active">
+        <b>Upload CSV File of Judges' Emails</b>
+        <input type="file" fileread="vm.csvfile" accept=".csv">
+        <br>
+        <a type="button" class="btn btn-primary" style="background: #115E67" ng-click="vm.send()">
+          <i class="glyphicon glyphicon-envelope"></i>
+          &nbsp; Send Emails
+        </a>
+        &nbsp;&nbsp;&nbsp;
+        <a type="button" class="btn btn-primary" ng-click="vm.resend()" style="background:#003B5C">
+          <i class="glyphicon glyphicon-share"></i>
+          &nbsp;Resend Emails</a>
+      </div>
     </div>
   </div>
   <div class="col-md-6">
     <div class="modify-box">
       <center>
       <img src="modules/hackathons/client/img/modification.png"><br><br>
-      
+
       <div ng-repeat="category in vm.hackathon.category">
         <a ui-sref="hackathons.edit_cat({ hackathonId: vm.hackathon._id, cat: $index})">Edit {{category.name}} Category</a>
         <br>

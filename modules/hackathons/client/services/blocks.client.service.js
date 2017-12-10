@@ -8,7 +8,7 @@
     BlockService.$inject = ['$resource', '$http', 'Socket'];
 
  function BlockService($resource, $http, Socket) {
-
+    //Structureof the block
     class Block {
         constructor(index, previousHash, timestamp, data, hash) {
             this.index = index;
@@ -18,7 +18,7 @@
             this.hash = hash.toString();
         }
     };
-
+    //Genesis block definition, keep in mind there is no note
     var getGenesisBlock = () => {
         var data = {
             sender: 'Genesis Block',
@@ -92,8 +92,11 @@
       if (!Socket.socket) {
         Socket.connect();
       }
-
-      // Add an event listener to the 'chatMessage' event
+      //Websocket connect check
+      Socket.on('connect', function (newBlock) {
+        console.log('Connected to web socket');
+      });
+      // Add an event listener to the 'voteMessage' event
       Socket.on('voteMessage', function (newBlock) {
         if(newBlock.type == 'vote')
         {
@@ -112,6 +115,16 @@
           return $http({url: '/api/blocks', method: 'GET'});
         },
 
+        // Clears all the blocks in the DB. This function should only be called
+        // during the archive oparation
+        clearBlocks: function () {
+          return $http({method: 'DELETE', url:'/api/blocks'}).then(function(res) {
+            console.log('Cleared all blocks in DB');
+          }, function(err) {
+            console.log('Error: ' + JSON.stringify(err));
+          });
+        },
+
         // Don't call this function unless blockchain in DB is empty!
         saveGenesisBlock: function () {
           var block = getGenesisBlock();
@@ -121,13 +134,17 @@
             console.log('Save Gen Block Error: ' + err);
           });
         },
+
         add: function (newBlockData) {
           var newBlock = generateNextBlock(newBlockData);
           if (isValidNewBlock(newBlock, getLatestBlock())) {
               $http({method: 'POST', url:'/api/blocks', data: newBlock}).then(function(res) {
                 //blockchain.push(newBlock);
                 Socket.emit('voteMessage', newBlock);
-                console.log('Saved Block: ' + JSON.stringify(res.data));
+                // Socket.on('error', function (err) {
+                //   console.log(err);
+                // });
+                console.log('Saved Block to DB: ' + JSON.stringify(res.data));
               }, function(err) {
                 console.log('Save Error: ' + err);
               });

@@ -41,6 +41,7 @@
     vm.create = create;
     vm.addCategoryToHackathon = addCategoryToHackathon;
     vm.removeCategoryFromHackathon = removeCategoryFromHackathon;
+    vm.archive = archive;
 
     vm.judges = JudgesService.query();
 
@@ -53,9 +54,9 @@
       }
 
       $http({method: 'POST', url: '/api/judges', data: newJudge}).then(function(res) {
-        console.log("OK");
+        //console.log("OK");
       }, function(err) {
-        console.log("NO");
+        //console.log("NO");
       });
     }
 
@@ -67,7 +68,7 @@
     var json;           // Hold the AWS information
     var judges = [];    // Hold judges that will be generated when sending emails
 
-    // Get AWS credentials and email from aws.json
+    // Get AWS credentials and email from aws.json - this is
     // $http.get('modules/hackathons/client/config/aws.json').then(function (data) {
     //   json = data;
     //   json = json.data;
@@ -77,7 +78,7 @@
     $http.get('https://api.heroku.com/apps/hackathonjudge/config-vars', {headers: headers}).then(function(data){
       json = data;
       json = json.data;
-      console.log(JSON.stringify(json));
+      // console.log(JSON.stringify(json));
     });
 
     // Function for AWS to send emails
@@ -126,7 +127,7 @@
           for (let i=0; i < vm.hackathon.judge.length; i++) {
             for (let j=0; j < vm.judges.length; j++) {
               if (vm.hackathon.judge[i].id == vm.judges[j].id) {
-                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                to_delete.push(vm.judges[j]._id); // Store the MongoDB ID of the judge in the judge collection to delete
                 break;
               }
             }
@@ -193,7 +194,7 @@
       let subject = vm.hackathon.name;
       subject += " - Judge Link";
 
-      generateUID(emails);    // Links emails and ids together - pushes object into judges
+      generateUID(emails);    // Links emails and ids together - pushes objects into vm.hackathon.judge
 
       for (let i = 0; i < vm.hackathon.judge.length; i++) {
         // Create an array of size one and push a single email each time to send
@@ -205,6 +206,7 @@
         let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
         temp_body += vm.hackathon.judge[i].id;
 
+        // AWS sends the email
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
@@ -216,7 +218,7 @@
     // Generate unique IDs for each judge
     // Borrowed from StackOverflow: https://stackoverflow.com/questions/6248666/how-to-generate-short-uid-like-ax4j9z-in-js
     function generateUID(emails) {
-      var id_array = [];  // Keep track of IDs in the unlikely event that there is a duplicate
+      var id_array = [];  // Keep track of IDs in the unlikely event that two generated IDs are the same
 
       for (let i = 0; i < emails.length; i++) {
         var temp_id = undefined;  // Hold the ID
@@ -246,6 +248,7 @@
           email: emails[i],
           id: temp_id
         };
+
         judges.push(temp_judge);  // To store judges in the hackathon collection
         createJudge(emails[i], temp_id);  // To store judges in the judge collection
       }
@@ -294,6 +297,7 @@
         let temp_body = "http://hackathonjudge.herokuapp.com/hackathons.projects.";
         temp_body += vm.hackathon.judge[i].id;
 
+        // AWS sends email
         sendMail(ses, temp_email, from, subject, temp_body);
       }
 
@@ -303,6 +307,7 @@
     }
 
     /* End of email sending code */
+
 
     // Check to see if the date needs to be more readable (if there is a date)
     if (vm.hackathon.date != null) {
@@ -426,26 +431,94 @@
       }
     }
 
+    // takes in a block from the chain and saves it into the hackathon model
+    // this is only called from the archive function
+    function addVoteToHackathon(nextBlock) {
+
+      var block = nextBlock.data;
+      console.log('Block: ' + JSON.stringify(block));
+      for(var cat = 0; cat < vm.hackathon.category.length; cat++) {
+        var category = vm.hackathon.category[cat];
+        if(category.name == block.category)
+        {
+          // find the project to add the votes to
+          for(var proj = 0; proj < category.project.length; proj++) {
+            var project = category.project[proj];
+            if(project.name == block.recipient) {
+              // now we have the project
+              var vote = [];
+              for(var i = 0; i < block.vote.length; i++) {
+                  vote[i] = {criteria_name: block.vote[i].criteria, number: block.vote[i].value};
+              }
+              if(block.note == undefined)
+              {
+                block.note = " ";
+              }
+              var obj = {
+                text: block.note,
+                vote: vote
+              };
+              project.note.push(obj);
+              console.log(JSON.stringify(project.note));
+            }
+          }
+        }
+      }
+    }
 
     // Function to archive the active hackathon
-    // function archive() {
-    //   if ($window.confirm('Are you sure you want to archive this Hackathon?')) {
-    //     vm.hackathon.active = false;
-    //
-    //     // get the blockchain and store individual votes into the hackathon object
-    //     BlockService.get().then(function(res) {
-    //       let blockchain = res.data;
-    //       for(var i = 0; i < blockchain.length; i++)
-    //       {
-    //         addDataToChart(blockchain[i]);
-    //       }
-    //
-    //     }
-    //
-    //   }
-    // }
+    function archive() {
+      if ($window.confirm('Are you sure you want to archive this Hackathon? This will clear the judges')) {
+        vm.hackathon.active = false;
 
+        // get the blockchain and store individual votes into the hackathon model
+        BlockService.get().then(function(res) {
+          let blockchain = res.data;
+          // console.log('Chain: ' + JSON.stringify(blockchain));
+          for(var i = 0; i < blockchain.length; i++)
+          {
+            addVoteToHackathon(blockchain[i]);
+          }
+          // now we need to clear the judges
+          if (vm.hackathon.judge != undefined) {
+            let to_delete = []; // Store the judges to delete
 
+            // Get the judges that belong to the current hackathon to delete
+            // There should be only one active hackathon at a time, so all judges
+            // from the judge collection will be deleted
+            for (let i=0; i < vm.hackathon.judge.length; i++) {
+              for (let j=0; j < vm.judges.length; j++) {
+                if (vm.hackathon.judge[i].id == vm.judges[j].id) {
+                  to_delete.push(vm.judges[j]._id); // Store the MongoDB ID
+                  break;
+                }
+              }
+            }
+
+            // Delete the judges
+            vm.hackathon.judge = [];
+            for (let i=0; i < to_delete.length; i++) {
+              let url = "/api/judges/";
+              url += to_delete[i];
+              $http({method: 'DELETE', url: url}).then(function(res) {
+                console.log("Deleted");
+              }, function(err) {
+                console.log("Fail");
+              });
+            }
+          }
+
+          // now we need to clear the blockchain & save the genesis block to set
+          // it up for the next active hackathon
+          BlockService.clearBlocks().then(function(res) {
+            BlockService.saveGenesisBlock();
+          });
+
+          // finally, save the hackathon
+          vm.save(true);
+        });
+      }
+    }
 
   }
 }());

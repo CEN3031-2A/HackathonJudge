@@ -22,7 +22,7 @@
           <input type="month" ng-model="vm.hackathon.date">
           <br>
           <br>
-          <div>
+          <div ng-if="vm.temp_active == false">
             <input type="checkbox" id="booleanTrue" name="true" ng-model="vm.hackathon.active">
             <label for="booleanTrue">Active Hackathon</label>
           </div>
