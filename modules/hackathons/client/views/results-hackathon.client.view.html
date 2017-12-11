@@ -1,5 +1,4 @@
 <!--If there are no projects in a category, a graph will not show-->
-<!--If project names are too long, it will shove off other projects from the graph-->
 <section>
   <div class="page-header">
     <a type="button" class="btn btn-primary" style="background:#509e2f" ui-sref="hackathons.view({ hackathonId: vm.hackathon._id })">
@@ -18,33 +17,17 @@
   <br><br>
 <div class="col-12">
   <div ng-repeat="category in vm.hackathon.category track by $index">
-    <!-- <div ng-if="$even" style="float:left; width:40%; margin-left:-100px" > -->
       <center><canvas id="bar" class="chart chart-horizontal-bar"
         height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
       </canvas></center>
-
-      <!--
-      <h2>Vote Counts</h2>
-      <div ng-repeat="project in vm.projects[$index]">
-        {{ project.name }} - {{ project.vote_size }} <br>
-      </div>-->
       <center>
-        <div class="winner">
+        <div class="winner" ng-if="isSecondary($index) == false">
           <h4>Current Category Winner:</h4><h3> {{ vm.winners[$index] }} </h3>
+        </div>
+        <div class="winner" ng-if="isSecondary($index) == true">
+          <h4>Current Category Winner:</h4><h3> {{ vm.secondary_winners[$index] }} </h3>
         </div><br><br>
       </center>
-    <!-- </div> -->
-
-    <!-- <div ng-if="$odd" style="float:right; width:40%;">
-      <canvas id="bar" class="chart chart-horizontal-bar"
-        height="500%" width="600%" chart-data="data[$index]" chart-labels="labels[$index]" chart-series="series[$index]" chart-options="options[$index]">
-      </canvas>
-
-      <h2>Vote Counts</h2>
-      <div ng-repeat="project in vm.projects[$index]">
-        {{ project.name }} - {{ project.vote_size }} <br>
-      </div>
-    </div> -->
   </div>
 </div>
 </section>

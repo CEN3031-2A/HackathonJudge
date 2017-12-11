@@ -228,7 +228,9 @@
                     //total_scores[cat][proj] = proj_score;
 
                     // Check to see if the current project is the new category winner
-                    if (proj_score > vm.winner_votes[cat] && proj_score > vm.secondary_winner_votes[cat]) {
+                    // If the project is the current winner, go to next else if statemtn
+                    // Don't want to have a project be in vm.winners and vm.secondary_winners
+                    if (proj_score > vm.winner_votes[cat] && project.name != vm.winners[cat]) {
                       // Secondary winner is previous category winner, new category winner is the current project
                       vm.secondary_winners[cat] = vm.winners[cat];
                       vm.secondary_winner_votes[cat] = vm.winner_votes[cat];
@@ -236,9 +238,15 @@
                       vm.winners[cat] = project.name;
                       vm.winner_votes[cat] = proj_score;
                     }
+                    
+                    // In case the current project is also the current winner, we need to update its total score
+                    else if (proj_score > vm.winner_votes[cat] && project.name == vm.winners[cat]) {
+                      vm.winner_votes[cat] = proj_score;
+                    }
 
                     // Get secondary winners
-                    else if (proj_score <= vm.winner_votes[cat] && proj_score > vm.secondary_winner_votes[cat]) {
+                    else if (proj_score <= vm.winner_votes[cat] && proj_score > vm.secondary_winner_votes[cat] 
+                      && project.name != vm.winners[cat]) {
                       vm.secondary_winners[cat] = project.name;
                       vm.secondary_winner_votes[cat] = proj_score;
                     }
@@ -253,12 +261,6 @@
           }
           break;
         }
-        // var str = "bar-" + block.category;
-        // var chart = document.getElementById(str);
-        // if(chart != null)
-        // {
-        //   chart.update();
-        // }
       }
 
       // Determine winner of the entire hackathon
@@ -269,6 +271,7 @@
           vm.overall_winner_index = cat;
         }
       }
+
     }
 
     if (vm.hackathon.active == true) {
