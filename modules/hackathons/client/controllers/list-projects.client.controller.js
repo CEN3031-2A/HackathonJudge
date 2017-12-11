@@ -64,6 +64,16 @@
     vm.blockchain = [];
     vm.saveVote = saveVote;
 
+    // Get the blockchain
+    BlockService.get().then(function (res) {
+      vm.blockchain = res.data;
+
+      BlockService.set(vm.blockchain);
+      for (var i = 0; i < vm.blockchain.length; i++) {
+        console.log('Adding data for: ' + JSON.stringify(vm.blockchain[i]) + "\n");
+      }
+    });
+
     vm.scaleArray = [
       ['1'],
       ['1', '2'],
