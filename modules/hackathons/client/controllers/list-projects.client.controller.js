@@ -64,15 +64,79 @@
     vm.blockchain = [];
     vm.saveVote = saveVote;
 
-    // Get the blockchain
-    BlockService.get().then(function (res) {
-      vm.blockchain = res.data;
+    // Handling average vote value ----------------------------------------------------
 
-      BlockService.set(vm.blockchain);
-      for (var i = 0; i < vm.blockchain.length; i++) {
-        console.log('Adding data for: ' + JSON.stringify(vm.blockchain[i]) + "\n");
-      }
-    });
+
+    vm.averageVote = function(project, category) {
+      console.log("Starting function on project: " + project.name + " and category: ");
+      console.log(category);
+      var average = [0,0,0,0];
+      var numberOfVotes = 0;
+      var votes = [];
+      // Get the blockchain
+      BlockService.get().then(function (res) {
+        vm.blockchain = res.data;
+        console.log(vm.blockchain);
+        
+        // Loop over all the votes in the chain
+        for (var i = 0; i < vm.blockchain.length; i++) {
+          console.log("Checking " + vm.blockchain[i].data.recipient + " vs " + project.name);
+          // If there is a project name match
+          if(vm.blockchain[i].data.recipient == project.name) {
+            console.log("Found vote \n");
+            numberOfVotes++;
+            // Loop through the criteria and compute average for each
+            for (var j = 0; j < category.criteria.length; j++) {
+              average[j] = Math.floor(((average[j] * (numberOfVotes - 1)) + vm.blockchain[i].data.vote[j].value) / numberOfVotes);
+              // Build the votes object for response
+              votes[j] = { criteria: category.criteria[j].name, value: average[j] };
+            }
+            console.log("Average votes: " + average);
+          }
+        }
+        
+          // Make sure that the user wants to finalize his/her vote
+          if (!$window.confirm("Are you sure you want to submit an average vote? All votes are final and cannot be edited."))
+            return;
+    
+          // Check to see if the judge has already voted for a project (secondary measure)
+          // Ideally an alert should not appear because votes are already checked for (judges won't see a submit button)
+          for (let j = 0; j < curr_judge.vote.length; j++) {
+            //Check to see if any of the judge's votes correspond to the current vote
+            if (curr_judge.vote[j] == project._id) {
+              alert("You have already voted for this project! Cannot vote again!");
+              return;
+            }
+          }
+    
+          // Remember that a judge has already voted for a project
+          curr_judge.vote.push(project._id);
+          let new_url = "/api/judges/"
+          new_url += curr_judge._id;
+    
+          $http({ method: 'PUT', url: new_url, data: curr_judge }).then(function (res) {
+            console.log("Updated");
+            curr_judge.__v += 1;
+          }, function (err) {
+            console.log("Fail");
+            console.log(err);
+          });
+    
+          // Create a new message object
+          var data = {
+            sender: $stateParams.judgeID,
+            recipient: project.name,
+            category: category.name,
+            note: project.note.text,
+            vote: votes
+          };
+    
+          BlockService.add(data);
+      });
+
+      return;
+    }
+
 
     vm.scaleArray = [
       ['1'],

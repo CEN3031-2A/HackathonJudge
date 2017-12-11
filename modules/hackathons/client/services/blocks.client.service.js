@@ -128,6 +128,7 @@
         // Don't call this function unless blockchain in DB is empty!
         saveGenesisBlock: function () {
           var block = getGenesisBlock();
+          blockchain.push(block);
           $http({method: 'POST', url:'/api/blocks', data: block}).then(function(res) {
             console.log('Successfully saved Gen Block: ' + JSON.stringify(res.data));
           }, function(err) {

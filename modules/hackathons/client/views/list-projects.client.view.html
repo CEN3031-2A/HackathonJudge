@@ -66,8 +66,10 @@
                         </div>
                       </div>
                     </div>
+                    <button ng-click="vm.averageVote(project, cat)" type="button" class="btn btn-info">Submit Average Vote</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </form>
+                  
                 </div>
 
               </span>
@@ -76,10 +78,6 @@
         </section>
       </uib-tab>
     </uib-tabset>
-  <li class="vote-message" ng-repeat="block in vm.blockchain">
-    Sender: {{block.sender}} Recipient: {{block.recipient}} vote1: {{block.voteCriteria1}} vote2: {{block.voteCriteria2}} vote3:
-    {{block.voteCriteria3}} vote4: {{block.voteCriteria4}}
-  </li>
 </body>
 
 </html>
