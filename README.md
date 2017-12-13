@@ -80,3 +80,9 @@ be implemented later.
     node server.js
 ```
 + On your browser navigate to localhost:3000
+
+### Potential Updates:
++ Chain mining to distribute the job of verifying votes before adding to chain.
++ A way to update votes, without removing the previous vote from the chain.
++ Having multiple hackathons at once and a chain for each.
+
